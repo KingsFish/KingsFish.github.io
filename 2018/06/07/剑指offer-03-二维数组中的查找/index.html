@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>剑指offer 03-二维数组中的查找 | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Algorithm">
+    <meta name="description" content="题目  在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请实现一个函数，输入这样的二维数组和一个整数，判断数组中是否含有该整数。例如下面的数组  12341 2 8 92 4 9 124 7 10 136 8 11 15  如果查找 10 ，则返回 true，如果查找 5 ，则返回 false 这个题目之前在leetcode上做过，不过没有做出来，刚开始的">
+<meta name="keywords" content="Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="剑指offer 03-二维数组中的查找">
+<meta property="og:url" content="https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="题目  在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请实现一个函数，输入这样的二维数组和一个整数，判断数组中是否含有该整数。例如下面的数组  12341 2 8 92 4 9 124 7 10 136 8 11 15  如果查找 10 ，则返回 true，如果查找 5 ，则返回 false 这个题目之前在leetcode上做过，不过没有做出来，刚开始的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-14T14:54:54.964Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="剑指offer 03-二维数组中的查找">
+<meta name="twitter:description" content="题目  在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请实现一个函数，输入这样的二维数组和一个整数，判断数组中是否含有该整数。例如下面的数组  12341 2 8 92 4 9 124 7 10 136 8 11 15  如果查找 10 ，则返回 true，如果查找 5 ，则返回 false 这个题目之前在leetcode上做过，不过没有做出来，刚开始的">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">剑指offer 03-二维数组中的查找</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">剑指offer 03-二维数组中的查找</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-07T02:23:25.000Z" itemprop="datePublished" class="page-time">
+  2018-06-07
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/剑指offer/">剑指offer</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-剑指offer-03-二维数组中的查找" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">剑指offer 03-二维数组中的查找</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-07 10:23:25" datetime="2018-06-07T02:23:25.000Z" itemprop="datePublished">2018-06-07</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/剑指offer/">剑指offer</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>题目</p>
+<blockquote>
+<p>在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请实现一个函数，输入这样的二维数组和一个整数，判断数组中是否含有该整数。<br>例如下面的数组</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">1 2 8 9</span><br><span class="line">2 4 9 12</span><br><span class="line">4 7 10 13</span><br><span class="line">6 8 11 15</span><br></pre></td></tr></table></figure>
+
+<p>如果查找 10 ，则返回 <code>true</code>，如果查找 5 ，则返回 <code>false</code></p>
+<p>这个题目之前在<code>leetcode</code>上做过，不过没有做出来，刚开始的思路类似于二分查找，选取当前矩形最中间的数字，如果小于要寻找的整数，则除去左上角的矩形，如果大于要寻找的整数，则去除右下角的矩形，但是之后就没法做了，也没法写成递归的形式。</p>
+<p>参考<code>leetcode</code>和「剑指offer」，正确的解法应该是按照左上角或者右下角的数字来逐步缩小搜索范围。以右上角为例，如果查找数字大于右上角数字，则可删除所在行，如果查找的数字小于右上角数字，那么可以删去所在列，重复操作直至找到数字或者矩阵为空。</p>
+<p>以上面的矩阵为例，假设我们要查找的数字是 10 ，先从右上角 9 开始，发现 10 &gt; 9，那么删去 9 所在的第一行，得到新矩阵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2 4 9 12</span><br><span class="line">4 7 10 13</span><br><span class="line">6 8 11 15</span><br></pre></td></tr></table></figure>
+
+<p>再看新矩阵右上角数字 12，发现 10 &lt; 12，所以删除 12 所在的列，得到新矩阵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">2 4 9</span><br><span class="line">4 7 10</span><br><span class="line">6 8 11</span><br></pre></td></tr></table></figure>
+
+<p>再看新矩阵右上角数字 9，10 &gt; 9 ，删除 9 所在行，得到新矩阵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">4 7 10</span><br><span class="line">6 8 11</span><br></pre></td></tr></table></figure>
+
+<p>再看新矩阵右上角数字 10，发现刚好是我们所要查找的数字。</p>
+<p>这样我们就找到了所要查找的数字。同样，如果以左下角开始查找也是类似的步骤，如果左下角的数字大于目标数字，那么删除最后一行，如果小于目标数字，则删除第一列，重复操作直至找到数字或者矩阵为空。</p>
+<p><code>Java</code>实现代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">searchMatrix</span><span class="params">(<span class="keyword">int</span>[][] matrix, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (matrix.length == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> i = <span class="number">0</span>, j = matrix[<span class="number">0</span>].length - <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 右上角开始查找</span></span><br><span class="line">    <span class="keyword">while</span> (i &lt; matrix.length &amp;&amp; j &gt;= <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (matrix[i][j] &gt; target) &#123;</span><br><span class="line">            <span class="comment">// 删除所在列</span></span><br><span class="line">            j --;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (matrix[i][j] &lt; target) &#123;</span><br><span class="line">            <span class="comment">// 删除所在行</span></span><br><span class="line">            i ++;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>左下角开始查找的代码类似，在这里就不写了。</p>
+<p>这个算法用上了辅助空间，空间复杂度是 O(1)，时间复杂度是 O(m*n)，<code>m``n</code>分别是矩阵的长宽。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.964Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2018/06/07/剑指offer-03-二维数组中的查找/" target="_blank" rel="external">https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/&title=《剑指offer 03-二维数组中的查找》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/&title=《剑指offer 03-二维数组中的查找》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《剑指offer 03-二维数组中的查找》 — 碎碎念&url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Leetcode-237 Delete Node in a Linked List</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/04/剑指offer-02-单例模式/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">剑指 offer 02 - 单例模式</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/&title=《剑指offer 03-二维数组中的查找》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/&title=《剑指offer 03-二维数组中的查找》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《剑指offer 03-二维数组中的查找》 — 碎碎念&url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/06/07/剑指offer-03-二维数组中的查找/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACuklEQVR42u3aQW7jMAwF0N7/0jNAVwNk4vxPWmkKPK+M1Jb1tBBVkl9f8fXn+3q8f/bLv78/vvv4+/W3rp+/4cLDw8MbTf3ZlX8yHyFZiJb9dAQ8PDy8Y7x8uOt382CwwSdzxsPDw/sEXv7X9q3kuIyHh4f3G3nX4aH45OWBHg8PD++38JJUQjuVZFGSOeTzwcPDw3sPb1MA+6n7N9X38PDw8Mqq+qwY1iZ/Z1t/NFs8PDy8A7xNE1XbhpWnM9pFeRE28PDw8G7lzYZoi2F58ne2TE/HwcPDwzvGawtXLbudYh6oXswNDw8P7wBv1ia1KWttDtmzpcfDw8O7l5ds7m2BKhknP0y3ISfqGsPDw8Nb8Dalpln5Kj+g39XcgIeHh3cvLw8Ms6nk4SEPSEkrQx338PDw8ErebOvfV+fbYlt7TMfDw8M7zWv/1d8cmtvkyHC58fDw8A7zokPqrc1SbStVkV/Bw8PDO8ZrGwJmsHYJWnZU5cPDw8M7xms337xUloSWNmzU9T08PDy8NS9PE2w27k1KYjaHvjMLDw8Pr+O1palkK78OKtf3s/CAh4eH91O8WRiYlbVmT+bLgYeHh/dO3r4hoE0cbEpfL1oH8PDw8G7l5Ztyez9rMigaquLkBR4eHt69vHxCsxLXJpAUzQHPnsHDw8M7zMuHuDeFkQeAekw8PDy8A7xZaqAtibWtCftWLTw8PLxzvFnSIb/yxWpLZdHJGQ8PD+8wr006JPhZYjc/muPh4eG9n9du8Xk5Kk9J7Itts3QGHh4e3oa3+WTbQLBpCEiSI//5Ch4eHt4xXt6GdR1V2oRvvsRt4gMPDw/vE3izNoJ2Odqw8WI58PDw8D6Gt383OhCXh/jbAgMeHh5ewMsbrfJD82xzb0PLi+fx8PDwDvDaAlieQk3YdyV5VxceHh5eyvsL6SYDJ9383ksAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

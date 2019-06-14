@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Kaggle初步-Titanic之灾 | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="机器学习,kaggle">
+    <meta name="description" content="今天尝试了一下kaggle，从最简单的训练题开始做机器学习的项目。 训练题有三个，我选择了第一个“泰坦尼克之灾”进行尝试。  泰坦尼克之灾 房价预测 数字识别  “泰坦尼克之灾”背景是大家所熟悉的那个Jack and Rose的故事。豪华游艇要沉了，大家都惊慌逃生，可是救生艇数量有限。副船长发话了“Lady and Kid First！”，所以获救与否非随机，而是与一些因素相关的。 训练和测试的数">
+<meta name="keywords" content="机器学习,kaggle">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kaggle初步-Titanic之灾">
+<meta property="og:url" content="https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="今天尝试了一下kaggle，从最简单的训练题开始做机器学习的项目。 训练题有三个，我选择了第一个“泰坦尼克之灾”进行尝试。  泰坦尼克之灾 房价预测 数字识别  “泰坦尼克之灾”背景是大家所熟悉的那个Jack and Rose的故事。豪华游艇要沉了，大家都惊慌逃生，可是救生艇数量有限。副船长发话了“Lady and Kid First！”，所以获救与否非随机，而是与一些因素相关的。 训练和测试的数">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kingsfish.github.io/2018/02/28/Kaggle初步-Titanic之灾/result.jpg">
+<meta property="og:updated_time" content="2019-06-14T14:54:54.870Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kaggle初步-Titanic之灾">
+<meta name="twitter:description" content="今天尝试了一下kaggle，从最简单的训练题开始做机器学习的项目。 训练题有三个，我选择了第一个“泰坦尼克之灾”进行尝试。  泰坦尼克之灾 房价预测 数字识别  “泰坦尼克之灾”背景是大家所熟悉的那个Jack and Rose的故事。豪华游艇要沉了，大家都惊慌逃生，可是救生艇数量有限。副船长发话了“Lady and Kid First！”，所以获救与否非随机，而是与一些因素相关的。 训练和测试的数">
+<meta name="twitter:image" content="https://kingsfish.github.io/2018/02/28/Kaggle初步-Titanic之灾/result.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Kaggle初步-Titanic之灾</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Kaggle初步-Titanic之灾</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-02-28T14:55:37.000Z" itemprop="datePublished" class="page-time">
+  2018-02-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/机器学习/">机器学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#参考文献"><span class="post-toc-number">1.</span> <span class="post-toc-text">参考文献</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Kaggle初步-Titanic之灾" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Kaggle初步-Titanic之灾</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-02-28 22:55:37" datetime="2018-02-28T14:55:37.000Z" itemprop="datePublished">2018-02-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/机器学习/">机器学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>今天尝试了一下<code>kaggle</code>，从最简单的训练题开始做机器学习的项目。</p>
+<p>训练题有三个，我选择了第一个“<a href="https://www.kaggle.com/c/titanic" target="_blank" rel="noopener">泰坦尼克之灾</a>”进行尝试。</p>
+<ul>
+<li><a href="https://www.kaggle.com/c/titanic" target="_blank" rel="noopener">泰坦尼克之灾</a></li>
+<li><a href="https://www.kaggle.com/c/house-prices-advanced-regression-techniques" target="_blank" rel="noopener">房价预测</a></li>
+<li><a href="https://www.kaggle.com/c/digit-recognizer" target="_blank" rel="noopener">数字识别</a></li>
+</ul>
+<p>“泰坦尼克之灾”背景是大家所熟悉的那个<strong>Jack and Rose</strong>的故事。豪华游艇要沉了，大家都惊慌逃生，可是救生艇数量有限。副船长发话了<code>“Lady and Kid First！”</code>，所以获救与否非随机，而是与一些因素相关的。</p>
+<p>训练和测试的数据是乘客的一些信息以及获救情况，需要根据这些数据来预测其他乘客的存活情况。</p>
+<p>这应该是一个二分类问题，也即<strong>Logistic Regresstion</strong>所能处理的范围。</p>
+<p>大致浏览了一下数据，乘客的信息主要由这些：</p>
+<ul>
+<li>PassengerId =&gt; 乘客ID</li>
+<li>Pclass =&gt; 乘客等级(1/2/3等舱位)</li>
+<li>Name =&gt; 乘客姓名</li>
+<li>Sex =&gt; 性别</li>
+<li>Age =&gt; 年龄</li>
+<li>SibSp =&gt; 堂兄弟/妹个数</li>
+<li>Parch =&gt; 父母与小孩个数</li>
+<li>Ticket =&gt; 船票信息</li>
+<li>Fare =&gt; 票价</li>
+<li>Cabin =&gt; 客舱</li>
+<li>Embarked =&gt; 登船港口</li>
+</ul>
+<p>提供的信息较多，刚开始觉得无所适从，记得<code>Andrew NG</code>老师说过，做机器学习的时候不要一上来就试图完美，先做一个基本的模型跑起来，有了结果之后再去优化这个模型或者做一个新的模型。</p>
+<p>依据<del>看电影得来的</del>经验和数据</p>
+<ul>
+<li>乘客的ID只是一个递增的数字，与结果没有太大的关联，所以直接舍</li>
+<li>乘客的舱位等级肯定会影响存活与否</li>
+<li><code>“Lady and Kid First！”</code>也会涉及到性别对存活的影响，年龄也是如此；</li>
+<li>堂兄弟/妹的个数似乎无法判别对最终结果的影响，暂时留存；</li>
+<li>父母与孩子个数也是如此；船票信息主要是票号，对最终结果无太大影响，舍去；</li>
+<li>票价和客舱信息应该是相关的，每个舱的价格不同，所以只取其一即可，票价作为一个连续的变量更好处理，但是查看数据后发现票价信息缺失了很大一部分，故此最初的模型暂不考虑影响；</li>
+<li>登船港口无法判别，因此也暂时保留。</li>
+</ul>
+<p>需要注意的是，在代码中，所有的数据都是以数字来保存的，但是给定的数据中很多都是字符串，比如性别，因此我们需要对数据进行一定的预处理，此模型中所使用的是<code>pandas.get_dummies()</code>函数。同时也要丢弃上面所说的无关数据。</p>
+<p>之后使用<code>sklearn</code>的线性回归模型，设定好<code>loss</code>喂入数据即可。</p>
+<p>预测时需要注意的是，测试数据也和训练数据一样需要进行相应的预处理。</p>
+<p>以下是这个初步模型的最终代码。</p>
+<p><del><a href="script.ipynb">代码点此下载</a></del></p>
+<p>纸上得来终觉浅，之前跟着<code>Andrew</code>老师学习了那么多理论知识，但是到实战的时候感觉不知道怎么用，还是需要多做项目来提升自己的能力。</p>
+<hr>
+<p>2018-03-02更新：</p>
+<p>经过以下的优化：</p>
+<ul>
+<li>去除登船港口特征</li>
+<li>加入客舱特征，因客舱数据缺失并且类目太多，所以将客舱数据重新分成两类，“有客舱数据”和“无客舱数据”</li>
+</ul>
+<p>正确率提高了1个百分点，排名从之前的8000+前进到了6001</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="result.jpg" alt="排名" title>
+                </div>
+                <div class="image-caption">排名</div>
+            </figure>
+
+<p><a href="script-v2.ipynb">代码点此下载</a></p>
+<h1 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h1><p><a href="http://blog.csdn.net/han_xiaoyang/article/details/49797143" target="_blank" rel="noopener">机器学习系列(3)_逻辑回归应用之Kaggle泰坦尼克之灾</a></p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.870Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2018/02/28/Kaggle初步-Titanic之灾/" target="_blank" rel="external">https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/kaggle/">kaggle</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/机器学习/">机器学习</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/&title=《Kaggle初步-Titanic之灾》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/&title=《Kaggle初步-Titanic之灾》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kaggle初步-Titanic之灾》 — 碎碎念&url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/04/09/个人品牌/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">个人品牌</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/02/27/增加gitment踩过的坑/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">增加gitment踩过的坑</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/&title=《Kaggle初步-Titanic之灾》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/&title=《Kaggle初步-Titanic之灾》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Kaggle初步-Titanic之灾》 — 碎碎念&url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/02/28/Kaggle初步-Titanic之灾/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACwUlEQVR42u3aQW7jQAwEwPz/09nLHgLsSu4mNbEPpZPhJNLUBDDp5nx9xdf3j+vnO8nv7K+rJz524eHh4S2Wfn/r+9/595756/s7XP1ttB48PDy8Y7x8icnWJKXiftFtWbp8Hw8PD+8DeEnLe7/QvEVuiwoeHh7eZ/LywjBbaL59eHh4eO/lbSLU+wLQtstvy1rw8PDwutw1miJ9zusj8z08PDy89VR91to+8DG9Xuff5+Lh4eEd4LVx6uxjehb4zjYLDw8P73d4z8as7UGBPLyYlS48PDy8E7xZJJoHskm0kR/eSt6vU2o8PDy8kpcPotoHtJFEssV54cHDw8M7wUua2vzoQL6XeeFZbRweHh7eAV7e7O6LRxtntGFH8e0BDw8Pb8HLh1LtIvLoIS8DSbEpkmk8PDy8EW926zbqnR2Wmh0XuPwf4uHh4T3E2ze7zy7xqaDkPy01Hh4e3gFe8rqoNscOKBRfAPDw8PAO8Npx1KxpzgOOfIOGZ8rw8PDw1rzZmH8zErvfyvYIwot/Ax4eHt4v8pJFbw5L5YcMkjDi8rl4eHh4B3irP3gols2b7Lxlx8PDwzvHmx17ygtJEnlsxmYvihYeHh7eAV5yu7zCJKFD26y3EUY9AMPDw8MreUmT2r5u2fkd2tkWHh4e3gnevr3eVKTZGKx9Ih4eHt4JXt4K5+Oo9vhUPgCrh3N4eHh4x3j31M3IPz9w0N4tCjvw8PDwjvHaIVYbYcwi2rbMXH5XwMPDw3uI911ebYvcHg5Iyk8yWnsxAMPDw8Nb8B6rLaNFt83xrPzg4eHhneDNGuXNIa28/GzGcnh4eHineXm02n6s5xHtpmjVP8bDw8N7K2/TlCfhQrs2PDw8vE/jzVrnWVD7QNCMh4eHd4y3OWi1J82eUhQGPDw8vEd5sy/8bUloNyUfqj1w4eHh4aW8P/Pz2k9y+zbDAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

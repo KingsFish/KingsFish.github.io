@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Leetcode-474 Ones-and-Zeross题解 | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Dynamic Programming">
+    <meta name="description" content="最近正在死磕动态规划，前阵子把Leetcode上的动态规划标签的简单题刷完了(其实一共也才5题)，最近在看动态规划中经典的0-1背包问题，顺便在Leetcode上就找了这个练习题。题目如下：  In the computer world, use restricted resource you have to generate maximum benefit is what we always w">
+<meta name="keywords" content="Dynamic Programming">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode-474 Ones-and-Zeross题解">
+<meta property="og:url" content="https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="最近正在死磕动态规划，前阵子把Leetcode上的动态规划标签的简单题刷完了(其实一共也才5题)，最近在看动态规划中经典的0-1背包问题，顺便在Leetcode上就找了这个练习题。题目如下：  In the computer world, use restricted resource you have to generate maximum benefit is what we always w">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kingsfish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/result_01.jpg">
+<meta property="og:image" content="http://www.hawstein.com/assets/img/2013/3/1/pic.png">
+<meta property="og:image" content="https://kingsfish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/result_02.jpg">
+<meta property="og:updated_time" content="2019-06-14T14:54:54.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode-474 Ones-and-Zeross题解">
+<meta name="twitter:description" content="最近正在死磕动态规划，前阵子把Leetcode上的动态规划标签的简单题刷完了(其实一共也才5题)，最近在看动态规划中经典的0-1背包问题，顺便在Leetcode上就找了这个练习题。题目如下：  In the computer world, use restricted resource you have to generate maximum benefit is what we always w">
+<meta name="twitter:image" content="https://kingsfish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/result_01.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Leetcode-474 Ones-and-Zeross题解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Leetcode-474 Ones-and-Zeross题解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-23T05:04:09.000Z" itemprop="datePublished" class="page-time">
+  2017-07-23
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Leetcode/">Leetcode</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#题目大意"><span class="post-toc-number">1.</span> <span class="post-toc-text">题目大意</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#思路"><span class="post-toc-number">2.</span> <span class="post-toc-text">思路</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#第一种解法"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">第一种解法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#0-1背包问题中的空间优化方法"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">0-1背包问题中的空间优化方法</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Ones-and-Zeros-问题中的空间优化方法"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">Ones and Zeros 问题中的空间优化方法</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Leetcode-474-Ones-and-Zeros" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Leetcode-474 Ones-and-Zeross题解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-23 13:04:09" datetime="2017-07-23T05:04:09.000Z" itemprop="datePublished">2017-07-23</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Leetcode/">Leetcode</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>最近正在死磕动态规划，前阵子把<code>Leetcode</code>上的动态规划标签的简单题刷完了(其实一共也才5题)，最近在看动态规划中经典的<strong>0-1背包问题</strong>，顺便在<code>Leetcode</code>上就找了这个练习题。题目如下：</p>
+<blockquote>
+<p>In the computer world, use restricted resource you have to generate maximum benefit is what we always want to pursue.<br>For now, suppose you are a dominator of m 0s and n 1s respectively. On the other hand, there is an array with strings consisting of only 0s and 1s.<br>Now your task is to find the maximum number of strings that you can form with given m 0s and n 1s. Each 0 and 1 can be used at most once.<br>Note:</p>
+<ol>
+<li>The given numbers of 0s and 1s will both not exceed 100</li>
+<li>The size of given string array won’t exceed 600.</li>
+</ol>
+<p>Example 1:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: Array = &#123;&quot;10&quot;, &quot;0001&quot;, &quot;111001&quot;, &quot;1&quot;, &quot;0&quot;&#125;, m = 5, n = 3</span><br><span class="line">Output: 4</span><br><span class="line">Explanation: This are totally 4 strings can be formed by the using of 5 0s and 3 1s, which are “10,”0001”,”1”,”0”</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Example 2:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Input: Array = &#123;&quot;10&quot;, &quot;0&quot;, &quot;1&quot;&#125;, m = 1, n = 1</span><br><span class="line">Output: 2</span><br><span class="line">Explanation: You could form &quot;10&quot;, but then you&apos;d have nothing left. Better form &quot;0&quot; and &quot;1&quot;.</span><br></pre></td></tr></table></figure>
+
+<h3 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h3><p>给定一个字符串数组以及整数<code>m</code>和<code>n</code>，<code>m</code>和<code>n</code>分别代表着<code>0</code>和<code>1</code>的个数，求出这些<code>0</code>和<code>1</code>能组成字符串数组中字符串的最大个数。如：</p>
+<p>给定数组<code>{&quot;10&quot;, &quot;0&quot;, &quot;1&quot;}</code>,以及<code>m = 1, n = 1</code>。那么输出为<code>2</code>，1个0和1个1可以组成字符串数组的中的二三两个字符串。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><h4 id="第一种解法"><a href="#第一种解法" class="headerlink" title="第一种解法"></a>第一种解法</h4><p>这是一个多维的<code>0-1背包问题</code>，只是把背包容量的大小换成了0和1的个数，而宝石换成了字符串，宝石的重量为字符串中0和1的个数，宝石价值都为1。</p>
+<p>状态和递推式和<code>0-1</code>背包问题类似。因为“背包”容量是2维的，所以存储状态的数组是3维的，<strong>状态<code>dp[i][j][k]</code>表示前i个字符串中能用j个0和k个1组成的最大字符串数</strong>。这样的话状态就已经确定下来，剩下的就是寻找转移方程了。</p>
+<p>字符串之间的转移是如何进行的呢？其实当我们考虑<code>dp[i][j][k]</code>时，我们讨论的是要不要组成第<code>i</code>个字符串，假设第<code>i</code>个字符串的0和1的个数分别为<code>zeros</code>和<code>ones</code>。如果不组成这个字符串，那么<code>dp[i][j][k]</code>的值就和<code>dp[i - 1][j][k]</code>的值是一样的；如果组成这个字符串，那么<code>dp[i][j][k]</code>就应该是<code>dp[i - 1][j - zeros][k - ones] + 1</code>，也即前<code>i - 1</code>的字符串中除去第<code>i</code>个字符串使用的0和1所剩下的0和1所能组成的最大字符串数量再加上1（组成了第<code>i</code>个字符串，所以+1）。这样就得到了递推式：</p>
+<blockquote>
+<p>dp[i][j][k] = max(dp[i][j][k], dp[i - 1][j - zeros][k - ones])</p>
+</blockquote>
+<p>这个算法的时间复杂度为<code>O(lmn)</code>，其中<code>l</code>是字符串数组的长度，空间复杂度也是<code>O(lmn)</code>，Java版的代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findMaxForm</span><span class="params">(String[] strs, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = strs.length;</span><br><span class="line">        <span class="keyword">int</span> [][][] d = <span class="keyword">new</span> <span class="keyword">int</span>[l + <span class="number">1</span>][m + <span class="number">1</span>][n + <span class="number">1</span>];     </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= l; i ++)&#123;</span><br><span class="line">            <span class="keyword">int</span> [] nums = <span class="keyword">new</span> <span class="keyword">int</span>[]&#123;<span class="number">0</span>,<span class="number">0</span>&#125;;</span><br><span class="line">            <span class="keyword">if</span> (i &gt; <span class="number">0</span>)&#123;</span><br><span class="line">               nums = getNum(strs[i - <span class="number">1</span>]);</span><br><span class="line">            &#125;         </span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt;= m; j ++)&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = <span class="number">0</span>; k &lt;= n; k ++)&#123;</span><br><span class="line">                    <span class="keyword">if</span> (i == <span class="number">0</span>) &#123;</span><br><span class="line">                        d[i][j][k] = <span class="number">0</span>;</span><br><span class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (j &gt;= nums[<span class="number">0</span>] &amp;&amp; k &gt;= nums[<span class="number">1</span>])&#123;</span><br><span class="line">                        d[i][j][k] = Math.max(d[i - <span class="number">1</span>][j][k], d[i - <span class="number">1</span>][j - nums[<span class="number">0</span>]][k - nums[<span class="number">1</span>]] + <span class="number">1</span>);</span><br><span class="line">                    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                        d[i][j][k] = d[i - <span class="number">1</span>][j][k];</span><br><span class="line">                    &#125;     </span><br><span class="line">                    </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;           </span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> d[l][m][n];</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="comment">// this method is used to get the count of 0 and 1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> [] getNum(String str)&#123;</span><br><span class="line">        <span class="keyword">int</span> [] nums = <span class="keyword">new</span> <span class="keyword">int</span> [<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; str.length(); i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (str.charAt(i) == <span class="string">'0'</span>) &#123;</span><br><span class="line">                nums[<span class="number">0</span>] ++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                nums[<span class="number">1</span>] ++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>提交Leetcode，结果如图</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="result_01.jpg" alt="运行结果" title>
+                </div>
+                <div class="image-caption">运行结果</div>
+            </figure>
+
+<h4 id="0-1背包问题中的空间优化方法"><a href="#0-1背包问题中的空间优化方法" class="headerlink" title="0-1背包问题中的空间优化方法"></a>0-1背包问题中的空间优化方法</h4><p><code>0-1背包问题</code>有优化空间复杂度的方法。类似的，这一题也可以将三维的数组优化成二维，字符串数量那一维删去，就可以得到空间复杂度为O(mn)的算法。</p>
+<p>以下图的<code>0-1背包问题</code>作为讲解。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://www.hawstein.com/assets/img/2013/3/1/pic.png" alt="状态数组" title>
+                </div>
+                <div class="image-caption">状态数组</div>
+            </figure>
+
+<p>我们可以看到，在每一次计算d[i][j]时，我们并没有用到所有的状态，只是前一行的两个状态。这样的话状态存储的就能从<code>L x m</code>优化成<code>2 x m</code>，然后轮流使用这两行进行状态即可。</p>
+<p>但是轮流使用还是很麻烦，那么有没有进一步的优化空间呢。从上面的递推式我们可以发现，当前的状态仅仅使用上一行的两个位置的状态，那么我们完全可以使用<code>1 x m</code>的数组进行存储。那么状态转移方程就变成了</p>
+<blockquote>
+<p>d[j] = max(d[j], d[j - w] + v)</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center">d[i - 1][j - w]</th>
+<th align="center"></th>
+<th align="center"></th>
+<th align="center">d[i - 1][j]</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">d[i][j]</td>
+</tr>
+</tbody></table>
+<p>左边的<code>d[j]</code>是第二行的<code>d[i][j]</code>，而右边是上一行的<code>d[i - 1][j]</code>，<code>d[j - w]</code>也是上一行的<code>d[i - 1][j - w]</code>。但是这样有个问题，如果<code>d[i][j + 1]</code>在更新的时候刚好要用到<code>d[i - 1][j]</code>，而这个时候<code>d[i - 1][j]</code>已经被更新成为了<code>d[i][j]</code>，那么结果就会出现错误。如果解决这个问题呢？其实只需要将<code>j</code>的迭代顺序从<code>0 -&gt; N</code>变成倒序即<code>N -&gt; 0</code>即可。这样的话就算<code>d[i][j + 1]</code>在更新的时候要用上<code>d[i - 1][j]</code>，<code>d[j]</code>也就是旧的还未更新之前的<code>d[i - 1][j]</code>。这样就将<code>0-1背包</code>的空间复杂度从<code>O(lm)</code>降到了<code>O(m)</code>。</p>
+<h4 id="Ones-and-Zeros-问题中的空间优化方法"><a href="#Ones-and-Zeros-问题中的空间优化方法" class="headerlink" title="Ones and Zeros 问题中的空间优化方法"></a>Ones and Zeros 问题中的空间优化方法</h4><p>类似于上面的<code>0-1背包问题</code>，在计算<code>dp[i][j][k]</code>时，我们只用到了<code>dp[i - ][j][k]</code>和<code>dp[i - 1][j - zeros][k - ones]</code>两个状态，因此将第二维和第三维的循环变量倒序，然后修改一下状态转移方程为</p>
+<blockquote>
+<p>d[j][k] = max(d[j][k], d[j - zeros][k - ones] + 1)</p>
+</blockquote>
+<p>这样把上一版的Java的代码修改如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Solution</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">findMaxForm</span><span class="params">(String[] strs, <span class="keyword">int</span> m, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> l = strs.length;</span><br><span class="line">        <span class="keyword">int</span> [][] dp = <span class="keyword">new</span> <span class="keyword">int</span>[m + <span class="number">1</span>][n + <span class="number">1</span>];     </span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; l; i ++)&#123;</span><br><span class="line">            <span class="keyword">int</span> [] nums = getNum(strs[i]);</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> j = m; j &gt;= nums[<span class="number">0</span>]; j --)&#123;</span><br><span class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> k = n; k &gt;= nums[<span class="number">1</span>]; k --)&#123;</span><br><span class="line">                    dp[j][k] = Math.max(dp[j][k], dp[j - nums[<span class="number">0</span>]][k - nums[<span class="number">1</span>]] + <span class="number">1</span>);                    </span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dp[m][n];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// this method is used to get the count of 0 and 1</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> [] getNum(String str)&#123;</span><br><span class="line">        <span class="keyword">int</span> [] nums = <span class="keyword">new</span> <span class="keyword">int</span> [<span class="number">2</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; str.length(); i++)&#123;</span><br><span class="line">            <span class="keyword">if</span> (str.charAt(i) == <span class="string">'0'</span>) &#123;</span><br><span class="line">                nums[<span class="number">0</span>] ++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                nums[<span class="number">1</span>] ++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> nums;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>第二版不仅复杂度降了很多，代码也变简单了。提交<code>Leetcode</code>结果如下：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="result_02.jpg" alt="提交结果" title>
+                </div>
+                <div class="image-caption">提交结果</div>
+            </figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>死磕动态规划也有一段时间了，总算会了一些，不像之前没学过那样磕磕碰碰看的头大了。其实动态规划都有其一定的规律，主要是定义状态以及状态转移方程，将大问题转化成子问题，最终一步步优化得到最后的结果。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.885Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/07/23/Leetcode-474-Ones-and-Zeros/" target="_blank" rel="external">https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Dynamic-Programming/">Dynamic Programming</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/&title=《Leetcode-474 Ones-and-Zeross题解》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/&title=《Leetcode-474 Ones-and-Zeross题解》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode-474 Ones-and-Zeross题解》 — 碎碎念&url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/08/22/Leetcode-494-Target-Sum/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Leetcode-494-Target-Sum</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/19/Machine-Learning-03/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">机器学习03-线性回归</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/&title=《Leetcode-474 Ones-and-Zeross题解》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/&title=《Leetcode-474 Ones-and-Zeross题解》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode-474 Ones-and-Zeross题解》 — 碎碎念&url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/23/Leetcode-474-Ones-and-Zeros/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACrklEQVR42u3aQW7jMAwF0Nz/0jPArAo0sT9J0Z0Cz6vATWw9LSSWX69XfP35d339/P3Kf/vpOcn918aFh4eH1xr69aCT1+TIybTmY8bDw8Pb5uWbwadfbSz0B6YYDw8P70d5yaKcFNm9rQIPDw/vN/KS5b4KmDc18PDw8H6KlzQjkvvX38m7rPP34uHh4e3x5u3U5z+v53t4eHh4rVS911yoltrVjaEwWjw8PLwF3nWUNY+jzpbF1UAODw8Pb5v36dG91kC1sr0eVXU63mwMeHh4eId4eYyUN2F7QzwQdH1/Ix4eHt4jvEl8lRS+yQbTmzg8PDy853m9lkSv2E1aCT1e4ZQWHh4e3oCXL829IH9OrR5uwMPDw9vj5UVw3lzIF+550yHa0vDw8PAWeMnyXT0C1VvW54e98PDw8LZ5veAqL8cn9e2krMfDw8Pb41Wbs/NjBNWmcHl/y3sVeHh4eC1eHvlXC+vqllDdJMqbAR4eHt5R3mQhnlDzcrw3fXh4eHgbvEnp3Cup87ZsHm7d4PHw8PDWeNXyd1IuJxOab0I3SDw8PLyjvPLRpbiFUZjdQdx1U8rj4eHhPcJLhtW7eqFXHte9eQ4eHh7eAq+3KCeDrjY4kqGPvo+Hh4d3iJeHXtVyOW8BT44RFE5G4OHh4T3Im3+zGpvl1Jv7eHh4eAu8PNDKYb1yvNdoiMIzPDw8vKO8Xvk7OSJQHWKveYGHh4f3DC8Pseat3iQe6208UbWOh4eHN+BNQqZeMyJvNzT/P8DDw8N7hDcpfDcW9MkEvRkDHh4e3hrv+jXVBf35Pa3QpcbDw8N7kNd7Zf7b3qGBm+fj4eHh/Qe83l97MVv1zqikxsPDwyvyesdGT5XL1QZHYSrx8PDwFniTf/WTQwDVZGqSXh3I9/Dw8PCu3vIXyl8r8CaC868AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

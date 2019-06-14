@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Leetcode-237 Delete Node in a Linked List | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Algorithm,链表">
+    <meta name="description" content="刷Leetcode刷到一个很有意思的题目，解题思路很新颖，题目如下：  Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.Given linked list – head = [4,5,1,9], which looks like f">
+<meta name="keywords" content="Algorithm,链表">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode-237 Delete Node in a Linked List">
+<meta property="og:url" content="https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="刷Leetcode刷到一个很有意思的题目，解题思路很新颖，题目如下：  Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.Given linked list – head = [4,5,1,9], which looks like f">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kingsfish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/1.jpg">
+<meta property="og:updated_time" content="2019-06-14T14:54:54.885Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode-237 Delete Node in a Linked List">
+<meta name="twitter:description" content="刷Leetcode刷到一个很有意思的题目，解题思路很新颖，题目如下：  Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.Given linked list – head = [4,5,1,9], which looks like f">
+<meta name="twitter:image" content="https://kingsfish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/1.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Leetcode-237 Delete Node in a Linked List</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Leetcode-237 Delete Node in a Linked List</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-06-08T02:00:36.000Z" itemprop="datePublished" class="page-time">
+  2018-06-08
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Leetcode/">Leetcode</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+
+<article id="post-Leetcode-237-Delete-Node-in-a-Linked-List" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Leetcode-237 Delete Node in a Linked List</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-06-08 10:00:36" datetime="2018-06-08T02:00:36.000Z" itemprop="datePublished">2018-06-08</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Leetcode/">Leetcode</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>刷<code>Leetcode</code>刷到一个很有意思的题目，解题思路很新颖，题目如下：</p>
+<blockquote>
+<p>Write a function to delete a node (except the tail) in a singly linked list, given only access to that node.<br>Given linked list – head = [4,5,1,9], which looks like following:</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">4 -&gt; 5 -&gt; 1 -&gt; 9</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>Definition for singly-linked list.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public class ListNode &#123;</span><br><span class="line">    int val;</span><br><span class="line">    ListNode next;</span><br><span class="line">    ListNode(int x) &#123; val = x; &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>The linked list will have at least two elements.</li>
+<li>All of the nodes’ values will be unique.</li>
+<li>The given node will not be the tail and it will always be a valid node of the linked list.</li>
+<li>Do not return anything from your function.</li>
+</ul>
+<p>题目大意是，给定一个要删除的节点，要求在这个节点所在的链表中删除该节点</p>
+<p>假设要删除的节点是 <code>a</code> ，常规做法是从链表头开始遍历找到 <code>a</code> 的前一个节点，假设为 <code>b</code>，将 <code>b</code> 的 <code>next</code> 指针指向 <code>a</code> 的 <code>next</code>就可以了。但是题目只给定了待删除的节点，没有给链表的头结点，似乎束手无策了。</p>
+<p>其实稍加思索可以发现，我们要删除的不是节点本身，而是节点的内容，以此题为例，节点里面的内容只有两个东西，<code>val</code>和<code>next</code>指针。如果我们要删除该节点，只需要把<code>b</code>的后一个节点的内容复制到<code>b</code>节点，然后跳过<code>b</code>节点的下一个节点即可。如图</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="1.jpg" alt="删除节点 b" title>
+                </div>
+                <div class="image-caption">删除节点 b</div>
+            </figure>
+
+<p>实现代码也比较简单</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">deleteNode</span><span class="params">(ListNode node)</span> </span>&#123;</span><br><span class="line">    node.val = node.next.val;</span><br><span class="line">    node.next = node.next.next;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>解题思路确实很新颖，之前没有想过可以这么做，其实这题完全可以出的更具迷惑性，把链表首结点也给出，大多数人可能都会遍历整个链表来删除节点。</p>
+<p>多刷题果然是有好处的。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.885Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/" target="_blank" rel="external">https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/链表/">链表</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/&title=《Leetcode-237 Delete Node in a Linked List》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/&title=《Leetcode-237 Delete Node in a Linked List》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode-237 Delete Node in a Linked List》 — 碎碎念&url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/06/14/剑指offer-04-替换空格/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">剑指offer 04 - 替换空格</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/06/07/剑指offer-03-二维数组中的查找/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">剑指offer 03-二维数组中的查找</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/&title=《Leetcode-237 Delete Node in a Linked List》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/&title=《Leetcode-237 Delete Node in a Linked List》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode-237 Delete Node in a Linked List》 — 碎碎念&url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/06/08/Leetcode-237-Delete-Node-in-a-Linked-List/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACtElEQVR42u3aQW4bMQwFUN//0ummixbwjD9JceAAb1ZGnMh6CiDSJF+v+Pn557l69+p19d3757Xx4OHh4Q22frVc8gH3fzs5iPvf/3AEeHh4eGu8yXWf3Mz3m04CwP06lz/Hw8PD+wLefRioBpJqboyHh4f3e3l5Kpwn1vnKeHh4eN/AS4oR+SbuCwenDuhwrQUPDw9voYv0Pa9X+nt4eHh44656fuEmV3/vKHv7/LsCHh4e3gIv//hqayoft6r+ZnmfeHh4eAu8SWGiV1rNBwV6BQg8PDy8bV4yUDUZJ00CxrwQXKij4OHh4R2qBvTGqqpt/klRo5qa4+Hh4W3zkm1VGb1kOjmU5qAAHh4e3pjXa95Xh6jyADBPtd/09/Dw8PCO8qoJdC/a9IodeZAoVFzw8PDwxrxTwaA3MlVtvOXjAuW4h4eHh9fiJVucBIm8eVZ9LlfGw8PDW+NNrvJekTdvm/XC1X+BAQ8PD+8or3o1T/psVUyyQrnWgoeHhzfmnQoJecCojlLlRec3f4WHh4e3wOtdvvnSOX5SHCkEKjw8PLw1Xv6Ffz4+1Ste5Gvi4eHhneX1RqDyJLh6ob8Gz2UxAg8PD2+Bl28xSYInF3pvTCGqteDh4eEd4vW2mCffvZJuNWyUO3t4eHh4h3g5qTDqtLB+/uDh4eE9wzvV4K8WaiefW+jp4eHh4S3wkqWrSXmvYFH9N+Dh4eE9zzsFq7bQRoWGahsMDw8Pb8zrfb2vXut5EjyZGnuzQzw8PLwFXvXCzZFnRwfy16OJLTw8PLyY1wsGvXS8egS9wICHh4f3DG+yxUnSPI9d5ZkyPDw8vMd58yLvvBBcTqnx8PDwvoZXBfwsP3h4eHhP8qrF1jxFzgcIekf24bjx8PDwFnjVL/xJCbU6dJWPHSz29/Dw8PA+8/4AReqmSyLrfBcAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

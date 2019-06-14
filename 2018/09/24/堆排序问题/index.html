@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>堆排序问题 | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Algorithm,Heap">
+    <meta name="description" content="中秋了也要发博客，写完我就出去浪，祝大家中秋快乐~  堆排序问题算是面试中的高频问题了，这个知识点作为基础排序算法会被问，另外还可以继续延伸，比如Top K问题和实现优先队列。百度面试的时候就让实现优先队列，然而当时紧张没有写出来，其实还是很简单的。 堆的定义堆是一种数据结构，类似于完全二叉树，但一般使用数组作为堆的实现。堆分为大顶堆和小顶堆，大顶堆指父节点的值大于两个孩子节点的值，这样根节点的">
+<meta name="keywords" content="Algorithm,Heap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="堆排序问题">
+<meta property="og:url" content="https://KingsFish.github.io/2018/09/24/堆排序问题/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="中秋了也要发博客，写完我就出去浪，祝大家中秋快乐~  堆排序问题算是面试中的高频问题了，这个知识点作为基础排序算法会被问，另外还可以继续延伸，比如Top K问题和实现优先队列。百度面试的时候就让实现优先队列，然而当时紧张没有写出来，其实还是很简单的。 堆的定义堆是一种数据结构，类似于完全二叉树，但一般使用数组作为堆的实现。堆分为大顶堆和小顶堆，大顶堆指父节点的值大于两个孩子节点的值，这样根节点的">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kingsfish.github.io/2018/09/24/堆排序问题/heap.jpg">
+<meta property="og:updated_time" content="2019-06-14T14:54:54.979Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="堆排序问题">
+<meta name="twitter:description" content="中秋了也要发博客，写完我就出去浪，祝大家中秋快乐~  堆排序问题算是面试中的高频问题了，这个知识点作为基础排序算法会被问，另外还可以继续延伸，比如Top K问题和实现优先队列。百度面试的时候就让实现优先队列，然而当时紧张没有写出来，其实还是很简单的。 堆的定义堆是一种数据结构，类似于完全二叉树，但一般使用数组作为堆的实现。堆分为大顶堆和小顶堆，大顶堆指父节点的值大于两个孩子节点的值，这样根节点的">
+<meta name="twitter:image" content="https://kingsfish.github.io/2018/09/24/堆排序问题/heap.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">堆排序问题</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">堆排序问题</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-09-24T01:20:03.000Z" itemprop="datePublished" class="page-time">
+  2018-09-24
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据结构和算法/">数据结构和算法</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#堆的定义"><span class="post-toc-number">1.</span> <span class="post-toc-text">堆的定义</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#主要操作"><span class="post-toc-number">2.</span> <span class="post-toc-text">主要操作</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#具体实现"><span class="post-toc-number">3.</span> <span class="post-toc-text">具体实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#下沉操作"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">下沉操作</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#建堆过程"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">建堆过程</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#获取堆顶值"><span class="post-toc-number">3.3.</span> <span class="post-toc-text">获取堆顶值</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#移除堆顶值"><span class="post-toc-number">3.4.</span> <span class="post-toc-text">移除堆顶值</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#问题扩展"><span class="post-toc-number">4.</span> <span class="post-toc-text">问题扩展</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#Top-K-问题"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">Top K 问题</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#优先队列"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">优先队列</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-堆排序问题" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">堆排序问题</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-09-24 09:20:03" datetime="2018-09-24T01:20:03.000Z" itemprop="datePublished">2018-09-24</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/数据结构和算法/">数据结构和算法</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <blockquote>
+<p>中秋了也要发博客，写完我就出去浪，祝大家中秋快乐~</p>
+</blockquote>
+<p>堆排序问题算是面试中的高频问题了，这个知识点作为基础排序算法会被问，另外还可以继续延伸，比如<code>Top K</code>问题和实现优先队列。百度面试的时候就让实现优先队列，然而当时紧张没有写出来，其实还是很简单的。</p>
+<h3 id="堆的定义"><a href="#堆的定义" class="headerlink" title="堆的定义"></a>堆的定义</h3><p>堆是一种数据结构，类似于完全二叉树，但一般使用数组作为堆的实现。堆分为大顶堆和小顶堆，大顶堆指父节点的值大于两个孩子节点的值，这样根节点的值必定为整个堆的最大值，因此称为大顶堆；与此相反，小顶堆指父节点的值小于两个孩子节点的值，这样根节点的值必定为整个堆的最小值，因此称为小顶堆。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="heap.jpg" alt="大顶堆和小顶堆" title>
+                </div>
+                <div class="image-caption">大顶堆和小顶堆</div>
+            </figure>
+
+<h3 id="主要操作"><a href="#主要操作" class="headerlink" title="主要操作"></a>主要操作</h3><table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">作用</th>
+<th align="center">时间复杂度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">get</td>
+<td align="center">取得堆顶值</td>
+<td align="center">O(1)</td>
+</tr>
+<tr>
+<td align="center">sink</td>
+<td align="center">将元素下沉，恢复堆有序性</td>
+<td align="center">O(logn)</td>
+</tr>
+<tr>
+<td align="center">delete</td>
+<td align="center">删除并取得顶堆值</td>
+<td align="center">O(logn)</td>
+</tr>
+<tr>
+<td align="center">build</td>
+<td align="center">建堆</td>
+<td align="center">O(n)</td>
+</tr>
+</tbody></table>
+<h3 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h3><p>这里以大顶堆作为例子，小顶堆其实类似，只不过下沉操作的时候比较大小时更换一下即可。</p>
+<h4 id="下沉操作"><a href="#下沉操作" class="headerlink" title="下沉操作"></a>下沉操作</h4><p>这是堆排序中最重要的操作，它保证了堆的有序性，建堆和删除堆顶值的时候都需要调用这个操作。</p>
+<p>下沉操作主要是让当前节点和两个子节点进行比较，如果父节点比子节点小，则将这两个节点互换，重复这个操作直至父节点比子节点大。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 下沉操作</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sink</span><span class="params">(<span class="keyword">int</span> [] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> end)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (i &lt; end) &#123;</span><br><span class="line">        <span class="comment">// 得到子节点位置</span></span><br><span class="line">        <span class="keyword">int</span> child = child(i); </span><br><span class="line">        <span class="keyword">if</span> (child &lt; end) &#123;</span><br><span class="line">            <span class="comment">// 如果左节点的值小于有节点，则替换右节点的值</span></span><br><span class="line">            <span class="keyword">if</span> ((child + <span class="number">1</span> &lt; end) &amp;&amp; nums[child] &lt; nums[child + <span class="number">1</span>]) &#123;</span><br><span class="line">                child ++;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (nums[i] &lt; nums[child]) &#123;</span><br><span class="line">                swap(nums, i, child);</span><br><span class="line">                i = child;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取子节点</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">child</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> i * <span class="number">2</span> + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 交换两个节点值</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">swap</span><span class="params">(<span class="keyword">int</span> [] nums, <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> tmp = nums[i];</span><br><span class="line">    nums[i] = nums[j];</span><br><span class="line">    nums[j] = tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="建堆过程"><a href="#建堆过程" class="headerlink" title="建堆过程"></a>建堆过程</h4><p>建堆其实就是不断调用<code>sink</code>下沉的过程，给定初始的数组，只需要从最后一个数字开始往前不断进行下沉操作即可，类似于一个递推的过程，不断的将新元素插入到原先已经建好堆的后方数组中。代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">heapSort</span><span class="params">(<span class="keyword">int</span> [] nums)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = nums.length - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i --) &#123;</span><br><span class="line">        <span class="comment">// 从后面开始不断进行下沉操作</span></span><br><span class="line">        sink(nums, i, nums.length);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="获取堆顶值"><a href="#获取堆顶值" class="headerlink" title="获取堆顶值"></a>获取堆顶值</h4><p>此时数组第一位为堆顶值，最大，直接返回即可</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getMax</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="comment">// 堆顶值最大</span></span><br><span class="line">    <span class="keyword">return</span> nums[<span class="number">0</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="移除堆顶值"><a href="#移除堆顶值" class="headerlink" title="移除堆顶值"></a>移除堆顶值</h4><p>移除数组第一位，并将数组最后一个数移到堆顶，并执行下沉操作即可保持堆有序性。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">delMax</span><span class="params">(<span class="keyword">int</span> [] nums, <span class="keyword">int</span> len)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> tmp = nums[<span class="number">0</span>];</span><br><span class="line">    swap(nums, <span class="number">0</span>, len - <span class="number">1</span>);</span><br><span class="line">    sink(nums, <span class="number">0</span>, len - <span class="number">1</span>);</span><br><span class="line">    <span class="keyword">return</span> tmp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="问题扩展"><a href="#问题扩展" class="headerlink" title="问题扩展"></a>问题扩展</h3><h4 id="Top-K-问题"><a href="#Top-K-问题" class="headerlink" title="Top K 问题"></a>Top K 问题</h4><p><code>Top K</code>问题是堆排序的扩展，一般问题描述如下：</p>
+<blockquote>
+<p>给定一个数组，求出最小/最大的 K 个数</p>
+</blockquote>
+<p>这个问题最简单的解决方法就是排序，时间复杂度最优是<code>O(nlogn)</code>，此法不是本文重点，不在此详细说明。这个问题用堆可以很容易的解决，最小 K 个数可以使用大顶堆，最大 K 个数可以使用小顶堆，本文示例使用大顶堆解决最小 K 个数问题。</p>
+<p>解法思路如下 ：</p>
+<ol>
+<li>创建一个大小为 K 的数组 B，并初始化数值为<code>Integer.MAX_VALUE</code>（小顶堆则初始化为<code>Integer.MIN_VALUE</code>）</li>
+<li>遍历给定的数组 A，对于每一个数 C，将其跟 B 的堆顶进行比较，如果比堆顶小，则将 B 的堆顶值替换成 C，然后执行下沉操作。遍历完成之后 B 数组即为所求的数字。</li>
+</ol>
+<p>代码如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">int</span> [] topK(<span class="keyword">int</span> [] nums, <span class="keyword">int</span> k) &#123;</span><br><span class="line">    <span class="keyword">if</span> (k &gt; nums.length) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> IllegalArgumentException(<span class="string">"k:"</span> + k + <span class="string">", length:"</span> + nums.length);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// min k</span></span><br><span class="line">    <span class="keyword">int</span> [] top = <span class="keyword">new</span> <span class="keyword">int</span>[k];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; top.length; i++) &#123;</span><br><span class="line">        <span class="comment">// 初始化值</span></span><br><span class="line">        top[i] = Integer.MAX_VALUE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length; i ++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (nums[i] &lt; top[<span class="number">0</span>]) &#123;</span><br><span class="line">            <span class="comment">// 如果比堆顶值小，则替换堆顶并执行下沉操作</span></span><br><span class="line">            top[<span class="number">0</span>] = nums[i];</span><br><span class="line">            sink(top, <span class="number">0</span>, top.length);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> top;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="优先队列"><a href="#优先队列" class="headerlink" title="优先队列"></a>优先队列</h4><p>优先队列在队列调度的时候用的很多，主要实现一个需求，往优先队列中无序放入优先级不同的任务，要求随时能取出优先级最高的任务。使用大顶堆堆可以很好的满足这个要求。大顶堆能维持顶堆的优先级最高，随时能够取出该任务。</p>
+<p>主要<code>API</code>如下：</p>
+<table>
+<thead>
+<tr>
+<th align="center">方法</th>
+<th align="center">作用</th>
+<th align="center">时间复杂度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">poll</td>
+<td align="center">取出优先级最高的任务</td>
+<td align="center">O(logn)</td>
+</tr>
+<tr>
+<td align="center">offer</td>
+<td align="center">增加一个任务</td>
+<td align="center">O(logn)</td>
+</tr>
+<tr>
+<td align="center">isEmpty</td>
+<td align="center">查询队列是否为空</td>
+<td align="center">O(1)</td>
+</tr>
+<tr>
+<td align="center">getSize</td>
+<td align="center">查询队列大小</td>
+<td align="center">O(1)</td>
+</tr>
+<tr>
+<td align="center">clear</td>
+<td align="center">清空队列</td>
+<td align="center">O(1)</td>
+</tr>
+</tbody></table>
+<p>与上述<code>Top K</code>问题不同的是，优先队列需要增加一个上浮操作。对于新加入的任务，需要执行该操作来维持堆的有序性。</p>
+<p>解决思路如下：</p>
+<ol>
+<li><code>poll</code>的实现堆已经实现过了，参考上文</li>
+<li><code>offer</code>的实现需要使用上浮操作，将新元素增加到队尾，然后执行上浮操作即可保持堆有序性</li>
+<li><code>isEmpty</code>的实现可以通过保存队列当前元素数量来实现</li>
+</ol>
+<p>具体代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">PriorityQueue</span>&lt;<span class="title">T</span> <span class="keyword">implements</span> <span class="title">Comparable</span>&gt;</span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> DEFAULT_COMPACITY = <span class="number">10</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> size = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> compacity = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">private</span> T [] ts;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PriorityQueue</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 默认容量10</span></span><br><span class="line">        <span class="keyword">this</span>(DEFAULT_COMPACITY);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">PriorityQueue</span><span class="params">(<span class="keyword">int</span> com)</span></span>&#123;</span><br><span class="line">        compacity = com;</span><br><span class="line">        ts = <span class="keyword">new</span> T[compacity];</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 取数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">poll</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="comment">// 交换队首以及最后的数据，然后执行下沉操作保证堆有序</span></span><br><span class="line">        T t = ts[<span class="number">0</span>];</span><br><span class="line">        swap(ts, <span class="number">0</span>, size - <span class="number">1</span>);</span><br><span class="line">        size --;</span><br><span class="line">        sink(ts, <span class="number">0</span>, size + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> t;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 增加数据</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">offer</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(size &gt;= compacity) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 将新数据添加到队尾，并执行上浮操作保证堆有序</span></span><br><span class="line">        size ++;</span><br><span class="line">        ts[size - <span class="number">1</span>] = t;</span><br><span class="line">        up(size - <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isEmpty</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size == <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getSize</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> size;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sink</span><span class="params">(<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">        <span class="comment">// 见上方</span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">up</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">while</span>(i &gt; <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="comment">// 不断将当前节点与父节点对比直到比父节点小</span></span><br><span class="line">            <span class="keyword">int</span> parent = i / <span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(ts[i].compareTo(ts[parent] &gt; <span class="number">0</span>)) &#123;</span><br><span class="line">                swap(ts, i, parent);</span><br><span class="line">                i = i / <span class="number">2</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>&#123;</span><br><span class="line">        size = <span class="number">0</span>;</span><br><span class="line">        ts = <span class="keyword">new</span> T[compacity];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>堆排序问题终于写完，该出去浪了~</p>
+</blockquote>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.979Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2018/09/24/堆排序问题/" target="_blank" rel="external">https://KingsFish.github.io/2018/09/24/堆排序问题/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Heap/">Heap</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/09/24/堆排序问题/&title=《堆排序问题》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/09/24/堆排序问题/&title=《堆排序问题》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/09/24/堆排序问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《堆排序问题》 — 碎碎念&url=https://KingsFish.github.io/2018/09/24/堆排序问题/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/09/24/堆排序问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/10/10/我的 2019 Android 秋招经历/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">我的 2019 Android 秋招经历</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/08/17/大疆Android面经/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">大疆Android面经</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/09/24/堆排序问题/&title=《堆排序问题》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/09/24/堆排序问题/&title=《堆排序问题》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2018/09/24/堆排序问题/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《堆排序问题》 — 碎碎念&url=https://KingsFish.github.io/2018/09/24/堆排序问题/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2018/09/24/堆排序问题/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQWrEMAwF0Ln/pVPoqjCd5EtKC7GfVyVMHD8XhGT59YrH8T0+PTl+jPcn7+++z5P/fjQwMDAeyzhOxyfGOTWZs7pBF1QMDIwNGPmyPm1BNWSfx8x8bRgYGBjJIs7DdJIyVgM9BgYGRpKiVTF5eMXAwMCYFLG9D+RFbBKIb6jFMTAwHsioNgb+8+8/7G9gYGA8hHEUR57SVRPBPMj+8hYGBsbSjKSJmB/uJ+njpIV5sQYMDIylGZNDsby1OW+UlnNYDAyMhRjVKxTnS0xgeSqZfB0DA2MfRq80nV+hmCeLGBgYazOqC80TuOo1sjyHvfg/YGBgLMeYf6ZXxOYXy3rzYGBgrMrIF11N4JLn1fK4nOdiYGA8nNELqcnU1eQvOaRrlrIYGBhLMKqv9WA9RuHQDQMDYzlG9eCsmj7m5e7o9xgYGBszqoEybwbkBW3UnMDAwFiakQe+GxqK1QW1wj0GBsaqjKTsrKaPeaidbyUGBsYOjAQ2mXp0Fjg5wsPAwFiCcVdhmX8+SfgKbUsMDIxtGHla1ltudVnltgQGBsbSjF4RWw2j1RBcbS1gYGCszTiKIw/T+S720k0MDIx9GJOm411HdZPDOAwMjH0Y8yBbbUkmZXN+1QwDA2MfRvWgrdkdHVyeuAj6GBgYGK3CtddnTDJZDAwMjHmpOUkEe20JDAyMHRjVixF54jh5krQZMDAwdmBMCshkC3oHc715MDAwlmN8AZqlLLosmpGUAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

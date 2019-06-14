@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>机器学习03-线性回归 | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Machine Learning">
+    <meta name="description" content="线性模型较为简单，易于求出参数，在之后的高级算法中有更多的应用。 线性回归的基本形式给定一系列数据样本(xi, yi)，其中x=(x1 ··· xn)，线性模型试图学得一个通过属性的线性组合来进行预测的函数，即  f(x)=w1x1 + ··· + wnxn + b  用向量则可以表示成  f(x)=wTx + b  其中w=(w1; w2···; wn)。将w和d学习得到之后就可以确定此模型。">
+<meta name="keywords" content="Machine Learning">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习03-线性回归">
+<meta property="og:url" content="https://KingsFish.github.io/2017/07/19/Machine-Learning-03/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="线性模型较为简单，易于求出参数，在之后的高级算法中有更多的应用。 线性回归的基本形式给定一系列数据样本(xi, yi)，其中x=(x1 ··· xn)，线性模型试图学得一个通过属性的线性组合来进行预测的函数，即  f(x)=w1x1 + ··· + wnxn + b  用向量则可以表示成  f(x)=wTx + b  其中w=(w1; w2···; wn)。将w和d学习得到之后就可以确定此模型。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-06-14T14:54:54.901Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习03-线性回归">
+<meta name="twitter:description" content="线性模型较为简单，易于求出参数，在之后的高级算法中有更多的应用。 线性回归的基本形式给定一系列数据样本(xi, yi)，其中x=(x1 ··· xn)，线性模型试图学得一个通过属性的线性组合来进行预测的函数，即  f(x)=w1x1 + ··· + wnxn + b  用向量则可以表示成  f(x)=wTx + b  其中w=(w1; w2···; wn)。将w和d学习得到之后就可以确定此模型。">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">机器学习03-线性回归</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">机器学习03-线性回归</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-19T07:54:20.000Z" itemprop="datePublished" class="page-time">
+  2017-07-19
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/机器学习/">机器学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#线性回归的基本形式"><span class="post-toc-number">1.</span> <span class="post-toc-text">线性回归的基本形式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#输入属性数目只有一个时w和d的求解"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">输入属性数目只有一个时w和d的求解</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#更一般的情况"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">更一般的情况</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#对数线性回归"><span class="post-toc-number">2.</span> <span class="post-toc-text">对数线性回归</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#“对数几率回归”-分类问题的“线性回归”"><span class="post-toc-number">3.</span> <span class="post-toc-text">“对数几率回归” - 分类问题的“线性回归”</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#定义"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">定义</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#如何确定w和b"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">如何确定w和b</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Machine-Learning-03" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">机器学习03-线性回归</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-19 15:54:20" datetime="2017-07-19T07:54:20.000Z" itemprop="datePublished">2017-07-19</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/机器学习/">机器学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>线性模型较为简单，易于求出参数，在之后的高级算法中有更多的应用。</p>
+<h1 id="线性回归的基本形式"><a href="#线性回归的基本形式" class="headerlink" title="线性回归的基本形式"></a>线性回归的基本形式</h1><p>给定一系列数据样本(x<sup>i</sup>, y<sup>i</sup>)，其中x=(x<sub>1</sub> ··· x<sub>n</sub>)，线性模型试图学得一个通过属性的线性组合来进行预测的函数，即</p>
+<blockquote>
+<p>f(x)=w<sub>1</sub>x<sub>1</sub> + ··· + w<sub>n</sub>x<sub>n</sub> + b</p>
+</blockquote>
+<p>用向量则可以表示成</p>
+<blockquote>
+<p>f(x)=w<sup>T</sup>x + b</p>
+</blockquote>
+<p>其中w=(w<sub>1</sub>; w<sub>2</sub>···; w<sub>n</sub>)。将<code>w</code>和<code>d</code>学习得到之后就可以确定此模型。</p>
+<p>那么如何求解<code>w</code>和<code>d</code>呢？</p>
+<h2 id="输入属性数目只有一个时w和d的求解"><a href="#输入属性数目只有一个时w和d的求解" class="headerlink" title="输入属性数目只有一个时w和d的求解"></a>输入属性数目只有一个时<code>w</code>和<code>d</code>的求解</h2><p>此时输入数据<code>x</code>是一个实数，但是有<code>m</code>个数据。求解<code>w</code>和<code>d</code>的关键在于衡量<code>f(x)</code>和<code>y</code>的差别。均方误差是回归任务中最常用的性能度量，因此我们可以试图将均方误差缩小，即：</p>
+<blockquote>
+<p>(w<sup>*</sup>, d<sup>*</sup>) 
+= arg min((f(x<sub>1</sub>) - y<sub>1</sub>)<sup>2</sup> + ··· + (f(x<sub>m</sub>) - y<sub>m</sub>)<sup>2</sup>)
+= arg min((y<sub>1</sub> - wx<sub>1</sub> - b)<sup>2</sup> + ··· + (y<sub>m</sub> - wx<sub>m</sub> - b)<sup>2</sup>)</p>
+</blockquote>
+<p>令E<sub>(w,b)</sub>等于上述函数，应用最小二乘法，分别对<code>w</code>和<code>d</code>求导，然后令偏导为0，则可得到<code>w</code>和<code>d</code>的解</p>
+<h2 id="更一般的情况"><a href="#更一般的情况" class="headerlink" title="更一般的情况"></a>更一般的情况</h2><p>此时<code>x</code>有<code>n</code>个属性，也即<code>x</code>是一个<code>n</code>维向量。</p>
+<p>类似的，利用最小二乘法来对<code>w</code>和<code>b</code>进行估计，可得<code>w</code>和<code>b</code>的解:</p>
+<blockquote>
+<p>2X<sup>T</sup>(Xw - y) = 0</p>
+</blockquote>
+<p>当<code>X&lt;sup&gt;T&lt;/sup&gt;X</code>为<strong>满秩矩阵</strong>或者<strong>正定矩阵</strong>时</p>
+<blockquote>
+<p>w = (X<sup>T</sup>X)<sup>-1</sup>X<sup>T</sup>y</p>
+</blockquote>
+<p>其中，<code>X</code>是输入数据的<code>m x n</code>矩阵，<code>y</code>是输出矩阵</p>
+<h1 id="对数线性回归"><a href="#对数线性回归" class="headerlink" title="对数线性回归"></a>对数线性回归</h1><p>线性回归虽简单，但是可以由很多的变化。线性回归的一般形式是：</p>
+<blockquote>
+<p>y = w<sup>T</sup>x + b</p>
+</blockquote>
+<p>如果模型预测值逼近于<code>y</code>的衍生物，比如指数尺度，那么就可以将输出标记的对数作为线性模型逼近的目标，即：</p>
+<blockquote>
+<p>lny = w<sup>T</sup>x + b</p>
+</blockquote>
+<p>这就是<strong>对数线性回归</strong>，它实际上是试图将e<sup>w<sup>T</sup>x + b</sup>趋近于<code>y</code>。</p>
+<p>更一般的，考虑单调可微函数<code>g(x)</code></p>
+<blockquote>
+<p>g(y) = w<sup>T</sup>x + b</p>
+</blockquote>
+<p>显然，对数线性回归是上面一般形式在<code>g(x)=ln(x)</code>时的特例。</p>
+<h1 id="“对数几率回归”-分类问题的“线性回归”"><a href="#“对数几率回归”-分类问题的“线性回归”" class="headerlink" title="“对数几率回归” - 分类问题的“线性回归”"></a>“对数几率回归” - 分类问题的“线性回归”</h1><p>上面讨论的是如何使用线性模型来进行回归模型，分类任务中也有”线性回归“模型。</p>
+<h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>根据上面的广义线性回归模型，只要找到一个特殊的<code>g(x)</code>将真实标记<code>y</code>与线性回归模型预测值联系起来即可。</p>
+<p>简单起见考察二分类问题，线性模型z = w<sup>T</sup>x + b输出为实数，而分类问题输出为<code>0/1</code>，那么只要找到将所有实数映射为<code>0/1</code>的<code>g(x)</code>即可。<strong>阶跃函数</strong>是最理想的。</p>
+<p>但是我们可以想到，阶跃函数并非连续，无法真正应用。那么只需要找到近似与阶跃函数的替代函数即可。<strong>对数几率函数</strong>是一个较为常用的替代函数:</p>
+<blockquote>
+<p>y = 1 / (1 + e<sup>-z</sup>)</p>
+</blockquote>
+<p>代入可得：</p>
+<blockquote>
+<p>ln(y / (1 - y)) = w<sup>T</sup>x + b</p>
+</blockquote>
+<p>若将<code>y</code>视为样本<code>x</code>作为正例的可能性，则<code>1 - y</code>是其反例可能性，两者的比值称为“几率”。因此，其对应的模型称为<strong>对数几率回归</strong>。</p>
+<h2 id="如何确定w和b"><a href="#如何确定w和b" class="headerlink" title="如何确定w和b"></a>如何确定<code>w</code>和<code>b</code></h2><p>待续。。。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.901Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/07/19/Machine-Learning-03/" target="_blank" rel="external">https://KingsFish.github.io/2017/07/19/Machine-Learning-03/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/">Machine Learning</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/&title=《机器学习03-线性回归》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/&title=《机器学习03-线性回归》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《机器学习03-线性回归》 — 碎碎念&url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/23/Leetcode-474-Ones-and-Zeros/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Leetcode-474 Ones-and-Zeross题解</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/17/Leetcode-64-Minimum-Path-Sum/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Leetcode 64 Minimum Path Sum</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/&title=《机器学习03-线性回归》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/&title=《机器学习03-线性回归》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《机器学习03-线性回归》 — 碎碎念&url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/19/Machine-Learning-03/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACHklEQVR42u3aQXaDMAwFwNz/0ukBUsiXBO3DHlZ5CWCPF4ol+fWKr/fB9XnP5/3Vd54/NbowMDAey0hed8c3ve8PqRgYGBswjiLYeTDN70nC9Pm4X+aMgYGBEWzXerBkyTAwMDB6AbdHTUbBwMDAmCSx56W0ajL8b7k4BgbGAxm9sPg3n2/pb2BgYDyK8S5e5wWy/P4k9S3MCgMDY2lGr5SWk/IGQH5E4/BODAyMbRiTsJs3CaqHyaLNIgYGxqKMSelq3uCshulDMAYGxtKM821fEo6rbcgEU/7HwMDAWJqRH8/q/do7IjY6ZoGBgbEoo5pYJo2B3naw9x4MDIwdGL1SfvWpOfVwLAwMjKUZvTJ9tRCWh+xeAwMDA2NtRtKG7HUM88NeF4yOgYGxNKMXOvNhem2AZoDGwMDYgDHpgvZC8MU7XAwMjI0ZeYLaO2CRt0iba4mBgfFwxkRfbQBcFcR/mTMGBsbSjPPgeHcSO2+LRi/CwMBYiJEP3EtB8yVrlvwwMDA2YFSDbx5qewlttZyHgYGxDyMJc9ViXK9JmSwTBgbGDox38conNJlWmYqBgbE0o7c5q27v5gW4SVsUAwNjDUaefM6bmlc9VagaYmBgLMSYlOGqrYLJtu9LKouBgYFx6USThSiMi4GBgTE4TpFMKynt3RJwMTAwHsXoHZKYHOrKmxMXl9swMDAeyKiG0Wr5Pl+syfsxMDAWZfwAgkksumsx/JoAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

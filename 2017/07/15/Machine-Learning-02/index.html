@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>机器学习02-模型的性能度量 | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content>
+    <meta name="description" content="性能度量用于判定机器学习的结果好坏程度。在比对不同的模型能力的时候，使用不同的性能度量往往会导致不同的评判结果。 在预测任务中，数据集D={(x1,y1),(x2,y2),···(xk,yk)}，yi是xi的真实标记。如果评估学习器f的性能，需将f(x)与yi进行比较。 回归任务常用的性能度量常用“均方误差”作为回归任务的性能度量  E(f;D)=(1/m){f(x1)-y1)+···+f(xm)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习02-模型的性能度量">
+<meta property="og:url" content="https://KingsFish.github.io/2017/07/15/Machine-Learning-02/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="性能度量用于判定机器学习的结果好坏程度。在比对不同的模型能力的时候，使用不同的性能度量往往会导致不同的评判结果。 在预测任务中，数据集D={(x1,y1),(x2,y2),···(xk,yk)}，yi是xi的真实标记。如果评估学习器f的性能，需将f(x)与yi进行比较。 回归任务常用的性能度量常用“均方误差”作为回归任务的性能度量  E(f;D)=(1/m){f(x1)-y1)+···+f(xm)">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://img.blog.csdn.net/20160712100637161">
+<meta property="og:image" content="http://img.blog.csdn.net/20170322130712503">
+<meta property="og:image" content="http://img.blog.csdn.net/20170419145844033">
+<meta property="og:updated_time" content="2019-06-14T14:54:54.901Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="机器学习02-模型的性能度量">
+<meta name="twitter:description" content="性能度量用于判定机器学习的结果好坏程度。在比对不同的模型能力的时候，使用不同的性能度量往往会导致不同的评判结果。 在预测任务中，数据集D={(x1,y1),(x2,y2),···(xk,yk)}，yi是xi的真实标记。如果评估学习器f的性能，需将f(x)与yi进行比较。 回归任务常用的性能度量常用“均方误差”作为回归任务的性能度量  E(f;D)=(1/m){f(x1)-y1)+···+f(xm)">
+<meta name="twitter:image" content="http://img.blog.csdn.net/20160712100637161">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">机器学习02-模型的性能度量</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">机器学习02-模型的性能度量</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-15T01:16:23.000Z" itemprop="datePublished" class="page-time">
+  2017-07-15
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/机器学习/">机器学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#回归任务常用的性能度量"><span class="post-toc-number">1.</span> <span class="post-toc-text">回归任务常用的性能度量</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#分类任务常用的性能度量"><span class="post-toc-number">2.</span> <span class="post-toc-text">分类任务常用的性能度量</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#错误率和精度"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">错误率和精度</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#查准率、查全率与F1"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">查准率、查全率与F1</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#平衡点"><span class="post-toc-number">2.2.1.</span> <span class="post-toc-text">平衡点</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#F1度量"><span class="post-toc-number">2.2.2.</span> <span class="post-toc-text">F1度量</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#ROC与AUC"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">ROC与AUC</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#代价敏感错误率与代价曲线"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">代价敏感错误率与代价曲线</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Machine-Learning-02" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">机器学习02-模型的性能度量</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-15 09:16:23" datetime="2017-07-15T01:16:23.000Z" itemprop="datePublished">2017-07-15</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/机器学习/">机器学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>性能度量用于判定机器学习的结果好坏程度。在比对不同的模型能力的时候，使用不同的性能度量往往会导致不同的评判结果。</p>
+<p>在预测任务中，数据集<code>D</code>={(x<sub>1</sub>,y<sub>1</sub>),(x<sub>2</sub>,y<sub>2</sub>),···(x<sub>k</sub>,y<sub>k</sub>)}，y<sub>i</sub>是x<sub>i</sub>的真实标记。如果评估学习器<code>f</code>的性能，需将<code>f(x)</code>与y<sub>i</sub>进行比较。</p>
+<h2 id="回归任务常用的性能度量"><a href="#回归任务常用的性能度量" class="headerlink" title="回归任务常用的性能度量"></a>回归任务常用的性能度量</h2><p>常用“均方误差”作为回归任务的性能度量</p>
+<blockquote>
+<p>E(f;D)=(1/m){f(x<sub>1</sub>)-y<sub>1</sub>)+···+f(x<sub>m</sub>)-y<sub>m</sub>)}</p>
+</blockquote>
+<p>更一般的，对于数据分布<code>D</code>和概率密度函数<code>p(x)</code>，有</p>
+<blockquote>
+<p>E(f;D)=sum(f(x)-y)<sup>2</sup>)p(x)dx</p>
+</blockquote>
+<h2 id="分类任务常用的性能度量"><a href="#分类任务常用的性能度量" class="headerlink" title="分类任务常用的性能度量"></a>分类任务常用的性能度量</h2><h3 id="错误率和精度"><a href="#错误率和精度" class="headerlink" title="错误率和精度"></a>错误率和精度</h3><p>错误率和精度是分类任务中最常用的两种性能度量，既适用于二分类任务，也适用于多分类任务。错误率是分类错误的样本数占总数的比例，精度则是分类正确的样本数占总数的比例。对于数据集<code>D</code>，分类错误率定义为</p>
+<blockquote>
+<p>E(f;D)=l/m<br>其中l是指所有数据集中，f(x<sub>i</sub>)!=y<sub>i</sub>的个数</p>
+</blockquote>
+<p>而精度定义为</p>
+<blockquote>
+<p>acc(f;D)=n/m=1-E(f;D)<br>其中n是指所有数据集中，f(x<sub>i</sub>)=y<sub>i</sub>的个数</p>
+</blockquote>
+<p>更一般的，对于数据分布<code>D</code>和概率密度函数<code>p(x)</code>，错误率为</p>
+<blockquote>
+<p>E(f;D)=sum(l(x)p(x))<br>其中，l(x)取值为0或者1，当f(x)=y时取0，当f(x)!=y时取1</p>
+</blockquote>
+<p>精度为</p>
+<blockquote>
+<p>acc(f;D)=sum(l(x)p(x))=1-E(f;D)<br>其中，l(x)取值为0或者1，当f(x)=y时取1，当f(x)!=y时取0</p>
+</blockquote>
+<h3 id="查准率、查全率与F1"><a href="#查准率、查全率与F1" class="headerlink" title="查准率、查全率与F1"></a>查准率、查全率与F1</h3><p>错误率和精度虽然常用，但是不能满足所有需求。以西瓜问题为例，我们用训练好的模型进行判别，显然，错误率指的是有多少比例的西瓜判别错误，但是我们关心的是“好瓜有多大的比例被挑出来了”或者“挑出来的西瓜有多少是好瓜”，这是就需要用到其他的度量。对于此类问题，“查全率”和“查准率”是更为适合的性能度量。</p>
+<p>对于二分类问题，可以根据真实结果和预测结果对整体数据进行划分，分为“真正例”，“假正例”，“假反例”和“真反例”。如下表所示：</p>
+<table>
+<thead>
+<tr>
+<th align="center">真实类别</th>
+<th align="center">预测为正例</th>
+<th align="center">预测为反例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">正例</td>
+<td align="center">TP(真正例)</td>
+<td align="center">FN(假反例)</td>
+</tr>
+<tr>
+<td align="center">反例</td>
+<td align="center">FP(假正例)</td>
+<td align="center">TN(真反例)</td>
+</tr>
+</tbody></table>
+<p>此表称为<strong>“混淆矩阵(confusion matrix)”</strong></p>
+<p>查准率P和查全率R分别定义为</p>
+<blockquote>
+<p>查准率P<br>P=TP/(TP+FP)</p>
+<p>查全率R<br>R=TP/(TP+FN)</p>
+</blockquote>
+<p>一般来说， 查准率高的时候，查全率偏低；查全率高的时候，查准率往往降低。以西瓜问题为例：查准率指的是所有预测为好瓜的西瓜中，真正的好瓜所占的比例；查全率指的是真正的好瓜中，有多少好瓜被挑出来了。</p>
+<p>以查准率P为纵轴，查全率R为横轴作图，就得到了查准率-查全率曲线，称为<strong>“P-R曲线”</strong>。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20160712100637161" alt="P-R曲线" title>
+                </div>
+                <div class="image-caption">P-R曲线</div>
+            </figure>
+
+<p>在比较两个模型的性能时，如果一个学习器的P-R曲线被另外一个学习器P-R曲线包住，那么后者的性能优于前者，如上图，A的性能优于C，B的性能也优于C；如果两个学习器的曲线有交叉点（如A和B），那么难以断定两个学习器性能的优劣，只能在具体的查准率或者查全率条件下进行比较。</p>
+<p>然而，在很多情况下，还是希望将AB做出比较，这时可以对比AB的P-R曲线下面积。但是这个值不太容易估量，因此有其他的性能度量来综合考察查准率和查全率。</p>
+<h4 id="平衡点"><a href="#平衡点" class="headerlink" title="平衡点"></a>平衡点</h4><p>平衡点(Break-Even Point，简称BEP)指得是“P=R”时候的取值，如上图，C的的BEP是0.64,。基于BEP的比较，可以认为学习器A优于B。</p>
+<h4 id="F1度量"><a href="#F1度量" class="headerlink" title="F1度量"></a>F1度量</h4><p>BEP过于简单，更常用的是F1度量。</p>
+<blockquote>
+<p>F1=2*P*R/(P+R)=2*TP/(样例总数+TP-TN)</p>
+</blockquote>
+<p>F1是基于查准率和查全率的调和平均定义的</p>
+<blockquote>
+<p>1/F1=1/2*(1/P+1/R)</p>
+</blockquote>
+<p>对于特定的应用场景，查准率和查全率的重视度是不一样的。例如在追捕逃犯时，希望尽可能的不遗漏逃犯，因此查全率较为重要；而在搜索引擎的搜索过程中，希望给用户精准的搜索信息，因此查准率更为重要。F1度量的更一般形式——F<sub>β</sub></p>
+<blockquote>
+<p>F<sub>β</sub>=(1+β<sup>2</sup>)*P*R/((β<sup>2</sup>*P)+R)</p>
+</blockquote>
+<p>其中<code>β&gt;0</code>度量了查全率对查准率的相对重要性<code>β=R/P</code>。<code>β=1</code>时退化为标准的F1。</p>
+<p>有时候我们会有多个混淆矩阵，比如我们做了多次训练。我们希望在n个二分类混淆矩阵上考察查准率和查重率。</p>
+<p>一种直接的做法是在各混淆矩阵上分别求出查准率和查全率(P<sub>1</sub>,R<sub>1</sub>)···(P<sub>n</sub>,R<sub>n</sub>)，再求其平均，这称之为<strong>“宏查准率(macro-P)”、”宏查全率(macro-R)”</strong>以及<strong>“宏F1(macro-F1)”</strong></p>
+<p>另一种做法是先将个混淆矩阵对应元素进行平均，得到TP、FP、TN、FN的平均值，之后根据平均值求<strong>“微查准率(micro-P)”、”微查全率(micro-R)”</strong>以及<strong>”微F1(micro-F1)”</strong></p>
+<h3 id="ROC与AUC"><a href="#ROC与AUC" class="headerlink" title="ROC与AUC"></a>ROC与AUC</h3><p>分类任务一般是如下流程：经过一定的训练之后，对于测试集的每一个数据，学习器给出相应的输出预测值，然后将这个预测值与某一个阈值(Threshold)进行比较，若大于阈值则为正例，否则为反例。例如，假设学习器输出的预测值范围为<code>[0.0,1.0]</code>，阈值为0.7，那么学习器输出预测值大于0.7的为正例，反之则为反例。</p>
+<p>实际上，我们可以根据输出预测值进行排序，“最可能”的是正例排在前面，而“最不可能的”排在后面，然后使用阈值作为“截断点”将样本分类。</p>
+<p>在不同的场景中，我们可以根据任务需求不一来确定截断点。因此，排序的好坏体现了学习器在不同任务下的“期望泛化性能”的好坏。ROC曲线则是从这个角度出来来研究学习器泛化性能的有力工具。</p>
+<p>ROC全称为<strong>“受试者工作特征(Receiver Operating Characteristic)”曲线</strong>。ROC曲线的纵轴是<strong>“真正例率”(True Positive Rate，简称TPR)”</strong>，横轴为<strong>“假正例率(False Positive Rate，简称FPR)”</strong>，两种分别定义为：</p>
+<blockquote>
+<p>真正例率<br>TPR=TP/(TP+FN)</p>
+<p>假正例率<br>FPR=FP/(TN+FP)</p>
+</blockquote>
+<p>真正例率指的是真实正例中有多少被预测为正例，假正例率指的是真实反例中有多少被预测为正例。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170322130712503" alt="ROC曲线和AUC示意图" title>
+                </div>
+                <div class="image-caption">ROC曲线和AUC示意图</div>
+            </figure>
+
+<p>对角线对应于“随机猜想”模型。点(0,1)则是所有正例都排在反例前面的“理想模型”。在实际情况中，通常是利用有限个测试样例来绘制ROC曲线，此时只能获得有限个坐标点，得不到圆滑的曲线（上图右侧）。</p>
+<p>与P-R曲线类似，如果学习器A的ROC曲线被学习器B完全“包住”，那么后者性能优于前者。但是当两个曲线有交点时，则需要比较曲线下的面积<strong>AUC(Area Under ROC Curve)</strong>。</p>
+<p>AUC可以由ROC曲线的每个坐标点与横轴围成的矩形面积求和得到。</p>
+<h3 id="代价敏感错误率与代价曲线"><a href="#代价敏感错误率与代价曲线" class="headerlink" title="代价敏感错误率与代价曲线"></a>代价敏感错误率与代价曲线</h3><p>现实生活中会有这样的场景，不同类型造成的错误后果不同。比如门禁，错误的把可通过人员挡在门外，会使得用户体验不佳，但是如果把不可通过人员进入则会造成严重的安全事故。为了权衡不同错误导致的不同损失，可以给每个错误设立一定的权重，称之为“非均等代价(unequal cost)”。</p>
+<p>以二分类为例，可以设定一个“代价矩阵(cost matrix)”。如下表，其中cost<sub>ij</sub>代表将第i类预测为第j类样本的代价。一般来说，cost<sub>ii</sub>=0。</p>
+<table>
+<thead>
+<tr>
+<th align="center">真实类别</th>
+<th align="center">预测为第0类</th>
+<th align="center">预测为第1类</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">第0类</td>
+<td align="center">0</td>
+<td align="center">cost<sub>01</sub></td>
+</tr>
+<tr>
+<td align="center">第1类</td>
+<td align="center">cost<sub>10</sub></td>
+<td align="center">0</td>
+</tr>
+</tbody></table>
+<p>根据上表，<strong>”代价敏感(cost-sensitive)“</strong>定义为</p>
+<blockquote>
+<p>E(f;D;cost)=(1/m)*sum(l*cost<sub>01</sub>+n*cost<sub>10</sub>)
+其中，l为真实类别中第0类而预测为第0类的数据个数，n为真实类别中第1类而预测为第1类的数据个数</p>
+</blockquote>
+<p>在非均等代价下，ROC不能直接反映出学习器的期望总体代价，而<strong>”代价曲线“</strong>则可以到达该目的。代价曲线的横轴是取值为[0,1]的正例概率代价：</p>
+<blockquote>
+<p>P(+)cost=p*cost<sub>01</sub>/(p*cost<sub>01</sub>+(1-p)*cost<sub>10</sub>)</p>
+</blockquote>
+<p>其中，p是样例为正例的概率；纵轴是取值为[0,1]的归一化代价。</p>
+<blockquote>
+<p>cost<sub>norm</sub>=FNR*p*cost<sub>01</sub>+FPR*(1-p)*cost<sub>10</sub>/(p*cost<sub>01</sub>+(1-p)*cost<sub>10</sub>)</p>
+</blockquote>
+<p>其中，FPR为ROC曲线中的假正例率，FNR=1-TPR是假反例率。代价曲线的绘制很简单：</p>
+<blockquote>
+<p>ROC曲线上的每一个点对应了代价平面的一条线段，假设ROC曲线上的坐标为(TPR, FPR)，则可相应计算出FNR，然后在代价平面上绘制从(0,FPR)到(1,FNR)的线段。如此将ROC曲线上的每一个点转化成代价平面上的一条线段，然后取所有线段的下界，围城的面积就是在所有条件下学习器的期望总体代价。</p>
+</blockquote>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="http://img.blog.csdn.net/20170419145844033" alt="代价曲线与期望总体代价" title>
+                </div>
+                <div class="image-caption">代价曲线与期望总体代价</div>
+            </figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.901Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/07/15/Machine-Learning-02/" target="_blank" rel="external">https://KingsFish.github.io/2017/07/15/Machine-Learning-02/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/&title=《机器学习02-模型的性能度量》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/&title=《机器学习02-模型的性能度量》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《机器学习02-模型的性能度量》 — 碎碎念&url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/16/Performance-testing-on-FreeSwitch-with-SIPp-01/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">使用SIPp对FreeSwitch压力测试01-注册</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/14/Machine-Learning-01/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">机器学习01-模型评估与选择以及参数的调节</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/&title=《机器学习02-模型的性能度量》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/&title=《机器学习02-模型的性能度量》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《机器学习02-模型的性能度量》 — 碎碎念&url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/15/Machine-Learning-02/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACK0lEQVR42u3aQW7CQAwFUO5/abpFqhK+baga582qgknIy8K1x3484vV8Wa+f/N5ztP/8nr/X4xsLAwPjsozkdt/4pPf5IRUDA+MGjKMI1tuT/3wSuM9/FwMDA+N8TxIuz2HJ68DAwMDoBdNzQLX2zEtlDAyMOzOqAbG6/lEtjoGBcUFGLyz+zd9f6W9gYGBcijEJmnmamBfAzafCwMBYzcgDXP6IvQZAPqJxuBMDA+M2jN5Rfm+MLB8mi5JFDAyMpYzzy/JD+WaILIbpQzAGBsZqRm9gYtKG/MYLwsDA2M2YZJRJcOwlnaMxCwwMjKWM3rhDHqzzdLB3HwwMjDsw8oRv3iqYUA+DMgYGxmpGL/wlqVueJuZ3Kx+3YWBgrGB89tbVl5I0QUdjFhgYGCsY1TZhFdBrAzQDNAYGxmpGs+c5DsGTVkQUdjEwMBYxqgf01SZokgjmgx2FkQsMDIwVjLyknCSRvbCevyAMDIzdjEkxOS9i89BcrsUxMDCWMnoNyzxAnz903nF9E3AxMDBuw0hukcS68ihqMU185P8lMDAwFjHyy5Kjt0mTsnyqhoGBsZTxLK7qVb3HKlMxMDBWMz6bnJ0XwJMDuElbFAMDYwcjD7KT+JYPhPXAGBgYd2D0Rit6jYTJa3pTymJgYGAUv63uyRPN6PwPAwPj9owqb1LiJodxGBgYd2DMhyR64xrVhsQHjtswMDAuyMhLx+rYRN74nLQHMDAwVjN+AOeak2HKPUQSAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

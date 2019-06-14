@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.8.0">
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Leetcode-15 3Sum题解 | 碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Algorithm,Binary Search">
+    <meta name="description" content="题目如下：  Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0?Find all unique triplets in the array which gives the sum of zero.Note: The solution set must not contain">
+<meta name="keywords" content="Algorithm,Binary Search">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Leetcode-15 3Sum题解">
+<meta property="og:url" content="https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/index.html">
+<meta property="og:site_name" content="碎碎念">
+<meta property="og:description" content="题目如下：  Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0?Find all unique triplets in the array which gives the sum of zero.Note: The solution set must not contain">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://kingsfish.github.io/2017/07/13/Leetcode-15-3Sum/time.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2017/07/13/Leetcode-15-3Sum/time_2.jpg">
+<meta property="og:updated_time" content="2019-06-14T15:38:59.233Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Leetcode-15 3Sum题解">
+<meta name="twitter:description" content="题目如下：  Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0?Find all unique triplets in the array which gives the sum of zero.Note: The solution set must not contain">
+<meta name="twitter:image" content="https://kingsfish.github.io/2017/07/13/Leetcode-15-3Sum/time.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide">
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/">
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives">
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags">
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories">
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank">
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about">
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml">
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Leetcode-15 3Sum题解</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Leetcode-15 3Sum题解</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-13T03:53:22.000Z" itemprop="datePublished" class="page-time">
+  2017-07-13
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Leetcode/">Leetcode</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#题目大意"><span class="post-toc-number">1.</span> <span class="post-toc-text">题目大意</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#思路"><span class="post-toc-number">2.</span> <span class="post-toc-text">思路</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#总结"><span class="post-toc-number">3.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Leetcode-15-3Sum" class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Leetcode-15 3Sum题解</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-13 11:53:22" datetime="2017-07-13T03:53:22.000Z" itemprop="datePublished">2017-07-13</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Leetcode/">Leetcode</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style="display:none">
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>题目如下：</p>
+<blockquote>
+<p>Given an array S of n integers, are there elements a, b, c in S such that a + b + c = 0?<br>Find all unique triplets in the array which gives the sum of zero.<br>Note: The solution set must not contain duplicate triplets.<br>For example, given array S = [-1, 0, 1, 2, -1, -4],<br>A solution set is:<br>[<br>  [-1, 0, 1],<br>  [-1, -1, 2]<br>]</p>
+</blockquote>
+<h3 id="题目大意"><a href="#题目大意" class="headerlink" title="题目大意"></a>题目大意</h3><p>给定一个数组，要求找出所有和为0的三个数的集合，不能重复。</p>
+<h3 id="思路"><a href="#思路" class="headerlink" title="思路"></a>思路</h3><p>最直接的思路是遍历，先对数组排序，然后第一层遍历固定第一个数字，在第一个数字右边进行第二层遍历，固定第二个数字，再进行二分查找是否有加和为0的第三个数。在此同时，为了防止重复的组合，需要记录上次和为0的值并与此次值进行比较。时间复杂度为O(n<sup>2</sup> logn)，空间复杂度为O(1)。代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; threeSum_v2(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">    Arrays.sort(nums);</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; result = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    List&lt;Integer&gt; temp;</span><br><span class="line">    <span class="keyword">int</span> lastIndex_i = -<span class="number">1</span>, lastIndex_j = -<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length - <span class="number">2</span>;) &#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> j = i + <span class="number">1</span>; j &lt; nums.length - <span class="number">1</span>; j++) &#123;</span><br><span class="line">            <span class="keyword">int</span> position = binarySearch(nums, - (nums[i] + nums[j]), j + <span class="number">1</span>, nums.length);</span><br><span class="line">            <span class="keyword">if</span> (position != -<span class="number">1</span>) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!(lastIndex_i != -<span class="number">1</span> &amp;&amp; nums[i] == nums[lastIndex_i] &amp;&amp; nums[j] == nums[lastIndex_j])) &#123;</span><br><span class="line">                    temp = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">                    temp.add(nums[i]);</span><br><span class="line">                    temp.add(nums[j]);</span><br><span class="line">                    temp.add(nums[position]);             </span><br><span class="line">                    result.add(temp);</span><br><span class="line">                    lastIndex_i = i;</span><br><span class="line">                    lastIndex_j = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        i++;</span><br><span class="line">        <span class="keyword">while</span> (i &lt; nums.length - <span class="number">2</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) &#123;</span><br><span class="line">            i++;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">int</span> <span class="title">binarySearch</span><span class="params">(<span class="keyword">int</span> [] nums, <span class="keyword">int</span> target, <span class="keyword">int</span> lo, <span class="keyword">int</span> hi)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (lo &lt; hi) &#123;</span><br><span class="line">        <span class="keyword">int</span> mid = lo + (hi - lo) / <span class="number">2</span>;</span><br><span class="line">        <span class="keyword">if</span> (nums[mid] &gt; target) &#123;</span><br><span class="line">            hi = mid;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[mid] &lt; target) &#123;</span><br><span class="line">            lo = mid + <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> mid;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>提交之后AC了，但是时间惨不忍睹，218ms。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="time.jpg" alt="运行时间" title>
+                </div>
+                <div class="image-caption">运行时间</div>
+            </figure>
+
+<p>看了看大神们是怎么做的，思路和我很类似，也是先对数组排序，但是在第二层遍历的时候直接进行第二和第三个数字。对于每一个第一层的数字，第二层遍历分别将最左端的值和最右端的值最为初始值,left和right，如果加和发现过大，那么就是右边的值太大，将right减1。反之如果加和发现太小，那么就是左边的值太小，将left加1，以此类推，直至三个数加和或者left大于right。仍需要注意的是，在第二层遍历中，如果找出了一组加和为0的集合，记录之后如果left右边或者right左边有与left和right相同的值，则分别需要进行左移和右移防止集合重复。</p>
+<p>这个算法还有其他小细节的改进。如果发现第一个数字为正数，那么可以直接结束搜索，因为正数右边全为正数，加和不可能为0。其次，如果排序之后发现最后一个数为负数，那么也可以直接结束搜索。此算法进行了两层循环，所以时间复杂度为O(n<sup>2</sup>)，空间复杂度为O(1)。代码如下</p>
+<p>​<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> List&lt;List&lt;Integer&gt;&gt; threeSum_v1(<span class="keyword">int</span>[] nums) &#123;</span><br><span class="line">    List&lt;List&lt;Integer&gt;&gt; lists = <span class="keyword">new</span> ArrayList&lt;&gt;();</span><br><span class="line">    Arrays.sort(nums);</span><br><span class="line">    <span class="keyword">if</span> (nums.length &gt; <span class="number">0</span> &amp;&amp; nums[nums.length - <span class="number">1</span>] &lt; <span class="number">0</span>) <span class="keyword">return</span> lists;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nums.length - <span class="number">2</span>; i++) &#123;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// if nums[i] &gt; 0, we can never get sum to 0</span></span><br><span class="line">        <span class="keyword">if</span> (nums[i] &gt; <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//avoid duplicate triplets</span></span><br><span class="line">        <span class="keyword">if</span> (i != <span class="number">0</span> &amp;&amp; nums[i] == nums[i - <span class="number">1</span>]) <span class="keyword">continue</span>;</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">int</span> target = -nums[i];</span><br><span class="line">        <span class="keyword">int</span> left = i + <span class="number">1</span>, right = nums.length - <span class="number">1</span>;</span><br><span class="line">        <span class="comment">// both side</span></span><br><span class="line">        <span class="keyword">while</span> (left &lt; right) &#123;</span><br><span class="line">            <span class="comment">// target is negative</span></span><br><span class="line">            <span class="keyword">if</span> (nums[left] + nums[right] &gt; target) &#123;</span><br><span class="line">                <span class="comment">// right side is too huge</span></span><br><span class="line">                right--;</span><br><span class="line">            &#125; <span class="keyword">else</span> <span class="keyword">if</span> (nums[left] + nums[right] &lt; target) &#123;</span><br><span class="line">                <span class="comment">// left side is too small</span></span><br><span class="line">                left++;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                lists.add(Arrays.asList(nums[i], nums[left], nums[right]));</span><br><span class="line">                <span class="comment">// avoid duplicate </span></span><br><span class="line">                <span class="keyword">while</span> (++left &lt; right &amp;&amp; nums[left] == nums[left - <span class="number">1</span>]) ;</span><br><span class="line">                <span class="keyword">while</span> (--right &gt; left &amp;&amp; nums[right] == nums[reft + <span class="number">1</span>]) ;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> lists;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>提交结果，运行时间为71ms：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="time_2.jpg" alt="运行结果" title>
+                </div>
+                <div class="image-caption">运行结果</div>
+            </figure>
+
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>第二版的运行时间比我的第一版短了2/3，而且代码比我的清晰简洁了很多。算法的能量是巨大的，仍需继续努力啊。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T15:38:59.233Z" itemprop="dateUpdated">2019-06-14 23:38:59</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/07/13/Leetcode-15-3Sum/" target="_blank" rel="external">https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Algorithm/">Algorithm</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Binary-Search/">Binary Search</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/&title=《Leetcode-15 3Sum题解》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/&title=《Leetcode-15 3Sum题解》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode-15 3Sum题解》 — 碎碎念&url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/13/Leetcode-543-Diameter-of-Binary-Tree/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Leetcode-543 Diameter of Binary Tree题解</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/13/Adding-connsole-commands-in-FreeSwitch/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">FreeSwitch增加控制台命令</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "2CfM2Fm7VsbIigabgehi8g05-gzGzoHsz",
+            appKey: "dgmqDkxfsXHQlooYvAtcN6ja",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check" data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style="display:none">
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style="display:none">
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2019</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/&title=《Leetcode-15 3Sum题解》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/&title=《Leetcode-15 3Sum题解》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Leetcode-15 3Sum题解》 — 碎碎念&url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://KingsFish.github.io/2017/07/13/Leetcode-15-3Sum/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACI0lEQVR42u3aQW6EMAwF0N7/0tN1VUH/d6AS4WWFBobxm4UVO/76itfn1/p9N3/+6Jnz5y9YGBgYj2Ukr8sBM17++SEVAwPjBYzzIM4Dyv+UJJme/+7h5xgYGBhBYm2faa8xMDAwckaeUtvN5fkbMDAwMPKA2vIyT6z/VItjYGA8kJF33f//+pbzDQwMjEcxPuWabQ3zFDyMCgMDY2tGnuDWDzXzEncWDwYGxhsYbUk5Kz6TTWc70oGBgbE3I0956xvBBNO26n7scDEwMDZl5FkrSYLtkWde0C71BTEwMB7OaNvxszZcy16aFsHAwNiUsd7Wz8vUtvT9YyOIgYHxGkaScJO79aFjEGKUlDEwMLZmzIbA7kvK7fEnBgbG2xhtfy4fnmjvtkMbGBgYezPa9lne9M8HvPLi9hCJgYGxNWNlMCsPd9aSqwfIMDAwtmYkgebHkMO6ufxrIisGBsYWjDZpXjUq0W46//hdDAyMrRltE+3uUNqN6bAXiIGB8UBGsplbKWLzrWQbyWHvEAMDY1PGtQeN+RsuG7bAwMB4DaNtkCUpdXZIWXfVMDAwNmV8ypWn3ZWwaioGBsbWjDaNrgyBzQ4h2sYcBgbGroyVJDsbv7hldgIDA+MFjFk5mqfjlXCLUhYDAwPj0pZce6gQVeQYGBgYo5ZZEtZ58o22mxgYGC9gzMaz2oZ++61b2m0YGBgPZKyPUMzCTUrc/BoDA2NTxjdNgImHavgNLAAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
