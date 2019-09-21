@@ -14,7 +14,7 @@
     
     
     
-    <title>Android中的框架模式：MVC&amp;MVP&amp;MVVM | 碎碎念</title>
+    <title>Android中的框架模式：MVC&amp;MVP&amp;MVVM | 葫芦籽的碎碎念</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -26,7 +26,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="Android中的框架模式：MVC&amp;MVP&amp;MVVM">
 <meta property="og:url" content="https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/index.html">
-<meta property="og:site_name" content="碎碎念">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
 <meta property="og:description" content="最近在实验室内部做了一次分享，主要内容是Android开发中常使用的三种软件框架模式，MVC、MVP和MVVM，另外写了一个小Demo来演示这几种模式的实际写法，在此一并发到博客上。 要声明的是，对于软件框架模式，每个人有自己的理解，另外模式也有多种变形，可能会与本文中的不完全一致，因此本文阐述的是我自己对这几个模式的理解。 软件框架模式什么是软件框架模式 软件框架模式是软件架构的设计理念，一个通">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/1.png">
@@ -61,7 +61,7 @@
 <meta name="twitter:description" content="最近在实验室内部做了一次分享，主要内容是Android开发中常使用的三种软件框架模式，MVC、MVP和MVVM，另外写了一个小Demo来演示这几种模式的实际写法，在此一并发到博客上。 要声明的是，对于软件框架模式，每个人有自己的理解，另外模式也有多种变形，可能会与本文中的不完全一致，因此本文阐述的是我自己对这几个模式的理解。 软件框架模式什么是软件框架模式 软件框架模式是软件架构的设计理念，一个通">
 <meta name="twitter:image" content="https://kingsfish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/1.png">
     
-        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -549,7 +549,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -559,7 +559,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -569,7 +569,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中的框架模式：MVC&MVP&MVVM》 — 碎碎念&url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&via=https://KingsFish.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&via=https://KingsFish.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -731,7 +731,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -741,7 +741,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -751,7 +751,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中的框架模式：MVC&MVP&MVVM》 — 碎碎念&url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&via=https://KingsFish.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&url=https://KingsFish.github.io/2019/05/13/Android中的框架模式：MVC-MVP-MVVM/&via=https://KingsFish.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>

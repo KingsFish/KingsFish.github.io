@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>碎碎念</title>
+  <title>葫芦籽的碎碎念</title>
   
   
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://KingsFish.github.io/"/>
-  <updated>2019-07-11T15:03:51.130Z</updated>
+  <updated>2019-09-21T16:06:25.726Z</updated>
   <id>https://KingsFish.github.io/</id>
   
   <author>
@@ -15,6 +15,27 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>葫芦籽的碎碎念</title>
+    <link href="https://KingsFish.github.io/2019/09/21/%E8%91%AB%E8%8A%A6%E7%B1%BD%E7%9A%84%E7%A2%8E%E7%A2%8E%E5%BF%B5/"/>
+    <id>https://KingsFish.github.io/2019/09/21/葫芦籽的碎碎念/</id>
+    <published>2019-09-21T14:56:40.000Z</published>
+    <updated>2019-09-21T16:06:25.726Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="「葫芦籽的碎碎念」是什么"><a href="#「葫芦籽的碎碎念」是什么" class="headerlink" title="「葫芦籽的碎碎念」是什么"></a>「葫芦籽的碎碎念」是什么</h3><p>「葫芦籽的碎碎念」是我的微信公众号，前几天刚刚开通的，准备长期运营。</p><h3 id="为什么要开通这个微信公众号"><a href="#为什么要开通这个微信公众号" class="headerlink" title="为什么要开通这个微信公众号"></a>为什么要开通这个微信公众号</h3><p>开通微信公众号所考虑的因素比较多：</p><ul><li>目前博客所有的文件保存在本地以及<code>Github</code>仓库中，有无法访问和数据丢失的风险。</li><li>博客评论系统比较麻烦，目前用过<code>Disqus</code>，<code>Gitment</code>，<code>valine</code>。<code>Disqus</code><del>由于不可抗力因素</del>国内无法访问；<code>Gitment</code>太乱，依托于<code>Github</code>的<code>issue</code>系统，并且需要登录<code>Github</code>；<code>valine</code>用了一段时间，感觉还不错，评论不需要注册账号，也不需要后端，不过<code>valine</code>依托于<code>LeanCloud</code>作为后端存储系统，而最近<code>LeanCloud</code>需要实名注册备案，不想把自己的隐私信息交出去。</li><li>使用博客的话，目前只提供了一个邮箱联系方式，与粉丝的连接性较差。使用公众号则可以随时与粉丝联系（<del>其实博客并没有多少粉丝T_T</del>）。</li></ul><h3 id="博客和公众号的共存性"><a href="#博客和公众号的共存性" class="headerlink" title="博客和公众号的共存性"></a>博客和公众号的共存性</h3><p>目前精力主要放在微信公众号中，但是会将微信公众号的部分内容（目前计划是技术相关，后期看精力会再增加）同步到博客。微信公众号会多一些其他内容，如自己除了技术其他方面的学习，读书笔记等等。</p><p>最近刚入职，精力主要放在了熟悉业务相关内容上，因此更新频率下降了很多，最近一次更新已经是2个多月之前了。另外，自己的学习计划也有很多没有时间完成，之后会慢慢把这些都捡起来。</p><p>最后，附上我的微信公众号，欢迎各位读者关注</p><figure class="image-bubble">                <div class="img-lightbox">                    <div class="overlay"></div>                    <img src="wechat.jpg" alt="葫芦籽的碎碎念" title>                </div>                <div class="image-caption">葫芦籽的碎碎念</div>            </figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h3 id=&quot;「葫芦籽的碎碎念」是什么&quot;&gt;&lt;a href=&quot;#「葫芦籽的碎碎念」是什么&quot; class=&quot;headerlink&quot; title=&quot;「葫芦籽的碎碎念」是什么&quot;&gt;&lt;/a&gt;「葫芦籽的碎碎念」是什么&lt;/h3&gt;&lt;p&gt;「葫芦籽的碎碎念」是我的微信公众号，前几天刚刚开通的，准备长
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title>2019上半年复盘</title>
@@ -574,37 +595,6 @@
       <category term="scheme" scheme="https://KingsFish.github.io/tags/scheme/"/>
     
       <category term="intent-filter" scheme="https://KingsFish.github.io/tags/intent-filter/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>2018上半年复盘</title>
-    <link href="https://KingsFish.github.io/2018/07/07/2018%E4%B8%8A%E5%8D%8A%E5%B9%B4%E5%A4%8D%E7%9B%98/"/>
-    <id>https://KingsFish.github.io/2018/07/07/2018上半年复盘/</id>
-    <published>2018-07-07T03:06:00.000Z</published>
-    <updated>2019-06-14T14:54:54.854Z</updated>
-    
-    <content type="html"><![CDATA[<p>一直觉得上半年过得更快，过了年就是 3 月份，还没来得及做什么，上半年就只剩下 4 个月。正好星球里布置了复盘的作业，顺便也发在博客上。</p><p>成果:</p><ul><li>拿到了华为一个大赛的奖</li><li>拿到了 <code>vivo</code> 的 <code>offer</code>。第一个 <code>offer</code>，很开心</li><li>完成老师给的项目</li><li>不断更新迭代「手机睿思」</li><li>完善博客功能(新的评论系统)，并一直在更新技术博客</li><li>学习了一些 <code>Android</code> 进阶的内容</li><li>刷了很多算法题</li><li>每天背单词</li></ul><p>遗憾:</p><ul><li>健身计划未能完整执行，时去时不去</li><li>年初指定的很多技术学习内容没有完成</li><li>理财亏了好多钱😭😭</li></ul><p>展望:</p><ul><li>暑假继续深入学习 <code>Android</code> 知识，秋招找一份满意的工作</li><li>坚决执行健身计划</li><li>找完工作陪家人出去旅游一次</li><li>继续探寻美食</li><li>坚持更新博客，提升博客内容深度</li><li>了解更多和技术无关的事情😏</li><li>毕业论文，开始！</li></ul><p>总的来说，上半年有一定收获，但还是没有全身心投入，很多时间其实可以用来深入学习的，结果被用在了玩上面。中间出差两次，加起来接近一个月的时间都在外地，天天把自己当猪养，还有老师给的项目。其实出差的时候相对学校更有空闲时间，但是没有用来学习，基本都在玩手机。还是自己效率不高，经常学习的时候不专注。下半年继续加油，就是干！</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;一直觉得上半年过得更快，过了年就是 3 月份，还没来得及做什么，上半年就只剩下 4 个月。正好星球里布置了复盘的作业，顺便也发在博客上。&lt;/p&gt;
-&lt;p&gt;成果:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;拿到了华为一个大赛的奖&lt;/li&gt;
-&lt;li&gt;拿到了 &lt;code&gt;vivo&lt;/code&gt; 的
-      
-    
-    </summary>
-    
-      <category term="复盘" scheme="https://KingsFish.github.io/categories/%E5%A4%8D%E7%9B%98/"/>
-    
-    
-      <category term="总结" scheme="https://KingsFish.github.io/tags/%E6%80%BB%E7%BB%93/"/>
-    
-      <category term="2018" scheme="https://KingsFish.github.io/tags/2018/"/>
     
   </entry>
   

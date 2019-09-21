@@ -14,7 +14,7 @@
     
     
     
-    <title>深度学习实践03-构建深层神经网络 | 碎碎念</title>
+    <title>深度学习实践03-构建深层神经网络 | 葫芦籽的碎碎念</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -25,7 +25,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="深度学习实践03-构建深层神经网络">
 <meta property="og:url" content="https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/index.html">
-<meta property="og:site_name" content="碎碎念">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
 <meta property="og:description" content="深层神经网络的构建18号的时候就已经学完了，自己写激活函数导数的时候遇到了一点困难，再加上懒癌发作，现在才弄到博客上来。 本次需要构建一个深层的神经网络，层数可以在训练时确定，主要流程跟之前的两次实践仍然是计算量的差别。主要流程还是一致的：  初始化参数W、b 根据W、b以及输入X求得输出Z和A 根据输入X和输出Z、A求得梯度下降量dW、db 使用dW、db来更新W、b 循环2-5直至满足学习终止">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://kingsfish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/前向.jpg">
@@ -37,7 +37,7 @@
 <meta name="twitter:description" content="深层神经网络的构建18号的时候就已经学完了，自己写激活函数导数的时候遇到了一点困难，再加上懒癌发作，现在才弄到博客上来。 本次需要构建一个深层的神经网络，层数可以在训练时确定，主要流程跟之前的两次实践仍然是计算量的差别。主要流程还是一致的：  初始化参数W、b 根据W、b以及输入X求得输出Z和A 根据输入X和输出Z、A求得梯度下降量dW、db 使用dW、db来更新W、b 循环2-5直至满足学习终止">
 <meta name="twitter:image" content="https://kingsfish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/前向.jpg">
     
-        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -304,7 +304,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -314,7 +314,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -324,7 +324,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践03-构建深层神经网络》 — 碎碎念&url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&via=https://KingsFish.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践03-构建深层神经网络》 — 葫芦籽的碎碎念&url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&via=https://KingsFish.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -486,7 +486,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -496,7 +496,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&title=《深度学习实践03-构建深层神经网络》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -506,7 +506,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践03-构建深层神经网络》 — 碎碎念&url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&via=https://KingsFish.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践03-构建深层神经网络》 — 葫芦籽的碎碎念&url=https://KingsFish.github.io/2017/09/24/深度学习实践03-构建深层神经网络/&via=https://KingsFish.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>

@@ -14,7 +14,7 @@
     
     
     
-    <title>剑指offer-06-重建二叉树 | 碎碎念</title>
+    <title>剑指offer-06-重建二叉树 | 葫芦籽的碎碎念</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     
     <meta name="theme-color" content="#3F51B5">
@@ -26,7 +26,7 @@
 <meta property="og:type" content="article">
 <meta property="og:title" content="剑指offer-06-重建二叉树">
 <meta property="og:url" content="https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/index.html">
-<meta property="og:site_name" content="碎碎念">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
 <meta property="og:description" content="题目：  输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果都不含重复的数字。  前序遍历指的是先遍历根节点再分别遍历左右子节点；中序遍历指的是先遍历左子结点，其次根节点，最后右子节点。 思路很简单，先根据前序遍历的结果确定根节点，再在中序遍历的结果中查找到该节点，这样就可以切分出左右子树序列，在得到的左右子树序列中递归使用上面的方法即可构建出原来的树。">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://kingsfish.github.io/2018/10/12/剑指offer-06-重建二叉树/tree.jpg">
@@ -36,7 +36,7 @@
 <meta name="twitter:description" content="题目：  输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果都不含重复的数字。  前序遍历指的是先遍历根节点再分别遍历左右子节点；中序遍历指的是先遍历左子结点，其次根节点，最后右子节点。 思路很简单，先根据前序遍历的结果确定根节点，再在中序遍历的结果中查找到该节点，这样就可以切分出左右子树序列，在得到的左右子树序列中递归使用上面的方法即可构建出原来的树。">
 <meta name="twitter:image" content="https://kingsfish.github.io/2018/10/12/剑指offer-06-重建二叉树/tree.jpg">
     
-        <link rel="alternate" type="application/atom+xml" title="碎碎念" href="/atom.xml">
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
     <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
@@ -259,7 +259,7 @@
 <div class="page-share" id="pageShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -269,7 +269,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -279,7 +279,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《剑指offer-06-重建二叉树》 — 碎碎念&url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&via=https://KingsFish.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《剑指offer-06-重建二叉树》 — 葫芦籽的碎碎念&url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&via=https://KingsFish.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
@@ -441,7 +441,7 @@
 <div class="global-share" id="globalShare">
     <ul class="reset share-icons">
       <li>
-        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
           <i class="icon icon-weibo"></i>
         </a>
       </li>
@@ -451,7 +451,7 @@
         </a>
       </li>
       <li>
-        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&title=《剑指offer-06-重建二叉树》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
           <i class="icon icon-qq"></i>
         </a>
       </li>
@@ -461,7 +461,7 @@
         </a>
       </li>
       <li>
-        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《剑指offer-06-重建二叉树》 — 碎碎念&url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&via=https://KingsFish.github.io" data-title=" Twitter">
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《剑指offer-06-重建二叉树》 — 葫芦籽的碎碎念&url=https://KingsFish.github.io/2018/10/12/剑指offer-06-重建二叉树/&via=https://KingsFish.github.io" data-title=" Twitter">
           <i class="icon icon-twitter"></i>
         </a>
       </li>
