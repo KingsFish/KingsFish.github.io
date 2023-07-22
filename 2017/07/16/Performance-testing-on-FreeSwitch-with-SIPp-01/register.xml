@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE scenario SYSTEM "sipp.dtd">
+
+<!--date:2017-5-9  -->
+<!--REGISTER        -->
+
+<scenario name="register">
+
+  <!-- retrans indicate the milliseconds of re-send time -->
+  
+  <send retrans="500">
+    <![CDATA[
+ 
+      REGISTER sip:[remote_ip] SIP/2.0
+      Via: SIP/2.0/UDP [local_ip]:[local_port];branch=[branch]
+      To: "[field0]"<sip:[field0]@[remote_ip]>
+      From: "[field0]"<sip:[field0]@[remote_ip]>;tag=[call_number]
+      Call-ID: [call_id]
+      CSeq: 1 REGISTER
+      Contact: <sip:[field0]@[local_ip]:[local_port]>
+      Content-Length: 0
+      Expires: 3600
+    ]]>
+  </send>
+
+  <recv response="100" optional="true">
+  </recv>
+
+  <!-- received 401 message, goto label 1 -->
+  <recv response="401" auth="true" next="1">
+  </recv>
+
+  <!--  send invite with authentication messages -->
+
+  <label id="1"/>
+  <send retrans="500">
+    <![CDATA[
+ 
+      REGISTER sip:[remote_ip] SIP/2.0
+      Via: SIP/2.0/UDP [local_ip]:[local_port];branch=[branch];rport
+      To: "[field0]"<sip:[field0]@[remote_ip]>
+      From: "[field0]"<sip:[field0]@[local_ip]>;tag=[call_number]
+      Call-ID: [call_id]
+      CSeq: 2 REGISTER
+      Contact: <sip:[field0]@[local_ip]:[local_port]>
+      [field1]
+      Content-Length: [len]
+      Expires: 3600
+    ]]>
+  </send>
+
+  <recv response="100" optional="true">
+  </recv>
+
+  <!--   received FreeSWITCH 200 OK nessage, register success-->
+
+  <recv response="200">
+  </recv>
+
+
+  <!-- Keep the call open for a while in case the 200 is lost to be     -->
+  <!-- able to retransmit it if we receive the BYE again.               -->
+  <pause milliseconds="1000"/>
+  <!-- definition of the response time repartition table (unit is ms)   -->
+
+  <ResponseTimeRepartition value="10, 20, 30, 40, 50, 100, 150, 200"/>
+
+  <!-- definition of the call length repartition table (unit is ms)     -->
+
+  <CallLengthRepartition value="10, 50, 100, 500, 1000, 5000, 10000"/>
+</scenario>
