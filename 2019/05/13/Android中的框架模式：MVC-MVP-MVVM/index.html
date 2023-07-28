@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Android中的框架模式：MVC&amp;MVP&amp;MVVM | 葫芦籽的碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,MVC,MVP,MVVM">
+    <meta name="description" content="最近在实验室内部做了一次分享，主要内容是Android开发中常使用的三种软件框架模式，MVC、MVP和MVVM，另外写了一个小Demo来演示这几种模式的实际写法，在此一并发到博客上。 要声明的是，对于软件框架模式，每个人有自己的理解，另外模式也有多种变形，可能会与本文中的不完全一致，因此本文阐述的是我自己对这几个模式的理解。 软件框架模式什么是软件框架模式 软件框架模式是软件架构的设计理念，一个通">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android中的框架模式：MVC&amp;MVP&amp;MVVM">
+<meta property="og:url" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/index.html">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
+<meta property="og:description" content="最近在实验室内部做了一次分享，主要内容是Android开发中常使用的三种软件框架模式，MVC、MVP和MVVM，另外写了一个小Demo来演示这几种模式的实际写法，在此一并发到博客上。 要声明的是，对于软件框架模式，每个人有自己的理解，另外模式也有多种变形，可能会与本文中的不完全一致，因此本文阐述的是我自己对这几个模式的理解。 软件框架模式什么是软件框架模式 软件框架模式是软件架构的设计理念，一个通">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/1.png">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/2.png">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/3.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/4.png">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/5.png">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/6.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/7.png">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/8.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/10.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/11.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/9.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/12.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/13.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/14.png">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/15.png">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/6.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/8.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/16.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/18.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/19.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/20.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/21.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/22.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/23.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/8.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/24.jpg">
+<meta property="article:published_time" content="2019-05-13T14:48:03.000Z">
+<meta property="article:modified_time" content="2019-06-14T14:54:54.854Z">
+<meta property="article:author" content="Fish">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="MVC">
+<meta property="article:tag" content="MVP">
+<meta property="article:tag" content="MVVM">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/1.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml"  >
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android中的框架模式：MVC&amp;MVP&amp;MVVM</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android中的框架模式：MVC&amp;MVP&amp;MVVM</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2019-05-13T14:48:03.000Z" itemprop="datePublished" class="page-time">
+  2019-05-13
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%BD%AF%E4%BB%B6%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">1.</span> <span class="post-toc-text">软件框架模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AF%E8%BD%AF%E4%BB%B6%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">什么是软件框架模式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">常见的软件框架模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%88%86%E5%B1%82%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">1.2.1.</span> <span class="post-toc-text">分层模式</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%8B%E4%BB%B6%E6%80%BB%E7%BA%BF%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">1.2.2.</span> <span class="post-toc-text">事件总线模式</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%BE%AE%E6%A0%B8%E6%9E%B6%E6%9E%84"><span class="post-toc-number">1.2.3.</span> <span class="post-toc-text">微核架构</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84"><span class="post-toc-number">1.2.4.</span> <span class="post-toc-text">微服务架构</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B-%E8%A7%86%E5%9B%BE-%E6%8E%A7%E5%88%B6%E5%99%A8%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">1.2.5.</span> <span class="post-toc-text">模型-视图-控制器模式</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MVC%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">2.</span> <span class="post-toc-text">MVC模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MVC%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%BB%8D"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">MVC模式介绍</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9C%A8Android%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">在Android开发中的应用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MVP%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">3.</span> <span class="post-toc-text">MVP模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MVP%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%BB%8D"><span class="post-toc-number">3.1.</span> <span class="post-toc-text">MVP模式介绍</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9C%A8Android%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8-1"><span class="post-toc-number">3.2.</span> <span class="post-toc-text">在Android开发中的应用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#MVVM%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">4.</span> <span class="post-toc-text">MVVM模式</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#MVVM%E6%A8%A1%E5%BC%8F%E4%BB%8B%E7%BB%8D"><span class="post-toc-number">4.1.</span> <span class="post-toc-text">MVVM模式介绍</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#DataBinding"><span class="post-toc-number">4.2.</span> <span class="post-toc-text">DataBinding</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%9C%A8Android%E5%BC%80%E5%8F%91%E4%B8%AD%E7%9A%84%E5%BA%94%E7%94%A8-2"><span class="post-toc-number">4.3.</span> <span class="post-toc-text">在Android开发中的应用</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%80%BB%E7%BB%93"><span class="post-toc-number">5.</span> <span class="post-toc-text">总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Android中的框架模式：MVC-MVP-MVVM"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android中的框架模式：MVC&MVP&MVVM</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2019-05-13 22:48:03" datetime="2019-05-13T14:48:03.000Z"  itemprop="datePublished">2019-05-13</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>最近在实验室内部做了一次分享，主要内容是<code>Android</code>开发中常使用的三种软件框架模式，<code>MVC</code>、<code>MVP</code>和<code>MVVM</code>，另外写了一个小<code>Demo</code>来演示这几种模式的实际写法，在此一并发到博客上。</p>
+<p>要声明的是，对于软件框架模式，每个人有自己的理解，另外模式也有多种变形，可能会与本文中的不完全一致，因此本文阐述的是我自己对这几个模式的理解。</p>
+<h2 id="软件框架模式"><a href="#软件框架模式" class="headerlink" title="软件框架模式"></a>软件框架模式</h2><h3 id="什么是软件框架模式"><a href="#什么是软件框架模式" class="headerlink" title="什么是软件框架模式"></a>什么是软件框架模式</h3><blockquote>
+<p>软件框架模式是软件架构的设计理念，一个通用的、可重用的解决方案，用于解决在给定上下文中的软件体系结构问题</p>
+</blockquote>
+<p>软件框架模式即为软件的结构设计，对于一个特定场景下的问题，如何组织和编写软件解决这个问题。就像人类要组织一场活动，如何安排场地和人员以完成活动就是活动的结构设计。</p>
+<p>良好的软件框架模式意味着优秀的软件架构，一般具有以下几个优点：</p>
+<ul>
+<li>框架中各部分模块关系清晰，职责和功能划分明确，功能模块易于复用，降低开发难度</li>
+<li>每个模块和其他模块之间关联度低，便于单元测试</li>
+<li>耦合度低，程序灵活，应对新变化如新增需求或者修改需求时便于软件维护</li>
+</ul>
+<p>很多人会把软件框架模式和软件设计模式混淆，个人认为，这两者都是软件从业人员经验的总结。但相对而言，软件设计模式更像是编程过程中局部使用的编程技巧，而框架模式则负责整个软件框架，处于全局的视角位置。</p>
+<h3 id="常见的软件框架模式"><a href="#常见的软件框架模式" class="headerlink" title="常见的软件框架模式"></a>常见的软件框架模式</h3><h4 id="分层模式"><a href="#分层模式" class="headerlink" title="分层模式"></a>分层模式</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="1.png" alt="分层模式示意图" title="">
+                </div>
+                <div class="image-caption">分层模式示意图</div>
+            </figure>
+
+<p>「分层模式」是最常见的软件框架模式，很多组织架构和这种模式十分相似。该模式将软件分成若干个水平层，每一层都有特定的角色和职能，代表着应用的某一些功能，不需要知道其他层的细节，层与层之间通过接口通信，OSI的七层和TCP&#x2F;IP的5层协议都应用了这种模式。</p>
+<h4 id="事件总线模式"><a href="#事件总线模式" class="headerlink" title="事件总线模式"></a>事件总线模式</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="2.png" alt="事件总线模式示意图" title="">
+                </div>
+                <div class="image-caption">事件总线模式示意图</div>
+            </figure>
+
+<p>「事件总线模式」主要用于处理事件，包括4个主要组件：事件源、事件监听器、通道和事件总线。对于不同事件源，产生的事件不同，这些事件都会发布到事件总线上的特定通道上。事件监听器器订阅特定的通道，每当有新事件发生时，订阅了该事件的监听器就可以通过订阅的通道得知该事件，从而做一定处理，每个监听器也可以对多个不同的事件进行监听。事件总线模式和设计模式里的发布订阅模式有一定相似之处。</p>
+<h4 id="微核架构"><a href="#微核架构" class="headerlink" title="微核架构"></a>微核架构</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="3.jpg" alt="微核架构示意图" title="">
+                </div>
+                <div class="image-caption">微核架构示意图</div>
+            </figure>
+
+<p>「微核架构」也称为插件化应用模式，由薄核心和多个功能插件组成。这种模式可以通过插件的形式添加额外的特性到核心系统中，提供了很好的扩展性，也使得新特性与核心系统隔离开。</p>
+<p>一般来说，核心提供了特定场景下的通用业务逻辑流程，而插件模块则根据这些规则实现具体的业务逻辑，一个例子是<code>FreeSwitch</code>。<code>FreeSwitch</code>是一个软电话交换系统，提供了软电话的通用逻辑，如话机两端先进行信令的沟通然后通过这个流程，详细的信令协议则由各插件实现，如SIP协议，H323协议等等，还有语音编解码的具体过程，都是由各语音编码插件完成，FreeSwitch只是提供了整体处理流程。</p>
+<h4 id="微服务架构"><a href="#微服务架构" class="headerlink" title="微服务架构"></a>微服务架构</h4><p>「微服务架构」提倡将大而全的应用功能拆分成以服务组件为单位的小模块，每个服务组件的服务能力粒度有大有小，小到一个单一的字符串提取，大到一个完整的计费系统。<code>5G</code>目前使用的就是微服务架构，将运营商的多种功能拆分成小功能单元，每一个新的应用都可以调用不同能力的服务组件以实现自身的功能。通信也在往互联网软件的方向发展。</p>
+<h4 id="模型-视图-控制器模式"><a href="#模型-视图-控制器模式" class="headerlink" title="模型-视图-控制器模式"></a>模型-视图-控制器模式</h4><figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="4.png" alt="MVC模式示意图" title="">
+                </div>
+                <div class="image-caption">MVC模式示意图</div>
+            </figure>
+
+<p>「模型-视图-控制器模式」也即「<code>MVC</code>模式」。这个模式多用于<code>GUI</code>程序的开发，如前端、<code>iOS</code>和<code>Android</code>。<code>MVC</code>模式将软件分成三个层级，模型（Model）、视图（View）和控制层（Controller）。模型包含核心功能和数据，视图展示信息，控制器处理用户输入。这个模式也是本篇文章的主要内容。</p>
+<h2 id="MVC模式"><a href="#MVC模式" class="headerlink" title="MVC模式"></a>MVC模式</h2><h3 id="MVC模式介绍"><a href="#MVC模式介绍" class="headerlink" title="MVC模式介绍"></a>MVC模式介绍</h3><p><code>MVC</code>模式主要分为三个部分，<code>Model</code>、<code>View</code>和<code>Controller</code>。</p>
+<ul>
+<li>模型持有所有的数据、状态和程序逻辑，一个模型可以有不同的多个视图表现形式，复用性高。</li>
+<li>视图是用户看到并与之交互的页面，通常直接从模型中取得它需要显示的状态与数据，一个视图往往有一个相应的控制器，理论上也可以同不同的模型相关联</li>
+<li>控制器位于视图和模型中间，负责接受用户的输入，将输入进行解析并反馈给模型</li>
+</ul>
+<p>下图是<code>MVC</code>模式的一个流程示例。<code>View</code>层有用户点击，<code>Controller</code>层接收到点击事件，做简单处理之后向<code>Model</code>层发送请求，<code>Model</code>层中主要的程序逻辑对接收到的数据进行计算等操作，得到结果后再通知<code>View</code>层进行视图更新。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="5.png" alt="MVC流程" title="">
+                </div>
+                <div class="image-caption">MVC流程</div>
+            </figure>
+
+<p>以一个计算器为例，如果要用<code>MVC</code>模式设计软件，则<code>View</code>层负责设计和绘制界面上的数字和运算符号按钮，<code>Controller</code>层响应点击事件，处理视图层传递的数据，并将数据传递给<code>Model</code>层，<code>Model</code>层通过控制层得到输入的数字和运算符，并对数据进行计算，最终将计算结果传递给<code>View</code>层进行视图更新。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="6.jpg" alt="计算器" title="">
+                </div>
+                <div class="image-caption">计算器</div>
+            </figure>
+
+<p>当用户点击<code>7</code> <code>*</code> <code>9</code>这三个按钮时，<code>Controller</code>层接收到这三个按钮的点击事件，然后将这三个按钮对应的数字和运算符传递给<code>Model</code>层进行计算，<code>Model</code>层计算得到最终结果为<code>63</code>，随之将<code>63</code>这个数字传递给<code>View</code>层进行展示。</p>
+<p>这就是<code>MVC</code>模式在计算器这个软件中的应用。这样分离之后，整个软件耦合度大大降低，软件修改和功能复用方便了很多。如果对计算器界面不满意，那么只需要修改<code>View</code>重新设计界面；如果想在其他平台如<code>Android</code>平台复用，<code>Model</code>包含了主要的程序逻辑，直接将<code>Model</code>层复用即可，<code>Android</code>端只需要重写<code>View</code>层和<code>Controller</code>层即可，整个软件灵活性大大增强。</p>
+<h3 id="在Android开发中的应用"><a href="#在Android开发中的应用" class="headerlink" title="在Android开发中的应用"></a>在Android开发中的应用</h3><p><code>Android</code>开发其实天生就是<code>MVC</code>模式，如下图所示：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="7.png" alt="Android开发对应各层" title="">
+                </div>
+                <div class="image-caption">Android开发对应各层</div>
+            </figure>
+
+<p>其中，<code>XML</code>层作为<code>View</code>层，定义视图的层级；<code>Activity</code>作为<code>Controller</code>层，接收视图的点击等效果，然后将数据请求等发送给<code>Model</code>层；<code>Model</code>层负责从网络或者数据库中获取数据。以实现下图的效果为例，界面上有一个按钮，点击按钮显示一条<code>Toast</code>，具体显示的消息从远端获取。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="8.jpg" alt="示意图" title="">
+                </div>
+                <div class="image-caption">示意图</div>
+            </figure>
+
+<p>整个流程过程如下图所示，<code>View</code>层控制页面布局，<code>Controller</code>层收到点击事件，处理之后向<code>Model</code>层获取数据，<code>Model</code>层获取数据，获取成功通知<code>View</code>层更新视图。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="10.jpg" alt="流程图" title="">
+                </div>
+                <div class="image-caption">流程图</div>
+            </figure>
+
+<p>具体实现中，涉及到通知方式的问题，<code>Android</code>中有很多方法可以解决这个问题，这里使用接口回调。</p>
+<p>首先定义回调接口<code>StringCallback</code>，里面有一个回调方法。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="11.jpg" alt="回调接口代码" title="">
+                </div>
+                <div class="image-caption">回调接口代码</div>
+            </figure>
+
+<p><code>XML</code>定义按钮等页面布局。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="9.jpg" alt="XML布局代码" title="">
+                </div>
+                <div class="image-caption">XML布局代码</div>
+            </figure>
+
+<p><code>Activity</code>实现了回调接口<code>StringCallbcak</code>，显示<code>Toast</code>消息，同时监听按钮的点击事件，当按钮被点击的时候，向<code>Model</code>层获取数据，同时将回调对象传入。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="12.jpg" alt="Activity布局代码" title="">
+                </div>
+                <div class="image-caption">Activity布局代码</div>
+            </figure>
+
+<p><code>Model</code>层向远端获取数据，这里为了方便起见，直接使用固定的字符串。数据获取获取成功后，通知<code>View</code>层更新视图，使用传入的回调对象进行操作。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="13.jpg" alt="Model层代码" title="">
+                </div>
+                <div class="image-caption">Model层代码</div>
+            </figure>
+
+<p><code>MVC</code>模式在<code>Android</code>中实现大概就是这个框架。不过实现中存在一个问题，<code>Model</code>层实际应该向<code>View</code>通知更新视图，但在这里，通知的接受者实际上是<code>Activity</code>，也就是<code>Controller</code>。这么做的原因在于，<code>XML</code>对视图的控制能力是在太弱，只能写一些静态的视图布局，动态的添加和修改等操作还得<code>Activity</code>完成。因此，这里的框架更像是下图所展示的模式：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="14.png" alt="实际的模式" title="">
+                </div>
+                <div class="image-caption">实际的模式</div>
+            </figure>
+
+<p>这样的话，业务逻辑都放到了<code>Model</code>层，<code>Model</code>层已经解耦，但是<code>Controller</code>层承包了<code>View</code>层的很多工作，耦合性依然存在。因此，出现了<code>MVC</code>模式的演化版本，<code>MVP</code>模式。</p>
+<h2 id="MVP模式"><a href="#MVP模式" class="headerlink" title="MVP模式"></a>MVP模式</h2><h3 id="MVP模式介绍"><a href="#MVP模式介绍" class="headerlink" title="MVP模式介绍"></a>MVP模式介绍</h3><p>与<code>MVC</code>类似，<code>MVP</code>模式也主要分为三个部分，<code>Model</code>、<code>View</code>和<code>Presenter</code>。</p>
+<ul>
+<li>模型持有所有的数据、状态和程序逻辑，一个模型可以有不同的多个视图表现形式，复用性高。</li>
+<li>视图是用户看到并与之交互的页面，一个视图往往有一个相应的表示层，理论上也可以同不同的模型相关联</li>
+<li>表示层位于视图和模型中间，负责接受用户的输入，将输入进行解析并反馈给模型</li>
+</ul>
+<p>下图是<code>MVC</code>模式的一个流程示例。<code>View</code>层有用户点击，<code>Presenter</code>层接收到点击事件，做简单处理之后向<code>Model</code>层发送请求，<code>Model</code>层中主要的程序逻辑对接收到的数据进行计算等操作，得到结果后再通知<code>Presenter</code>层，随后<code>Presenter</code>再通知<code>View</code>层进行视图更新。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="15.png" alt="MVP模式" title="">
+                </div>
+                <div class="image-caption">MVP模式</div>
+            </figure>
+
+<p>以一个计算器为例，如果要用<code>MVP</code>模式设计软件，则<code>View</code>层负责设计和绘制界面上的数字和运算符号按钮，<code>Presenter</code>层响应点击事件，处理视图层传递的数据，并将数据传递给<code>Model</code>层，<code>Model</code>层通过控制层得到输入的数字和运算符，并对数据进行计算，最终将计算结果传递给<code>Presenter</code>层，<code>Presenter</code>层接收到数据后，再通知<code>View</code>层进行视图更新。在某种意义上来说，<code>MVP</code>和代理模式有些类似。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="6.jpg" alt="计算器" title="">
+                </div>
+                <div class="image-caption">计算器</div>
+            </figure>
+
+<p>当用户点击<code>7</code> <code>*</code> <code>9</code>这三个按钮时，<code>Presenter</code>层接收到这三个按钮的点击事件，然后将这三个按钮对应的数字和运算符传递给<code>Model</code>层进行计算，<code>Model</code>层计算得到最终结果为<code>63</code>，随之将<code>63</code>这个数字传递给<code>Presenter</code>层，<code>Presenter</code>层接收到结果，通知<code>View</code>层进行展示。</p>
+<p>这就是<code>MVP</code>模式在计算器这个软件中的应用，这个模式和<code>MVC</code>模式最大的区别在于，<code>Model</code>层和<code>View</code>层不能直接通信，传递数据等操作都需要<code>Presenter</code>层介入才能完成。</p>
+<h3 id="在Android开发中的应用-1"><a href="#在Android开发中的应用-1" class="headerlink" title="在Android开发中的应用"></a>在Android开发中的应用</h3><p>以实现和<code>MVC</code>模式中相同的界面布局为例，界面上有一个按钮，点击按钮显示一条<code>Toast</code>，具体显示的消息从远端获取。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="8.jpg" alt="示意图" title="">
+                </div>
+                <div class="image-caption">示意图</div>
+            </figure>
+
+<p>整个流程过程如下图所示，<code>View</code>层控制页面布局，<code>Controller</code>层收到点击事件，处理之后向<code>Model</code>层获取数据，<code>Model</code>层获取数据，获取成功通知<code>View</code>层更新视图。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="16.jpg" alt="流程图" title="">
+                </div>
+                <div class="image-caption">流程图</div>
+            </figure>
+
+<p>具体实现中，涉及到通知方式的问题，<code>Android</code>中有很多方法可以解决这个问题，这里使用接口回调。在<code>MVP</code>模式的实现中，一共有两次回调用以通知，分别是<code>Model</code>层通知<code>Presenter</code>层和<code>Presenter</code>层通知<code>View</code>层。因此，一共需要定义两个回调接口，分别由<code>Presenter</code>层和<code>View</code>层来实现。</p>
+<p>首先定义两个回调接口，里面有两个方法。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="18.jpg" alt="View层接口](17.jpg) ![Presenter层接口" title="">
+                </div>
+                <div class="image-caption">View层接口](17.jpg) ![Presenter层接口</div>
+            </figure>
+
+<p><code>XML</code>部分代码与<code>MVC</code>中一致，在这个实现中，<code>Activity</code>和<code>XML</code>共称为<code>View</code>层，<code>XML</code>负责静态，<code>Activity</code>负责动态，同时需要实现<code>View</code>层接口，并在接收到按钮点击事件时调用<code>Presenter</code>层的功能。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="19.jpg" alt="Activity代码" title="">
+                </div>
+                <div class="image-caption">Activity代码</div>
+            </figure>
+
+<p><code>Presenter</code>层实现了一个通过<code>Model</code>层获取数据的方法，同时需要实现<code>Presenter</code>层接口，供<code>Model</code>层回调。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="20.jpg" alt="Presenter代码" title="">
+                </div>
+                <div class="image-caption">Presenter代码</div>
+            </figure>
+
+<p><code>Model</code>层向远端获取数据，这里为了方便起见，直接使用固定的字符串。数据获取获取成功后，通知<code>Presenter</code>层更新数据，使用传入的回调对象进行操作。<code>Presenter</code>层接收到通知后，也通过传入的<code>View</code>层回调对象进行操作。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="21.jpg" alt="Model层代码" title="">
+                </div>
+                <div class="image-caption">Model层代码</div>
+            </figure>
+
+<p>示例所实现的功能太少，所以现在看来代码略显繁琐，但是代码层次分明，便于扩展。</p>
+<p>其实，无论是<code>MVC</code>还是<code>MVP</code>模式，都有一个很重要的功能实现是将新的数据（<code>Presenter</code>或<code>Controller</code>层）更新到视图（<code>View</code>层）上。如果有框架能够自动完成这个工作，那么能节省很大一部分工作，开发者可以专注于数据更新和逻辑处理。因此，出现了<code>MVVM</code>模式。</p>
+<h2 id="MVVM模式"><a href="#MVVM模式" class="headerlink" title="MVVM模式"></a>MVVM模式</h2><h3 id="MVVM模式介绍"><a href="#MVVM模式介绍" class="headerlink" title="MVVM模式介绍"></a>MVVM模式介绍</h3><p><code>MVVM</code>模式则是将<code>MVP</code>模式中的<code>Presenter</code>改成了<code>ViewModel</code>层，负责的功能类似，区别在于与<code>View</code>层的双向绑定。</p>
+<p>下图是<code>MVVM</code>模式的一个流程示例。<code>View</code>层有用户点击，<code>VM</code>层通过双向绑定得知，做简单处理之后向<code>Model</code>层发送请求，<code>Model</code>层中主要的程序逻辑对接收到的数据进行计算等操作，得到结果后再通知<code>VM</code>层。<code>VM</code>数据更改之后，<code>View</code>层通过双向绑定，从而得知数据更新，并进行视图更新。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="22.jpg" alt="MVVM模式" title="">
+                </div>
+                <div class="image-caption">MVVM模式</div>
+            </figure>
+
+<p><code>MVVM</code>模式一般很少会自己实现，有现成的框架。前端有<code>Vue.js</code>，是一个提供了<code>MVVM</code>模式中数据双向绑定的<code>Javascript</code>库。<code>Android</code>方面，<code>Google</code>提供了<code>Databinding</code>库。</p>
+<h3 id="DataBinding"><a href="#DataBinding" class="headerlink" title="DataBinding"></a>DataBinding</h3><p><code>DataBinding</code>是谷歌官方发布的一个框架，顾名思义即为数据绑定，是<code>MVVM</code>模式在<code>Android</code>上的一种实现，用于降低布局和逻辑的耦合性，使代码逻辑更加清晰。</p>
+<p><code>DataBinding</code>其实并没有实现新的<code>API</code>来完成双向绑定，只是对原有<code>API</code>的封装，如<code>findViewById()</code>和<code>setText()</code>，亦或是<code>click</code>事件，这些都被框架隐藏起来了。</p>
+<p>至于这些事件的触发，例如<code>View</code>层接收到点击事件并通知<code>ViewModel</code>层，则是使用发布订阅模式实现的，如下图：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="23.jpg" alt="DataBinding实现" title="">
+                </div>
+                <div class="image-caption">DataBinding实现</div>
+            </figure>
+
+<p>每当<code>View</code>层更改时，<code>ViewModel</code>层通过订阅收到通知；每当<code>ViewModel</code>层更改时，<code>View</code>层也会通过订阅收到通知，这样就实现了双向绑定。</p>
+<p>这里可能会出现一个循环问题，假设其中某一层<code>A</code>改变，那么另外一层<code>B</code>得到通知随之改变，这会导致<code>A</code>层得到通知，<code>A</code>层也改变，循环往复出现问题。</p>
+<p><code>DataBinding</code>通过前后数据对比来决定是否更新，假设<code>View</code>层需要更新文本信息（如<code>TextView</code>），则<code>DataBinding</code>会对比当前的文本和更新的文本，如果不一致则进行更新操作；如果相同，则不做任何操作。其他的控件也有类似的判定操作，这样就解决了数据双向绑定中的循环问题。</p>
+<h3 id="在Android开发中的应用-2"><a href="#在Android开发中的应用-2" class="headerlink" title="在Android开发中的应用"></a>在Android开发中的应用</h3><p>以实现和<code>MVP</code>模式中相同的界面布局为例，界面上有一个按钮，点击按钮显示一条<code>Toast</code>，具体显示的消息从远端获取。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="8.jpg" alt="示意图" title="">
+                </div>
+                <div class="image-caption">示意图</div>
+            </figure>
+
+<p>整个流程过程如下图所示。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="24.jpg" alt="流程图" title="">
+                </div>
+                <div class="image-caption">流程图</div>
+            </figure>
+
+<p><code>DataBinding</code>因为有现成的框架，因此这里就不贴具体实现的代码了。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>安卓开发中<code>MVC</code>模式存在的耦合问题在其他开发中可能不存在，各个模式之间也没有什么优劣之分，只有适合与否的问题。整体而言，在不考虑框架的前提下，安卓开发中个人使用<code>MVP</code>模式较多。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.854Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/" target="_blank" rel="external">https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVC/" rel="tag">MVC</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVP/" rel="tag">MVP</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/MVVM/" rel="tag">MVVM</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2019/07/11/Leetcode-507-Perfect-Number/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Leetcode 507 Perfect Number</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2019/01/23/%E8%BF%91%E5%86%B5/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">近况</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "QIdqLJLWm9STg3WqIkB6z1e8-MdYXbMMI",
+            appKey: "zFmObMH4Njg5C6DprdK0TIC2",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/&title=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android中的框架模式：MVC&MVP&MVVM》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2019/05/13/Android%E4%B8%AD%E7%9A%84%E6%A1%86%E6%9E%B6%E6%A8%A1%E5%BC%8F%EF%BC%9AMVC-MVP-MVVM/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD70lEQVR42u3aS27bQBAFQN3/0g6QlRcW+fr10BGQmpUhU+RMcdHqz+sVr6+/6/rv7598X++uvL7++lvvvps88cDCgQMHDhzBUZNb55u7/iSBS9b1C8vviQMHDhw4nuBIguvZA+es13vLOZL74MCBAweO3+SYBtTphvJDdqEXBw4cOHB8Jsd1OBw8uCpNJiVFHDhw4MDxCRx5C6crIE6PlDyxK24eq5XiwIEDB477mttqoOGT//4H8x04cODA8V9yfA1X11jKA+Q+YdssHDhw4MCx59iMHWxaR0+UAvNhiJsrceDAgQPHgiNpJuWBcDqIkPx33wbLQzIOHDhw4DjLMS2lTZs60+G2ZFd5ayp55Thw4MCB4xRHUrxLwlU0iFaVC7sDj/lw4MCBA8ea42watjn2tKQ4TT7H+8eBAwcOHBXHvvA3PV4HlwxJTJtkN787cODAgQPHY22n/HbT0Nu1r/ajDDcZLQ4cOHDgWHNMk7dpUpcMSeQFviQAJy8gSuFw4MCBA8eQIy+05YlWNwaRH7g79uCV4MCBAweONcc0PcvXNLXLg263w3HKigMHDhw4hhx5aW/T5tkMNyRp4anv4sCBAweOPUc3OtAlacnW82bV9EVOS4o4cODAgaPj6NKzPAx34bm7zzSR++F6HDhw4MBxiKM70qmgmA9DTAfpktLhDxktDhw4cOBYc4yHyeJyYTeyMD5GHLBvsHDgwIEDx1GOafqUB7ZTQbQrCyb7x4EDBw4cZzm6Abj9eNy+HNkVB6POGw4cOHDgWJwiL/NNDzANupuJjLzQeXM3HDhw4MCx4NikQ0ki1wXgp9tOb++DAwcOHDjWHPm42zQE5sXE6dbz0uEq5cOBAwcOHBVHPi7QPX5K3BUHu/sP2k44cODAgeMox350YF92nIbbPM0rG044cODAgSN+2GZzeUjeB+ZuyC86NQ4cOHDgWHDsy3ObJtO+EJn/OMCBAwcOHL/DsQlLyZV546cLtJti5dtT4MCBAweOBUf34A7xVJNpP8Tw9ok4cODAgeMQx7S99ArWV7WmTanpHW6ejgMHDhw4DnH85pG60Ng9NzlXNCqHAwcOHDhijm7ILC/M7VO4zd66gQwcOHDgwLHh2ATRroDYjVBMhyGm5cubjBYHDhw4cMQc+eoaTkkqlSRveYjNA3BegsSBAwcOHFOOJ1pBm5GITaDdNJ9w4MCBA8dZjjwQdiF2HNurgN39dIj+gQMHDhw4HuBIguIUpSv8nQ3qZaDFgQMHDhyHOE6V6jbHXh34unSIAwcOHDgOcUyLg8mDnxh6e3zcAQcOHDhwrDk2pbSc47lPbtpIVXKIAwcOHDiq3f4BbRHO4dSrCZ8AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

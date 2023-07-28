@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>深度学习实践05-优化算法 | 葫芦籽的碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="这周的课程开始了新的优化算法，优化的主要措施有以下三种：  Mini-Batch梯度下降算法 Momentum算法 RMSprop算法 Adam算法  Mini-Batch梯度下降算法此算法与之前的梯度下降算法差别在于数据的迭代方式，梯度下降法直接将整个数据集进行训练，而Mini-Batch梯度下降算法则是根据一定条件将整个数据集进行分割，每个小数据集进行一次梯度下降，其实梯度下降法是MiniBa">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习实践05-优化算法">
+<meta property="og:url" content="https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/index.html">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
+<meta property="og:description" content="这周的课程开始了新的优化算法，优化的主要措施有以下三种：  Mini-Batch梯度下降算法 Momentum算法 RMSprop算法 Adam算法  Mini-Batch梯度下降算法此算法与之前的梯度下降算法差别在于数据的迭代方式，梯度下降法直接将整个数据集进行训练，而Mini-Batch梯度下降算法则是根据一定条件将整个数据集进行分割，每个小数据集进行一次梯度下降，其实梯度下降法是MiniBa">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/Mini-Batch将数据集进行分割">
+<meta property="og:image" content="https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/Mo.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/RMS.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/Adam.jpg">
+<meta property="article:published_time" content="2017-09-29T01:34:07.000Z">
+<meta property="article:modified_time" content="2019-06-14T14:54:55.010Z">
+<meta property="article:author" content="Fish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/Mini-Batch将数据集进行分割">
+    
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml"  >
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">深度学习实践05-优化算法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">深度学习实践05-优化算法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-29T01:34:07.000Z" itemprop="datePublished" class="page-time">
+  2017-09-29
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Mini-Batch%E6%A2%AF%E5%BA%A6%E4%B8%8B%E9%99%8D%E7%AE%97%E6%B3%95"><span class="post-toc-number">1.</span> <span class="post-toc-text">Mini-Batch梯度下降算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Momentum%E7%AE%97%E6%B3%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">Momentum算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#RMSprop%E7%AE%97%E6%B3%95"><span class="post-toc-number">3.</span> <span class="post-toc-text">RMSprop算法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Adam%E7%AE%97%E6%B3%95"><span class="post-toc-number">4.</span> <span class="post-toc-text">Adam算法</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-深度学习实践05-优化算法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">深度学习实践05-优化算法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-29 09:34:07" datetime="2017-09-29T01:34:07.000Z"  itemprop="datePublished">2017-09-29</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>这周的课程开始了新的优化算法，优化的主要措施有以下三种：</p>
+<ol>
+<li>Mini-Batch梯度下降算法</li>
+<li>Momentum算法</li>
+<li>RMSprop算法</li>
+<li>Adam算法</li>
+</ol>
+<h2 id="Mini-Batch梯度下降算法"><a href="#Mini-Batch梯度下降算法" class="headerlink" title="Mini-Batch梯度下降算法"></a>Mini-Batch梯度下降算法</h2><p>此算法与之前的梯度下降算法差别在于数据的迭代方式，梯度下降法直接将整个数据集进行训练，而<strong>Mini-Batch梯度下降算法</strong>则是根据一定条件将整个数据集进行分割，每个小数据集进行一次梯度下降，其实梯度下降法是<code>MiniBatch</code>算法的一个特例。具体实现的时候，<strong>Mini-Batch</strong>与梯度下降的主要区别是(1)分割数据集(2)增加数据集的内部循环。与梯度下降差别不大，在这里就不实现了。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="Mini-Batch将数据集进行分割" alt="partition.png" title="">
+                </div>
+                <div class="image-caption">partition.png</div>
+            </figure>
+
+<h2 id="Momentum算法"><a href="#Momentum算法" class="headerlink" title="Momentum算法"></a>Momentum算法</h2><p><strong>Momentum算法</strong>与梯度下降算法的差别在于参数<code>W</code>和<code>b</code>的更新。更新的公式变成了下面的公式。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="Mo.jpg" alt="更新公式" title="">
+                </div>
+                <div class="image-caption">更新公式</div>
+            </figure>
+
+<p>也就是说，参数更新时的变化量从<code>dW</code>变成了<code>Vdw</code>，其他的没有很大的变化，其中<code>t</code>为。实现代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">update_parameters_with_momentum</span>(<span class="params">parameters, grads, v, beta, learning_rate, t</span>):</span><br><span class="line"></span><br><span class="line">    L = <span class="built_in">len</span>(parameters) // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(L):</span><br><span class="line"></span><br><span class="line">        v[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta * v[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta) * grads[<span class="string">&#x27;dW&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)]</span><br><span class="line">        v[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta * v[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta) * grads[<span class="string">&#x27;db&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)]</span><br><span class="line">        </span><br><span class="line">        v_corrected[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = v[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line">        v_corrected[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = v[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line"></span><br><span class="line">        parameters[<span class="string">&quot;W&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = parameters[<span class="string">&quot;W&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] - learning_rate * v[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)]</span><br><span class="line">        parameters[<span class="string">&quot;b&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = parameters[<span class="string">&quot;b&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] - learning_rate * v[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)]</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> parameters, v</span><br></pre></td></tr></table></figure>
+
+<h2 id="RMSprop算法"><a href="#RMSprop算法" class="headerlink" title="RMSprop算法"></a>RMSprop算法</h2><p><strong>RMSprop算法</strong>与<strong>Momentum算法</strong>类似，差别在于更新参数的方式。公式如下；</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="RMS.jpg" alt="迭代公式" title="">
+                </div>
+                <div class="image-caption">迭代公式</div>
+            </figure>
+
+<p>实现代码如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">update_parameters_with_momentum</span>(<span class="params">parameters, grads, s, beta, learning_rate, t, epsilon=<span class="number">10e-8</span></span>):</span><br><span class="line"></span><br><span class="line">    L = <span class="built_in">len</span>(parameters) // <span class="number">2</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(L):</span><br><span class="line">        s[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta2 * s[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta2) * (grads[<span class="string">&#x27;dW&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line">        s[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta2 * s[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta2) * (grads[<span class="string">&#x27;db&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        s_corrected[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = s[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">        s_corrected[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = s[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">        </span><br><span class="line">        parameters[<span class="string">&quot;W&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = parameters[<span class="string">&quot;W&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] - learning_rate * parameters[<span class="string">&quot;W&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (np.sqrt(s_corrected[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)]) + episilon)</span><br><span class="line">        parameters[<span class="string">&quot;b&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = parameters[<span class="string">&quot;b&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] - learning_rate * parameters[<span class="string">&quot;b&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (np.sqrt(s_corrected[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)]) + episilon)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> parameters, s</span><br></pre></td></tr></table></figure>
+
+<h2 id="Adam算法"><a href="#Adam算法" class="headerlink" title="Adam算法"></a>Adam算法</h2><p><strong>Adam算法</strong>综合了<strong>Momentum算法</strong>和<strong>RMSprop算法</strong>，更新公式如下</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="Adam.jpg" alt="迭代公式" title="">
+                </div>
+                <div class="image-caption">迭代公式</div>
+            </figure>
+
+<p>实现如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">update_parameters_with_adam</span>(<span class="params">parameters, grads, v, s, t, learning_rate = <span class="number">0.01</span>, beta1 = <span class="number">0.9</span>, beta2 = <span class="number">0.999</span>,  epsilon = <span class="number">1e-8</span></span>):</span><br><span class="line"></span><br><span class="line">    </span><br><span class="line">    L = <span class="built_in">len</span>(parameters) // <span class="number">2</span></span><br><span class="line">    v_corrected = &#123;&#125;</span><br><span class="line">    s_corrected = &#123;&#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> l <span class="keyword">in</span> <span class="built_in">range</span>(L):</span><br><span class="line">        v[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta1 * v[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta1) * grads[<span class="string">&#x27;dW&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] </span><br><span class="line">        v[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta1 * v[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta1) * grads[<span class="string">&#x27;db&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] </span><br><span class="line">        </span><br><span class="line">        v_corrected[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = v[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line">        v_corrected[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = v[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta1**t)</span><br><span class="line"></span><br><span class="line">        s[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta2 * s[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta2) * (grads[<span class="string">&#x27;dW&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line">        s[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = beta2 * s[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)] + (<span class="number">1</span> - beta2) * (grads[<span class="string">&#x27;db&#x27;</span> + <span class="built_in">str</span>(l + <span class="number">1</span>)]**<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line">        s_corrected[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = s[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line">        s_corrected[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = s[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (<span class="number">1</span> - beta2**t)</span><br><span class="line"></span><br><span class="line">        parameters[<span class="string">&quot;W&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = parameters[<span class="string">&quot;W&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (np.sqrt(s_corrected[<span class="string">&quot;dW&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)]) + epsilon)</span><br><span class="line">        parameters[<span class="string">&quot;b&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] = parameters[<span class="string">&quot;b&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] - learning_rate * v_corrected[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)] / (np.sqrt(s_corrected[<span class="string">&quot;db&quot;</span> + <span class="built_in">str</span>(l+<span class="number">1</span>)]) + epsilon)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> parameters, v, s</span><br></pre></td></tr></table></figure>
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:55.010Z" itemprop="dateUpdated">2019-06-14 22:54:55</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/" target="_blank" rel="external">https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/&title=《深度学习实践05-优化算法》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/&title=《深度学习实践05-优化算法》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践05-优化算法》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/10/09/%E5%9B%BD%E5%BA%86%E5%B0%8F%E8%AE%B0/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">国庆小记</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/09/24/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B504-%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96%E4%BB%A5%E5%8F%8A%E6%AD%A3%E5%88%99%E5%8C%96/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">深度学习实践04-参数优化以及正则化</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "QIdqLJLWm9STg3WqIkB6z1e8-MdYXbMMI",
+            appKey: "zFmObMH4Njg5C6DprdK0TIC2",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/&title=《深度学习实践05-优化算法》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/&title=《深度学习实践05-优化算法》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践05-优化算法》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/09/29/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B505-%E4%BC%98%E5%8C%96%E7%AE%97%E6%B3%95/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAASYAAAEmCAAAAADqr2IGAAAEjUlEQVR42u3aW27jMBAEwNz/0tkDJGt3z8iAqJS/FoZDUcUF5sWvr/jz/fLz85ftyvnf5s/93z7bHX5hwoQJE6bDmRKC5Pv8m3Y/r19vfzDJ8WPChAkTptOZZqG6TQ6KbcWv1B7PkB4TJkyYMP0ZpoSsZWpXzlONhBITJkyYMGGaBdok5M9aukk6sj8YTJgwYcL0JKZ8uQ1Hvk4SwmepwMd74ZgwYcKE6WZMm+s1p//74g8mTJgwYboZ03f5ed26nZWvs8s6eYu5Han+shNMmDBhwnQsU76VWTv1qjylHYvm48ziaDFhwoQJ04FM+Ugyb5vOXq8Oz3G7OV/nTd6ECRMmTJgOZGov5bRXXvJtJWu2RXg+di2mvpgwYcKE6SimvKWbf3/ti7XF8CxReLMOJkyYMGE6nCkfQOaDyc03+bg0b9euyDBhwoQJ07FMm5CftHHbxnGeTMzWWaUvmDBhwoTpQKaoBzxKEZKkoSg+y4FrThb9h8CECRMmTIczzcaWCeWsidy2kmd7KKAxYcKECdMjmHKgvLU6KzjztKB9yvAbTJgwYcJ0OFNbKOaFcTJQbIeOs8s6m8IYEyZMmDA9iSlHmYXt/Cl5ibsp1JO3wIQJEyZM5zK1YTIfTLYpQv7EpCyfFe1vnosJEyZMmA5kakPpplW6v6Aza922zegid8CECRMmTLdnaoN6spXZ6822npSvecP6zW8wYcKECdOxTLPG6yfGiheE7XW6U6QFmDBhwoTp9kx507N9+eSTQ+RXbdoiOTo8TJgwYcJ0LFN+CSYPrslLzlKKWaKwaS5jwoQJE6bTmZIl2sA/Ky83F4Dy38zeCxMmTJgwncuUhM88xO4L2haiHZ1efIkHEyZMmDAdxTQLmZ8offO/yhOUNi0oanRMmDBhwnR7pn2Az4eXSZC+dgiaP+vN95gwYcKE6UCmzVZyjny7eWqS/LJ9+pteOCZMmDBhOpBpVnbmReMsOZgd2FW16mXVOSZMmDBhugHT7FWvLS/zg2lburOG9S87wYQJEyZMj2Cq55/r7nJ+PNcmCsPbTJgwYcKE6UCmq5KATfmaF66zlZP1V01eTJgwYcJ0CNMsIbg46JaHkY9F2yI8KoAxYcKECdPtmWZhex/m90VvskK72+h+EyZMmDBhOorp9aKbYD8bHyZ/lTy3TTuiv8WECRMmTAcy1Y3OuIDMD6AdW7aN3SQ1ifImTJgwYcL0OKarAnwSVffPapOYYleYMGHChOkRTO0Yct+EnV3ZaS8bzVrGmDBhwoTpGUz71u2mgTtrxc4K9Y/0xTFhwoQJ0+2ZZldY2uIzb+DO2sebFCFKFDBhwoQJ07FMbUieNVtnxecmQZldTkoKfkyYMGHCdCLT566/tA3c2WtvmrzJ1SVMmDBhwvQMpllveNbYbRuv1+5w+ERMmDBhwvRnmPLNRYF2xNfudt9oxoQJEyZMf4epvbKTF67tkbTpyKqAx4QJEyZMhzMlTd7ZtZ585fYY8sFqngRcMM7EhAkTJkw3Y2oLy7aF+h1/8kCev9LsUtGs/MaECRMmTDdj+gcW5/0u6Ddl8wAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

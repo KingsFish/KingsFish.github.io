@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>FreeSwitch增加控制台命令 | 葫芦籽的碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="SIP">
+    <meta name="description" content="最近老板的活大部分干完了，大概总结一下。 一、主要内容老师给的活主要分为四个部分：  修改FreeSwitch绑定的IP和端口，这个情况主要是用在多网卡的服务器上。因为FreeSwitch运行的时候默认会绑定某一个IP地址，但是默认绑定的地址可能不是我们想要的IP，于是就有了绑定IP的控制台命令。端口  用户管理，包括用户的增、删、改、查。  呼叫转移规则，包括遇忙转移、无条件转移、无应答转移以及">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FreeSwitch增加控制台命令">
+<meta property="og:url" content="https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/index.html">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
+<meta property="og:description" content="最近老板的活大部分干完了，大概总结一下。 一、主要内容老师给的活主要分为四个部分：  修改FreeSwitch绑定的IP和端口，这个情况主要是用在多网卡的服务器上。因为FreeSwitch运行的时候默认会绑定某一个IP地址，但是默认绑定的地址可能不是我们想要的IP，于是就有了绑定IP的控制台命令。端口  用户管理，包括用户的增、删、改、查。  呼叫转移规则，包括遇忙转移、无条件转移、无应答转移以及">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2017-07-13T02:42:56.000Z">
+<meta property="article:modified_time" content="2019-06-14T15:38:59.218Z">
+<meta property="article:author" content="Fish">
+<meta property="article:tag" content="SIP">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml"  >
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">FreeSwitch增加控制台命令</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">FreeSwitch增加控制台命令</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-13T02:42:56.000Z" itemprop="datePublished" class="page-time">
+  2017-07-13
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E7%A7%91%E7%A0%94/">科研</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%80%E3%80%81%E4%B8%BB%E8%A6%81%E5%86%85%E5%AE%B9"><span class="post-toc-number">1.</span> <span class="post-toc-text">一、主要内容</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BA%8C%E3%80%81%E7%9B%AE%E5%89%8D%E5%B7%A5%E4%BD%9C%E7%8A%B6%E5%86%B5"><span class="post-toc-number">2.</span> <span class="post-toc-text">二、目前工作状况</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-1-FreeSwitch%E6%9C%8D%E5%8A%A1%E5%99%A8IP%E7%9A%84%E7%AB%AF%E5%8F%A3"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">2.1 FreeSwitch服务器IP的端口</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-2-%E7%94%A8%E6%88%B7%E4%BF%A1%E6%81%AF%E7%AE%A1%E7%90%86"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">2.2 用户信息管理</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-3-%E5%91%BC%E5%8F%AB%E8%BD%AC%E7%A7%BB%E8%A7%84%E5%88%99"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">2.3 呼叫转移规则</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#2-4-%E4%BC%9A%E8%AE%AE%E5%AE%A4%E7%AE%A1%E7%90%86"><span class="post-toc-number">2.4.</span> <span class="post-toc-text">2.4 会议室管理</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B8%89%E3%80%81%E6%80%BB%E7%BB%93"><span class="post-toc-number">3.</span> <span class="post-toc-text">三、总结</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Adding-connsole-commands-in-FreeSwitch"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">FreeSwitch增加控制台命令</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-13 10:42:56" datetime="2017-07-13T02:42:56.000Z"  itemprop="datePublished">2017-07-13</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E7%A7%91%E7%A0%94/">科研</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>最近老板的活大部分干完了，大概总结一下。</p>
+<h2 id="一、主要内容"><a href="#一、主要内容" class="headerlink" title="一、主要内容"></a>一、主要内容</h2><p>老师给的活主要分为四个部分：</p>
+<ol>
+<li><p>修改<code>FreeSwitch</code>绑定的<code>IP</code>和端口，这个情况主要是用在多网卡的服务器上。因为<code>FreeSwitch</code>运行的时候默认会绑定某一个<code>IP</code>地址，但是默认绑定的地址可能不是我们想要的<code>IP</code>，于是就有了绑定<code>IP</code>的控制台命令。端口</p>
+</li>
+<li><p>用户管理，包括用户的增、删、改、查。</p>
+</li>
+<li><p>呼叫转移规则，包括遇忙转移、无条件转移、无应答转移以及热线电话。</p>
+</li>
+<li><p>会议管理，包括会议的增、删、改、查。改的部分只做了改密码，而且会议开启之后才能改密码。</p>
+</li>
+</ol>
+<h2 id="二、目前工作状况"><a href="#二、目前工作状况" class="headerlink" title="二、目前工作状况"></a>二、目前工作状况</h2><h3 id="2-1-FreeSwitch服务器IP的端口"><a href="#2-1-FreeSwitch服务器IP的端口" class="headerlink" title="2.1 FreeSwitch服务器IP的端口"></a>2.1 FreeSwitch服务器IP的端口</h3><p>修改FreeSwitch绑定的<code>IP</code>和端口是通过读写文件完成的。涉及到的文件有5个，包括</p>
+<blockquote>
+<ul>
+<li>${conf.dir}&#x2F;vars.xml</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>${conf.dir}&#x2F;sip_profile&#x2F;external.xml</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>${conf.dir}&#x2F;sip_profile&#x2F;internal.xml</li>
+</ul>
+</blockquote>
+<p>其中，<code>vars.xml</code>中需要修改一个参数<br><br><code>&lt;X-PRE-PROCESS cmd=&quot;set&quot; data=&quot;domain=$$&#123;local_ip_v4&#125;&quot;/&gt;</code></p>
+<p><code>external.xml</code>需要修改两个参数<br><br><code>&lt;param name=&quot;rtp-ip&quot; value=&quot;$$&#123;local_ip_v4&#125;&quot;/&gt;</code><br><code>&lt;param name=&quot;sip-ip&quot; value=&quot;$$&#123;local_ip_v4&#125;&quot;/&gt;</code></p>
+<p><code>internal.xml</code>需要改的参数与externaml.xml文件改的一样<br><br><code>&lt;param name=&quot;rtp-ip&quot; value=&quot;$$&#123;local_ip_v4&#125;&quot;/&gt;</code><br><code>&lt;param name=&quot;sip-ip&quot; value=&quot;$$&#123;local_ip_v4&#125;&quot;/&gt;</code></p>
+<p>如果改一次<code>IP</code>就得把3个文件读取然后改完再重写，比较麻烦而且读写文件会影响服务器运行效率<br>师兄给的意见是在<code>vars.xml</code>中添加<code>server_bind_ip</code>这个全局变量，然后将上面的5个参数的值置为<code>server_bind_ip</code>，之后修改<code>IP</code>只需要改<code>server_bind_ip</code>这个值就可以</p>
+<p>但是老师认为不能让管理人员去修改xml文档，因此我又加上了一个新的全局参数<code>ip_changed</code>，用于查看IP是否改过，<code>server_bind_ip</code>这个参数是否添加过，如果添加过只需改一下<code>server_nbbind_ip</code>参数即可，但是如果没有添加过，则需要改上述3个文件以及添加<code>server_bind_ip</code>参数</p>
+<p>修改端口就简单很多，只需要修改<code>vars.xml</code>中的<br><code>&lt;X-PRE-PROCESS cmd=&quot;set&quot; data=&quot;internal_sip_port=5060&quot;/&gt;</code><br>即可。而至于修改静态路由则等服务器对接之后再进行，综合之前所看到的资料，应该是修改<code>$&#123;conf.dirs&#125;/dialplan/default.xml</code>即可</p>
+<h3 id="2-2-用户信息管理"><a href="#2-2-用户信息管理" class="headerlink" title="2.2 用户信息管理"></a>2.2 用户信息管理</h3><p>用户信息管理主要包括增、删、改、查</p>
+<p>增加用户只需要往<code>$&#123;conf.dir&#125;/directory/default</code>目录下添加以用户ID命名的xml文件，此xml文件的内容有模版，然后修改其中的三个参数<code>password</code>,<code>priority</code>,<code>forced_released_call</code>。其中<code>forced_released_call</code>是可选的，默认为true，其他的默认，之后再“reloadxml”-重新加载一下xml</p>
+<p>删除用户方面，只需要删除上述目录下用户ID对应的xml文档</p>
+<p>修改用户信息方面，与增加用户类似，只能修改三个参数<code>password</code>,<code>priority</code>,<code>forced_released_call</code>。修改<code>$&#123;conf.dir&#125;/directory/default</code>目录下用户ID相同的xml文档，读取文档，修改之后再重新写入即可</p>
+<p>查询用户信息则简单得多，<code>FreeSwitch</code>则已经提供了查询所有用户信息的API。但是我们查询用户也需要针对某一个特定用户的信息查询，其次<code>FreeSwitch</code>提供的查询API没有给出用户密码等级等相关信息。因此有两个工作，一个是针对查询所有用户信息API进行修改，增加密码等级等信息，二是增加对于特定ID查询用户信息。所需要的工作不多，源代码中提供了用户信息查询的函数，直接调用就能得到所需的信息。</p>
+<h3 id="2-3-呼叫转移规则"><a href="#2-3-呼叫转移规则" class="headerlink" title="2.3 呼叫转移规则"></a>2.3 呼叫转移规则</h3><p>设置呼叫转移规则则包括四个方面：</p>
+<ul>
+<li>无条件转移</li>
+<li>遇忙转移</li>
+<li>无应答转移</li>
+<li>热线电话</li>
+</ul>
+<p>这4个方面都包括四个小方面：增、删、改、查。增和改其实都是一个命令，所以简化之下就只有三个方面，且这四个方面只需要一个命令即可。</p>
+<ul>
+<li>增：<code>db insert/$&#123;domain&#125;-$&#123;cmd&#125;/$&#123;user_id&#125;/$&#123;transfer_id&#125;</code></li>
+<li>删：<code>db delete/$&#123;domain&#125;-$&#123;cmd&#125;/$&#123;user_id&#125;/$&#123;transfer_id&#125;</code></li>
+<li>查：<code>db select/$&#123;domain&#125;-$&#123;cmd&#125;/$&#123;user_id&#125;</code></li>
+</ul>
+<p>其中，${domain}是服务的IP，${user_id}是设置转移规则的用户，${tranfer_id}是设置转移规则的目标用户，${cmd}为字符串，各规则不一，对应如下：</p>
+<ul>
+<li>无条件转移 -&gt; <code>cfwdn</code></li>
+<li>遇忙转移 -&gt; <code>cfwdb</code></li>
+<li>无应答转移 -&gt; <code>cfwdna</code></li>
+<li>热线电话 -&gt; <code>hotline</code></li>
+</ul>
+<p>至此，呼叫规则转移设置完毕</p>
+<h3 id="2-4-会议室管理"><a href="#2-4-会议室管理" class="headerlink" title="2.4 会议室管理"></a>2.4 会议室管理</h3><p>会议室管理方面则为最难的一部分。<br><br>老板的设想是预先设定会议，号码以及密码都设置好，之后参加会议的人直接打电话就可以。但是会议目前的流程是电话号码可以设定，密码也可以设置，但是这是一个总体规则，对于所有会议都使用，而且有的会议室号码不用预约也可以使用，和设想流程刚好相反。</p>
+<p>在查阅了<code>dialplan</code>的相关资料之后找到了解决方法，<code>FreeSwitch</code>是根据<code>dialplan</code>中的<code>default.xml</code>配置来进行通话的。每一个<code>&lt;extension&gt;</code>都是一个配置，<code>FreeSwitch</code>从上到下进行扫描匹配，成功匹配到第一个之后就不再进行扫描。因此，只需要往<code>default.xml</code>中添加一个<code>&lt;extension&gt;</code>，匹配<code>destination_number</code>，然后在<code>&lt;action&gt;</code>中做出<code>&lt;answer&gt;</code>以及<code>conference</code>动作就可以。不过也需要对文件进行读取以及重新写入，需要对资源进行一定消耗。</p>
+<p>删除会议方面不难，也是需要对文件进行读写，删除该会议的<code>&lt;extension&gt;</code>就可以删除该会议</p>
+<p>其他的控制台命令如修改会议密码和查询所有会议，<code>FreeSwitch</code>都有提供的控制台命令，自己就无需再做了</p>
+<h2 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h2><p>这个项目从3月10号开始，前前后后一共花了40天左右做完，目前为止，大块头以及有难度的部分已经做完，剩下的边边角角的工作还需要跟老师商量之后很快也可以搞定，这个项目可以说告一段落了。</p>
+<p>在此期间，其实有很大一部分时间是自己休闲，并不是所有时间都在做，所以实际上的时间可能不到一个月。现在也是研一，平时也得上课，所以没有全部时间放在上面也很正常。其次，这个服务器是C语言写的，而C语言已经很久没有写过了，进度慢也正常。</p>
+<p>但是实际上整个项目期间，除了这个项目之外我其他的东西都没有做，算法、课程还有网络方面都拉下了，至于之前的网络也没有好好学。其次，Android也很久没有动过了，自从大四之后就没有看过相关的知识，Android版本已经过了两三个大版本，有很多新的东西需要学习，而且已经很久没写过相关的项目，手也已经生了。</p>
+<p>近期项目大部分已经结束了，也要开始继续算法，网络以及课程的学习。这也是简书的第一篇文章，写作的习惯也要开始慢慢养成。</p>
+<p>撸起袖子加油干！</p>
+<p>于2017年4月23号晚11点</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T15:38:59.218Z" itemprop="dateUpdated">2019-06-14 23:38:59</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/07/13/Adding-connsole-commands-in-FreeSwitch/" target="_blank" rel="external">https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SIP/" rel="tag">SIP</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/&title=《FreeSwitch增加控制台命令》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/&title=《FreeSwitch增加控制台命令》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《FreeSwitch增加控制台命令》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/13/Leetcode-15-3Sum/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">Leetcode-15 3Sum题解</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/13/Leetcode-18-4Sum/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Leetcode-18 4Sum题解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "QIdqLJLWm9STg3WqIkB6z1e8-MdYXbMMI",
+            appKey: "zFmObMH4Njg5C6DprdK0TIC2",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/&title=《FreeSwitch增加控制台命令》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/&title=《FreeSwitch增加控制台命令》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《FreeSwitch增加控制台命令》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/07/13/Adding-connsole-commands-in-FreeSwitch/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAN4AAADeCAAAAAB3DOFrAAACpklEQVR42u3au04DMRAFUP7/p6GhQIKYOw9HW5ytIkK8c1zY1h1/fMTP54/n/JdXvz2PeX7O4yw8eHh4eIPSz0OfX/n79fn/J5hzPb9HwMPDw7vNOy/oeVnJxpAUmtfzjwUPDw/vAbzqCXYyZr4J4eHh4T2Z14sMeoXi4eHhPZmXF11l98ZJJmg5a8HDw8OLeflB+Tmfr/T38PDw8MZd9d6CW235nwOLXp3fI+Dh4eFd4FXj1KTZn7fEqpFEr048PDy8XV6+KE+ih0LkujSheHh4eLd58zC0umTnRf+zp53fjoeHh3eBt5uC5iFC9Y29acLDw8N7J2/34lQvXEiQC908PDw8vBav13CqwiYBRx5GRCk1Hh4e3hJvqw12ZuTFzTchPDw8vBu8fPHtHbvzKcg3nkLkgYeHh3eB1wsjejFuL87ofYuHh4d3jzePFaqFVvGTSwZ4eHh4N3jVxXfSyK9i8pbY6BiNh4eHt3ofqde8z+Pa/L2TSwZ4eHh4u7zqpajJNlA9UvfSlD9Sajw8PLxVXrUdlSCTgvLPvStZeHh4eLd5eds+jyeqS3Y1/C2MgIeHh3eNNylofgEr2QBGx2g8PDy8JV7eOppED9Vyq2HEy0rw8PDwLvB60e3uMboXNxTadXh4eHiXeXlA0GtfTS5dVd+Lh4eHd5uXH157G8P8Xlhz68LDw8O7zMtD2GSB7k1WrzH28ld4eHh4q7zP4tMrtHr47t0a++NbPDw8vAu86lKbxwqTQ/nkc/PBw8PDK/KSzaAXEFRbaFsbAx4eHt57eNXO0VZgMd+7Cg0wPDw8vMfwkiP1Qt5cPILj4eHhPYeXH3l7R+3eszxDeHh4eEs5Zx4EnKPb6oWDZOoXshY8PDy8mNc72k4mIt9IJlOAh4eHd4H3BXBxFtsohqr+AAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

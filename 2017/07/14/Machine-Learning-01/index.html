@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>机器学习01-模型评估与选择以及参数的调节 | 葫芦籽的碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Machine Learning">
+    <meta name="description" content="模型评估与过拟合学习器在训练过程中，很容易将训练样本本身的特征当作普遍特征。如在西瓜挑选问题中，如果训练样本中有很大一部分西瓜为深绿色，则学习器很大可能会将深绿色作为好瓜的评定标准之一。再比如在树叶判定过程中，如果给的叶子中有很多是有锯齿的，那么学习器很可能会将锯齿作为叶子的判定标准之一，继而产生错误的判定结果。这也称之为“过拟合”。 评估方法很多时候我们只有D一个数据集，那么我们就需要将D进行训">
+<meta property="og:type" content="article">
+<meta property="og:title" content="机器学习01-模型评估与选择以及参数的调节">
+<meta property="og:url" content="https://kingsfish.github.io/2017/07/14/Machine-Learning-01/index.html">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
+<meta property="og:description" content="模型评估与过拟合学习器在训练过程中，很容易将训练样本本身的特征当作普遍特征。如在西瓜挑选问题中，如果训练样本中有很大一部分西瓜为深绿色，则学习器很大可能会将深绿色作为好瓜的评定标准之一。再比如在树叶判定过程中，如果给的叶子中有很多是有锯齿的，那么学习器很可能会将锯齿作为叶子的判定标准之一，继而产生错误的判定结果。这也称之为“过拟合”。 评估方法很多时候我们只有D一个数据集，那么我们就需要将D进行训">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ooo.0o0.ooo/2016/06/27/5771e48767a65.png">
+<meta property="article:published_time" content="2017-07-14T08:11:11.000Z">
+<meta property="article:modified_time" content="2019-06-14T14:54:54.901Z">
+<meta property="article:author" content="Fish">
+<meta property="article:tag" content="Machine Learning">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ooo.0o0.ooo/2016/06/27/5771e48767a65.png">
+    
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml"  >
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">机器学习01-模型评估与选择以及参数的调节</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">机器学习01-模型评估与选择以及参数的调节</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-07-14T08:11:11.000Z" itemprop="datePublished" class="page-time">
+  2017-07-14
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E6%A8%A1%E5%9E%8B%E8%AF%84%E4%BC%B0%E4%B8%8E%E8%BF%87%E6%8B%9F%E5%90%88"><span class="post-toc-number">1.</span> <span class="post-toc-text">模型评估与过拟合</span></a></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%AF%84%E4%BC%B0%E6%96%B9%E6%B3%95"><span class="post-toc-number">2.</span> <span class="post-toc-text">评估方法</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%95%99%E5%87%BA%E6%B3%95"><span class="post-toc-number">2.1.</span> <span class="post-toc-text">留出法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BA%A4%E5%8F%89%E9%AA%8C%E8%AF%81%E6%B3%95"><span class="post-toc-number">2.2.</span> <span class="post-toc-text">交叉验证法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E8%87%AA%E5%8A%A9%E6%B3%95"><span class="post-toc-number">2.3.</span> <span class="post-toc-text">自助法</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E8%B0%83%E5%8F%82%E4%B8%8E%E6%9C%80%E7%BB%88%E6%A8%A1%E5%9E%8B"><span class="post-toc-number">3.</span> <span class="post-toc-text">调参与最终模型</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Machine-Learning-01"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">机器学习01-模型评估与选择以及参数的调节</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-07-14 16:11:11" datetime="2017-07-14T08:11:11.000Z"  itemprop="datePublished">2017-07-14</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h1 id="模型评估与过拟合"><a href="#模型评估与过拟合" class="headerlink" title="模型评估与过拟合"></a>模型评估与过拟合</h1><p>学习器在训练过程中，很容易将训练样本本身的特征当作普遍特征。如在西瓜挑选问题中，如果训练样本中有很大一部分西瓜为深绿色，则学习器很大可能会将深绿色作为好瓜的评定标准之一。再比如在树叶判定过程中，如果给的叶子中有很多是有锯齿的，那么学习器很可能会将锯齿作为叶子的判定标准之一，继而产生错误的判定结果。这也称之为“过拟合”。</p>
+<h1 id="评估方法"><a href="#评估方法" class="headerlink" title="评估方法"></a>评估方法</h1><p>很多时候我们只有<code>D</code>一个数据集，那么我们就需要将<code>D</code>进行训练集<code>S</code>和测试集<code>T</code>的划分，评估方法就是用来划分集合的方法。但是不管是什么方法都需要注意一点，训练集的数据最好不要出现在测试集中。以下是一些划分集合的方法：</p>
+<h2 id="留出法"><a href="#留出法" class="headerlink" title="留出法"></a>留出法</h2><p>将数据集<code>D</code>直接划分两个互斥的集合，即<code>S|T=D</code>，<code>S&amp;T=O</code>。</p>
+<p>注意，<code>S</code>和<code>T</code>的划分应该尽可能保持数据分布的一致性，即如果<code>D</code>中有1000个数据，其中700个正例和300个反例，且<code>S</code>有700个数据，<code>T</code>有300个数据，那么<code>S</code>最终应当有490个正例和210个反例。这种抽样方法也称之为“分层抽样”。</p>
+<p>另外一个需要注意的问题是，单次的留出法并不可靠，每次抽样的数据有波动，那么这些不同的划分会导致不同的结果。因此一般在实际过程中需要随机多次划分，重复进行实验，最后取这些重复实验的均值最为最终结果。</p>
+<p>留出法还有一个问题是，如果<code>S</code>划分的太小，那么与<code>D</code>的差距较大，那么测试集的结果与真实结果会有很大差别；但是如果<code>S</code>划分的太小，那么测试集<code>T</code>规模很小，最终的结果可能不稳定准确。此问题没有解决方法，一般取2&#x2F;3~4&#x2F;5的样本用于训练，剩余样本用于测试。</p>
+<h2 id="交叉验证法"><a href="#交叉验证法" class="headerlink" title="交叉验证法"></a>交叉验证法</h2><p>将<code>D</code>进行分层抽样，产生多个互斥子集<code>&#123;D&lt;sub&gt;1&lt;/sub&gt;</code>,<code>D&lt;sub&gt;2&lt;/sub&gt;</code>,···<code>D&lt;sub&gt;k&lt;/sub&gt;&#125;</code>，保持每个互斥子集的分布一致性，<code>K</code>最常用的取值是10，此时称为10折交叉验证；其他常用的还有5、20。</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="https://ooo.0o0.ooo/2016/06/27/5771e48767a65.png" alt="10折交叉验证示意图" title="">
+                </div>
+                <div class="image-caption">10折交叉验证示意图</div>
+            </figure>
+
+<p>同样，交叉验证法也有和留出法一样的不稳定问题，也需要进行多次划分，常见的有10次10折交叉验证法。</p>
+<p>若<code>D</code>中有m个样本数据且<code>k=m</code>，则称之为留1法，此方法结果比较准确，但是当<code>m</code>比较大的时候，计算开销太大。</p>
+<h2 id="自助法"><a href="#自助法" class="headerlink" title="自助法"></a>自助法</h2><p>假设<code>D</code>有<code>m</code>个样本，在上面的两种方法中，都需要留出一部分数据用于测试，当数据集规模比较小的时候会有很大的偏差，最后的结果会受到影响。</p>
+<p>自助法是一个很好的解决方法。对于数据集<code>D</code>，每次在<code>D</code>中抽取一个样本复制到<code>D&#39;</code>，然后将其放回，重复<code>m</code>次后得到新样本数据集<code>D&#39;</code>，显然，这个新的数据集中会有一部分的重复数据，另外一部分数据则不会出现在新样本数据中。做一个简单的估计，样本在<code>m</code>次抽样中都不被抽取的概率是<code>(1-1/m)&lt;sup&gt;m&lt;/sup&gt;</code>，取极限可得概论为<code>1/e</code>，约为<code>36.8%</code>。所以最终会有<code>36.8%</code>的数据保留作为测试数据。这个方法也成为“包外估计”。</p>
+<p>自助法一般在数据集规模较小的时候使用，因为此方法会有估计误差。数据集规模较大的时候一般使用“留出法”和“交叉验证法”。</p>
+<h1 id="调参与最终模型"><a href="#调参与最终模型" class="headerlink" title="调参与最终模型"></a>调参与最终模型</h1><p>大多数算法都需要进行参数调节，参数配置的不同往往影响着模型性能的好坏。学习算法中的很多参数在实数范围内取值，因此对于每一个参数都建立模型是不可行的。通常的做法是：对每一个参数选定一个范围和变化步长，如选定变化范围[0,5]，步长为1，那么实际要评估的参数有6个，最终从这6个候选值中产生选定值。</p>
+<p>给定包含m个样本的数据集<code>D</code>，在模型评估和选择过程中由于需要留出一部分数据用于评估测试。因此，在模型选择完毕后，学习算法和参数已经选定，此时应该用数据集<code>D</code>重新训练模型。这个模型在训练过程中使用了所有m个样本。这才是最终我们提交给用户的模型</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.901Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/07/14/Machine-Learning-01/" target="_blank" rel="external">https://kingsfish.github.io/2017/07/14/Machine-Learning-01/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Machine-Learning/" rel="tag">Machine Learning</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/&title=《机器学习01-模型评估与选择以及参数的调节》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/&title=《机器学习01-模型评估与选择以及参数的调节》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《机器学习01-模型评估与选择以及参数的调节》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/07/15/Machine-Learning-02/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">机器学习02-模型的性能度量</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/07/13/Leetcode-554-Brick-Wall/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Leetcode-554 Brick Wall题解</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "QIdqLJLWm9STg3WqIkB6z1e8-MdYXbMMI",
+            appKey: "zFmObMH4Njg5C6DprdK0TIC2",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/&title=《机器学习01-模型评估与选择以及参数的调节》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/&title=《机器学习01-模型评估与选择以及参数的调节》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《机器学习01-模型评估与选择以及参数的调节》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/07/14/Machine-Learning-01/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACLUlEQVR42u3aQXKDMAwF0Nz/0um2My3Jl+R2gv1YMbSAHwtFlvR4xMfzx/H9+tX59yuvn5nfNTowMDBuy3i+PJJXTu6qXr+kYmBgHMC4imC9/8lf//pK8l4MDAyM6nkVlj8fAwMDY23Are49kw+BgYGB0QuIyRM+bi+OgYFxQ0YvLP7P+Z/0NzAwMG7FeBaPaoktWVY1yP7yFgwMjK0ZeYDLl9hrAFSHLTAwMM5h9MYpqtvaasEuAZcrdhgYGLdlJMvNkeVIXwzTb8AYGBhHMqpBtjpykTQmC6U3DAyMTRmFYlarYdAbEVs8ZoGBgXFzxmRsq9oq6LUEqmU4DAyM/RiTpG0+C5F/6TdBGQMD4wBG/ppewzJvfFZbpxgYGCcwknSwWt3qNUTzNRSyXQwMjI0Y1cZAEnyT5a4dKcPAwNibUQ2yvVg+3yRHqSEGBsZ2jMni8sRu3hAt1PMwMDC2Y/SalKvKcL1PfLkqDAyMrRm9dmNSSquW1RZsYjEwMDZlzAe/5iljtcGw4HcDAwPj5oykDZkwmkMSve4rBgbGAYz5qER+JfkcSdqKgYFxAuNZPPJ0bbKsMhUDA2NrxiQ5y9O+eQFu8rEwMDD2YORBtjqEkSy92hy9vBcDA+MARq8M1yuoTdK+N1tZDAwMjEGa+Dqw9sbCHskfMDAwjmesGvnKWw5/+LuBgYHx8Yxl41nFFLDakFhQbsPAwLghI9869loC+cfqtQcwMDC2ZnwBoYGJhxWHYE0AAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

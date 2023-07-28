@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>我的 2019 Android 秋招经历 | 葫芦籽的碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="Android,面经,秋招">
+    <meta name="description" content="前言经过几个月的努力，基本上拿到了满意的offer，一直奔波在求职路上，现在终于能好好的停下来总结这段经历。 找工作确实很累，无论从生理上还是心理上，我一天最多的时候赶了 3 场面试，分布在西安的各个地方，当天回来根本不想学习；面试被虐的时候会各种怀疑自己，怀疑人生。无论如何，保持好心态最重要。 求职期间其实看了很多前人的经历，现在总结也算是给后来秋招的师弟师妹一点参考和建议，希望师弟师妹早作准备">
+<meta property="og:type" content="article">
+<meta property="og:title" content="我的 2019 Android 秋招经历">
+<meta property="og:url" content="https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/index.html">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
+<meta property="og:description" content="前言经过几个月的努力，基本上拿到了满意的offer，一直奔波在求职路上，现在终于能好好的停下来总结这段经历。 找工作确实很累，无论从生理上还是心理上，我一天最多的时候赶了 3 场面试，分布在西安的各个地方，当天回来根本不想学习；面试被虐的时候会各种怀疑自己，怀疑人生。无论如何，保持好心态最重要。 求职期间其实看了很多前人的经历，现在总结也算是给后来秋招的师弟师妹一点参考和建议，希望师弟师妹早作准备">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2018-10-10T02:20:03.000Z">
+<meta property="article:modified_time" content="2019-06-14T14:54:54.995Z">
+<meta property="article:author" content="Fish">
+<meta property="article:tag" content="Android">
+<meta property="article:tag" content="面经">
+<meta property="article:tag" content="秋招">
+<meta name="twitter:card" content="summary">
+    
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml"  >
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">我的 2019 Android 秋招经历</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">我的 2019 Android 秋招经历</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-10-10T02:20:03.000Z" itemprop="datePublished" class="page-time">
+  2018-10-10
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%B1%82%E8%81%8C%E8%B7%AF%E4%B8%8A/">求职路上</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%89%8D%E8%A8%80"><span class="post-toc-number">1.</span> <span class="post-toc-text">前言</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E7%A7%8B%E6%8B%9B%E6%88%98%E7%BB%A9"><span class="post-toc-number">2.</span> <span class="post-toc-text">秋招战绩</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%88%91%E7%9A%84%E4%B8%AA%E4%BA%BA%E6%83%85%E5%86%B5"><span class="post-toc-number">3.</span> <span class="post-toc-text">我的个人情况</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%B0%B1%E4%B8%9A%E5%BD%A2%E5%8A%BF%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%9C%8B%E6%B3%95"><span class="post-toc-number">4.</span> <span class="post-toc-text">就业形势的个人看法</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%88%91%E7%9A%84%E5%B7%A5%E4%BD%9C%E5%87%86%E5%A4%87"><span class="post-toc-number">5.</span> <span class="post-toc-text">我的工作准备</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95"><span class="post-toc-number">5.1.</span> <span class="post-toc-text">数据结构和算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Java-amp-Android"><span class="post-toc-number">5.2.</span> <span class="post-toc-text">Java &amp; Android</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%BD%91%E7%BB%9C"><span class="post-toc-number">5.3.</span> <span class="post-toc-text">操作系统和网络</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AE%9E%E9%99%85%E9%A1%B9%E7%9B%AE"><span class="post-toc-number">5.4.</span> <span class="post-toc-text">实际项目</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96%E5%87%86%E5%A4%87"><span class="post-toc-number">5.5.</span> <span class="post-toc-text">其他准备</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E7%AE%80%E5%8E%86"><span class="post-toc-number">5.5.1.</span> <span class="post-toc-text">简历</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%AA%E4%BA%BA%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2"><span class="post-toc-number">5.5.2.</span> <span class="post-toc-text">个人独立博客</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%8E%86"><span class="post-toc-number">6.</span> <span class="post-toc-text">面试经历</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#vivo-%E6%8F%90%E5%89%8D%E6%89%B9"><span class="post-toc-number">6.1.</span> <span class="post-toc-text">vivo 提前批</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%80%E9%9D%A2"><span class="post-toc-number">6.1.1.</span> <span class="post-toc-text">一面</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%8C%E9%9D%A2"><span class="post-toc-number">6.1.2.</span> <span class="post-toc-text">二面</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%8D%8E%E4%B8%BA"><span class="post-toc-number">6.2.</span> <span class="post-toc-text">华为</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%AD%97%E8%8A%82%E8%B7%B3%E5%8A%A8"><span class="post-toc-number">6.3.</span> <span class="post-toc-text">字节跳动</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%80%E9%9D%A2-1"><span class="post-toc-number">6.3.1.</span> <span class="post-toc-text">一面</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%8C%E9%9D%A2-1"><span class="post-toc-number">6.3.2.</span> <span class="post-toc-text">二面</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%89%E9%9D%A2"><span class="post-toc-number">6.3.3.</span> <span class="post-toc-text">三面</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%A4%A7%E7%96%86"><span class="post-toc-number">6.4.</span> <span class="post-toc-text">大疆</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%80%E9%9D%A2-2"><span class="post-toc-number">6.4.1.</span> <span class="post-toc-text">一面</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%BA%8C%E9%9D%A2-2"><span class="post-toc-number">6.4.2.</span> <span class="post-toc-text">二面</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E4%B8%89%E9%9D%A2-1"><span class="post-toc-number">6.4.3.</span> <span class="post-toc-text">三面</span></a></li></ol></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%B9%A6%E5%8D%95"><span class="post-toc-number">7.</span> <span class="post-toc-text">书单</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Java"><span class="post-toc-number">7.1.</span> <span class="post-toc-text">Java</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%9F%BA%E7%A1%80"><span class="post-toc-number">7.1.1.</span> <span class="post-toc-text">基础</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E8%BF%9B%E9%98%B6"><span class="post-toc-number">7.1.2.</span> <span class="post-toc-text">进阶</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#Android"><span class="post-toc-number">7.2.</span> <span class="post-toc-text">Android</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E5%9F%BA%E7%A1%80-1"><span class="post-toc-number">7.2.1.</span> <span class="post-toc-text">基础</span></a></li><li class="post-toc-item post-toc-level-4"><a class="post-toc-link" href="#%E8%BF%9B%E9%98%B6-1"><span class="post-toc-number">7.2.2.</span> <span class="post-toc-text">进阶</span></a></li></ol></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E5%92%8C%E7%AE%97%E6%B3%95-1"><span class="post-toc-number">7.3.</span> <span class="post-toc-text">数据结构和算法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F"><span class="post-toc-number">7.4.</span> <span class="post-toc-text">设计模式</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%85%B6%E4%BB%96"><span class="post-toc-number">7.5.</span> <span class="post-toc-text">其他</span></a></li></ol></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%80%BB%E7%BB%93"><span class="post-toc-number">8.</span> <span class="post-toc-text">总结</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%B8%AA%E4%BA%BA%E6%84%9F%E6%83%B3"><span class="post-toc-number">8.1.</span> <span class="post-toc-text">个人感想</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%BB%BA%E8%AE%AE"><span class="post-toc-number">8.2.</span> <span class="post-toc-text">建议</span></a></li></ol></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-我的 2019 Android 秋招经历"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">我的 2019 Android 秋招经历</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-10-10 10:20:03" datetime="2018-10-10T02:20:03.000Z"  itemprop="datePublished">2018-10-10</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%B1%82%E8%81%8C%E8%B7%AF%E4%B8%8A/">求职路上</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>经过几个月的努力，基本上拿到了满意的<code>offer</code>，一直奔波在求职路上，现在终于能好好的停下来总结这段经历。</p>
+<p>找工作确实很累，无论从生理上还是心理上，我一天最多的时候赶了 3 场面试，分布在西安的各个地方，当天回来根本不想学习；面试被虐的时候会各种怀疑自己，怀疑人生。无论如何，保持好心态最重要。</p>
+<p>求职期间其实看了很多前人的经历，现在总结也算是给后来秋招的师弟师妹一点参考和建议，希望师弟师妹早作准备，未来拿到心仪的<code>offer</code>。</p>
+<p><strong>以下均为个人经验，可能不适用与所有人，另外鉴于个人水平有限，难免出现失误的地方，如果有欢迎提出，非常感谢。</strong></p>
+<hr>
+<h2 id="秋招战绩"><a href="#秋招战绩" class="headerlink" title="秋招战绩"></a>秋招战绩</h2><p>先总结一下秋招战绩，岗位都是安卓开发。大部分拒笔试和面试的原因都是自己手里头已经有了更好的<code>offer</code>，就不去浪费人家的时间和精力了。</p>
+<table>
+<thead>
+<tr>
+<th align="center">公司</th>
+<th align="center">地点</th>
+<th align="center">批次</th>
+<th align="center">结果</th>
+<th align="center">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">vivo</td>
+<td align="center">深圳</td>
+<td align="center">提前批</td>
+<td align="center">offer</td>
+<td align="center">第一个 offer</td>
+</tr>
+<tr>
+<td align="center">老虎证券</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">offer</td>
+<td align="center">个人很看好的公司</td>
+</tr>
+<tr>
+<td align="center">大疆</td>
+<td align="center">深圳</td>
+<td align="center">正常批</td>
+<td align="center">offer</td>
+<td align="center">土豪公司</td>
+</tr>
+<tr>
+<td align="center">华为</td>
+<td align="center">西安</td>
+<td align="center">优招</td>
+<td align="center">offer</td>
+<td align="center">薪资给了个惊喜</td>
+</tr>
+<tr>
+<td align="center">招银网络</td>
+<td align="center">杭州</td>
+<td align="center">正常批</td>
+<td align="center">offer</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">百度</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">offer</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">中国银联</td>
+<td align="center">上海</td>
+<td align="center">提前批</td>
+<td align="center">offer</td>
+<td align="center">薪资今年大爆发</td>
+</tr>
+<tr>
+<td align="center">字节跳动</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">offer</td>
+<td align="center">准备签</td>
+</tr>
+<tr>
+<td align="center">美团</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">offer</td>
+<td align="center">薪资略失望</td>
+</tr>
+<tr>
+<td align="center">罗辑思维</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">offer</td>
+<td align="center">个人很看好的公司，薪资也给力，以后会考虑</td>
+</tr>
+<tr>
+<td align="center">360</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">offer 池</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">京东</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">笔试挂</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">网易互娱</td>
+<td align="center">深圳</td>
+<td align="center">正常批</td>
+<td align="center">笔试挂</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">拼多多</td>
+<td align="center">上海</td>
+<td align="center">提前批</td>
+<td align="center">笔试挂</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">阿里巴巴</td>
+<td align="center">杭州</td>
+<td align="center">正常批</td>
+<td align="center">笔试挂</td>
+<td align="center">凑齐 4 个已回绝</td>
+</tr>
+<tr>
+<td align="center">深信服</td>
+<td align="center">深圳</td>
+<td align="center">提前批</td>
+<td align="center">笔试挂</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">英语流利说</td>
+<td align="center">北京</td>
+<td align="center">提前批</td>
+<td align="center">拒笔试</td>
+<td align="center">已有其他offer</td>
+</tr>
+<tr>
+<td align="center">海康威视</td>
+<td align="center">杭州</td>
+<td align="center">正常批</td>
+<td align="center">拒笔试</td>
+<td align="center">已有其他offer</td>
+</tr>
+<tr>
+<td align="center">去哪儿</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">拒笔试</td>
+<td align="center">已有其他offer</td>
+</tr>
+<tr>
+<td align="center">爱奇艺</td>
+<td align="center">北京</td>
+<td align="center">提前批</td>
+<td align="center">拒面试</td>
+<td align="center">已有其他offer</td>
+</tr>
+<tr>
+<td align="center">好未来</td>
+<td align="center">成都</td>
+<td align="center">正常批</td>
+<td align="center">拒面试</td>
+<td align="center">面试地点是成都，已有其他offer</td>
+</tr>
+<tr>
+<td align="center">微众银行</td>
+<td align="center">广州</td>
+<td align="center">正常批</td>
+<td align="center">拒面试</td>
+<td align="center">面试地点是广州，已有其他offer</td>
+</tr>
+<tr>
+<td align="center">oppo</td>
+<td align="center">深圳</td>
+<td align="center">正常批</td>
+<td align="center">拒面试</td>
+<td align="center">已有其他offer</td>
+</tr>
+<tr>
+<td align="center">百词斩</td>
+<td align="center">成都</td>
+<td align="center">正常批</td>
+<td align="center">拒面试</td>
+<td align="center">已有其他offer</td>
+</tr>
+<tr>
+<td align="center">腾讯</td>
+<td align="center">深圳</td>
+<td align="center">正常批</td>
+<td align="center">拒面试</td>
+<td align="center">与华为签约冲突，已有其他offer</td>
+</tr>
+<tr>
+<td align="center">科大讯飞</td>
+<td align="center">杭州</td>
+<td align="center">正常批</td>
+<td align="center">拒面试</td>
+<td align="center">已有其他offer</td>
+</tr>
+<tr>
+<td align="center">网易</td>
+<td align="center">杭州</td>
+<td align="center">正常批</td>
+<td align="center">拒面试</td>
+<td align="center">来了西安没叫我去面试，结果要去杭州面试</td>
+</tr>
+<tr>
+<td align="center">keep</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">没消息</td>
+<td align="center">现场投递简历，后来没消息</td>
+</tr>
+<tr>
+<td align="center">搜狗</td>
+<td align="center">北京</td>
+<td align="center">提前批</td>
+<td align="center">没消息</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">贝壳</td>
+<td align="center">北京</td>
+<td align="center">正常批</td>
+<td align="center">一面挂</td>
+<td align="center">霸面</td>
+</tr>
+<tr>
+<td align="center">百度</td>
+<td align="center">北京</td>
+<td align="center">提前批</td>
+<td align="center">一面挂</td>
+<td align="center">手机百度，难度很大</td>
+</tr>
+<tr>
+<td align="center">oppo</td>
+<td align="center">深圳</td>
+<td align="center">提前批</td>
+<td align="center">一面挂</td>
+<td align="center">第一个挂的公司</td>
+</tr>
+<tr>
+<td align="center">阿里巴巴</td>
+<td align="center">杭州</td>
+<td align="center">提前批</td>
+<td align="center">一面挂</td>
+<td align="center">国际事业部</td>
+</tr>
+<tr>
+<td align="center">百度</td>
+<td align="center">深圳</td>
+<td align="center">提前批</td>
+<td align="center">一面挂</td>
+<td align="center">系统部，完全不是一个方向</td>
+</tr>
+<tr>
+<td align="center">网易</td>
+<td align="center">杭州</td>
+<td align="center">提前批</td>
+<td align="center">三面挂</td>
+<td align="center">去杭州面试</td>
+</tr>
+</tbody></table>
+<p>今年秋招提前了很多，基本上 8 月份很多大公司已经开始了，但其实最早的是大疆，4 月份有“技术分享会”，就是所谓的提前批，但是那时候基本没有人关注，也没有消息，之后就是<code>vivo</code>提前批，5 月底截止投递简历，然后 6 月份就面试完发了<code>offer</code>。我有幸参加了这个面试，拿到第一个<code>offer</code>，对我之后的求职信心有了很大的帮助。</p>
+<hr>
+<h2 id="我的个人情况"><a href="#我的个人情况" class="headerlink" title="我的个人情况"></a>我的个人情况</h2><p>先说一下我的个人情况，双西电通信工程专业硕士，个人感觉跟以往不一样的事是，现在找工作很多都是硕士，3 年前很多都是本科生。大三的时候，也就是 15 年移动客户端最火的时候学的安卓开发，信心满满准备找工作，被两家公司虐了之后发现自己技术是个渣，然后放弃找工作准备考研，研究生好好学技术， 3 年后再战。当然实际研究生阶段也没有按照自己当初的方向走，杂七杂八的学了很多其他的知识，比如深度学习和后端相关知识，最后还是决定选择最为熟悉的安卓开发作为求职的方向。</p>
+<hr>
+<h2 id="就业形势的个人看法"><a href="#就业形势的个人看法" class="headerlink" title="就业形势的个人看法"></a>就业形势的个人看法</h2><p>今年延续去年人工智能大潮，很多人涌向了算法岗位，人多竞争也激烈，因此今年算法算是一个小年。而开发学的人相对少了人多，尤其移动客户端。</p>
+<p>以字节跳动（今日头条）为例，官方出了一个公告，说算法相关岗位投递简历特别多，而移动客户端方向很少，因此针对这个形势出了一个政策，每个移动客户端岗位的人工作满一年之后能拿到三个月的签字费，并且不要求有移动客户端开发经验，移动客户端今年应该算是个大年。</p>
+<p>另外我听到过小道消息说美团也很缺，基本上没得挑，面试差不多的就给<code>offer</code>，后来跟我谈<code>offer</code>的<code>HR</code>感觉也基本证实了这个消息，她问我能不能提前去实习，一般回答了之后就不会再往下问了，但是她问得很细，能去几个月，大概什么时候，老师态度如何等等。</p>
+<p>总之，今年移动客户端就业形势感觉还不错，另外今年互联网企业大部分都涨了工资，不过就业形势这个东西每一年都不一样，去年是算法大年，今年就是移动客户端大年，明年谁也说不好，不过万变不离其宗，只要基础扎实，并有一两个自己非常熟悉的项目找工作肯定没问题，无需害怕竞争。</p>
+<hr>
+<h2 id="我的工作准备"><a href="#我的工作准备" class="headerlink" title="我的工作准备"></a>我的工作准备</h2><p>前文提到了我上研究生的目的，自己计划在研究生阶段好好夯实基础学习技术，因此我准备的比较早。主要分几个方面：</p>
+<ul>
+<li>数据结构和算法</li>
+<li>Java 基础，包括虚拟机相关</li>
+<li>Android 基础和进阶</li>
+<li>操作系统、网络等其他知识</li>
+<li>实际项目</li>
+<li>其他准备</li>
+</ul>
+<h3 id="数据结构和算法"><a href="#数据结构和算法" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h3><p>我升研一的暑假开始系统性的学习数据结构和算法，刚开始花了很多时间看清华大学“邓俊辉”教授的《数据结构和算法》视频课程。这里推荐一下这个视频课程，给了我很大的帮助，讲的通俗易懂，学习期间我认真的做了笔记，同时看完视频之后还会自己用<code>Java</code>实现（视频课程是用<code>C++</code>实现的），不过对于一些很难的知识点理解起来较难，我就跳过了，比如“红黑树”、<code>KMP</code>和<code>BM</code>字符串搜索算法等，不过还是建议不要丢弃这些知识，因为这些坑在我笔试的时候就出现了。</p>
+<p>看完这个视频之后数据结构算法的基础框架搭建起来了，后来买了一本《算法（第四版）》，这本书是《算法导论》作者的弟子<code>Robert Sedgewick</code>写的，浅显易懂，对于基础知识而言完全足够了，并且这本书是用<code>Java</code>实现的，这是我买这本书的一个很重要原因。</p>
+<p>其实数据结构和算法无论怎么看书都是不够的，因为这些知识本来就是人类在实践中不断总结出来的经验，因此仍然需要在实践中去不断使用。</p>
+<p>大体看完了《算法（第四版）》之后我就开始刷题。我选择的<code>OJ</code>平台是<code>Leetcode</code>，这上面的题目实践性较强，很多都是<code>Google</code>、<code>Facebook</code>和<code>Apple</code>等大公司的题目，更适合于找工作的方向。另外，这上面<code>discuss</code>系统做的很不错，除了题目的典型解法之外还可以在上面找到很多很<code>tricky</code>的解题方法，我每次看完别人的解法都会萌生出“还有这种操作？”的想法。</p>
+<p>另外《剑指offer》这本书也是面试必备，里面有很多经典的题目，在秋招面试的时候碰到了好几次原题。这本书大概是 4 月底去北京出差的时候开始看，之后在牛客上在线刷题做完了大概<code>40+</code>题，后面的题目就是看了但是没有自己写过。不得不说<code>vivo</code>提前批<code>offer</code>真的给了我很大的动力，逼着我好好复习。</p>
+<p>还有要提一下的地方是面试常有的手撕代码环节。为了解决这个大问题，我后期刷<code>OJ</code>的时候开始尝试不借助<code>IDE</code>而在网页上直接编程。写得多了会发现其实手撕代码并不是一个难以攻克的难关，之前多刷一些题，其实手撕代码和普通在线编程差不多。</p>
+<h3 id="Java-amp-Android"><a href="#Java-amp-Android" class="headerlink" title="Java &amp; Android"></a>Java &amp; Android</h3><p><code>Java</code>基础知识主要是一些语言特性和内置的数据结构，比如<code>List</code>、<code>Map</code>、<code>Set</code>和反射等，相对而言这些比较简单，大概挑重点看了一下《Java 编程思想》这本书，其他的还看了一下线程池和并发相关，因为之后的项目用到了，所以着重看了一点。</p>
+<p><code>Java</code>虚拟机部分主要看的是<strong>周志明</strong>的《深入 Java 虚拟机》这本书，不得不说这是市面上为数不多讲<code>Java</code>虚拟机讲的不错的书，我本科的时候大概浏览了一次，但是隔的时间久了很多知识都不记得了。另外本科的时候对于这本书的知识点并没有相关涉及，只是知道面试的时候会用上所以学一学。现在编程经验多了才知道这是个重点，现在很多技术都需要用到这些底层知识，比如“插件化”和“热修复”就需要对<strong>双亲加载模型</strong>有一定了解。</p>
+<p><code>Android</code>基础相关主要回顾了一下<strong>郭霖</strong>大神的《第一行代码（第二版）》这本书，这本书很适合入门，第一版是我的安卓入门书。</p>
+<p>当然<code>Android</code>只靠这些基础肯定是不够的，我另外也看了<strong>徐宜生</strong>的《Android 群英传》，这本书里有很多实际开发中使用的技巧，很适合于面试中的场景题，另外也有一些进阶的知识如“事件分发机制”和“View 的绘制过程”等。我大概花了 3 周的时间看完，当然只实践了其中少部分的内容，因为实践起来需要大量时间，而我还需要对其他的知识查缺补漏。另外，我后来发现<strong>任玉刚</strong>的《Android 开发艺术探索》简直是面试宝典，面试时候碰上的很多进阶问题都可以在这本书里看到相关阐述，可惜这个发现有点晚，面试晚期才开始读这本书，直到现在还没有看完。</p>
+<h3 id="操作系统和网络"><a href="#操作系统和网络" class="headerlink" title="操作系统和网络"></a>操作系统和网络</h3><p>这部分知识准备如果要算的话得追溯到本科了，那时候特意选了“操作系统”这门课，至于网络方面则基本没怎么担心过，因为我是通信工程专业出身的，本身学科就是网络相关。不过准备肯定还是要有的，主要是看别人的总结，这里要感谢一下一本<code>Gitbook</code>的几个作者，链接在此<a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/lrh1993/android_interview_guide/details">Android 校招面试指南</a> 。这本书主要是面试问题集合，除了上述的操作系统知识之外还有很多设计模式和数据库相关，靠这本书我扛过了秋招，再次对几位作者表示感谢。</p>
+<h3 id="实际项目"><a href="#实际项目" class="headerlink" title="实际项目"></a>实际项目</h3><p>对于研究生而言，项目是一个非常重要的因素。本科生接触项目的机会较少可以理解，但研究生就实验室而言就有项目可以做。但是我的情况很尴尬，实验室的项目和我的工作方向并不对口，因此我只能想想其他的项目。</p>
+<p>其实手里头对口的项目不多，4 月份在校时期和别人一起做了一个<code>App</code>，好好复习了一下项目里用的东西，也大概看了一下另外一个同伴的代码，理出项目的大体框架还有大概的实现流程等。另外项目里用的知识点一定要熟悉，不然面试会被问的很惨。</p>
+<h3 id="其他准备"><a href="#其他准备" class="headerlink" title="其他准备"></a>其他准备</h3><h4 id="简历"><a href="#简历" class="headerlink" title="简历"></a>简历</h4><p>我的简历前前后后修改了六七个版本，综合我自己的想法和很多人的建议。个人更喜欢简洁风，所以最后做出来的简历纯黑白，连照片都没有放上去。主要分为 5 各部分，包括个人信息、教育经历、技能清单、项目经历和获得奖励，我没有把我本科的实习经历放上去所以没有实习经历那一项。</p>
+<p>但是简洁 ≠ 简单，我简历上一些着重点如获得的奖励会加粗，标题和内容大小等都有区别，校招简历该有的内容也没少，比如教育经历、技能清单、获得奖励等，当然大头还得是项目经历。项目经历使用<code>STAR</code>法则来描述</p>
+<ul>
+<li><code>S - situation</code>，事情在什么情况下发生的，也即项目背景</li>
+<li><code>T - task</code>，有哪些任务，也即项目所承担的内容</li>
+<li><code>A - action</code>，有哪些行动，也即如何完成任务的，碰到了什么困难，如何解决的</li>
+<li><code>R - result</code>，结果如何，也即项目最终取得了什么成果</li>
+</ul>
+<p>我的简历项目经历部分一共写了三个项目，包括实验室的项目、比赛和校内<code>App</code>。其实我之前也很犹豫要不要放不相关的项目，咨询了一些前辈之后觉得这些项目其实也可以展示你的编程和学习能力，所以我也把他们写上去了。</p>
+<p>简历建议的话不超过一页纸，贵精不在多，写上去的东西自己一定要熟悉，很多公司都是对着简历问的，另外简历一定要有粗有细，对于重点内容可以加粗，比如<code>App</code>的下载量或者拿到的奖项，对于自己很熟悉的东西也可以加粗以引导面试官进入对我们有利的情景中。这个技巧其实是女朋友教我的，在此感谢她一直的陪伴。</p>
+<h4 id="个人独立博客"><a href="#个人独立博客" class="headerlink" title="个人独立博客"></a>个人独立博客</h4><p>个人独立博客算是我误打误撞做的准备。以前都觉得有博客的都是大神，会往上写一些高深的技术文章，现在想想其实是当时的眼界不够开放，把自己限制的很死，很多未知的事情不敢去尝试，后来在一位博士好友的催促下做了一个简陋的首页。万事开头难，做好了第一个页面之后就一直在弄博客的事情，到现在一年多时间一共有 <code>45</code>篇原创文章，平均一周多发一篇，数量不多，还需要继续加油。</p>
+<p>个人认为独立博客内容是学习能力的一个体现，<code>I hear and I forget. I see and I remember. I do and I understand.</code>，只有输入没有输出的话很容易淡忘，多写写文章，无论是知识总结还是自己的新想法，这些都可以帮助对知识的进一步理解。同时博客也算是一个“日记”，可以记录平时开发中碰到的困难以及解决方法，以后职业生涯帮助也很大。</p>
+<hr>
+<h2 id="面试经历"><a href="#面试经历" class="headerlink" title="面试经历"></a>面试经历</h2><p>个人觉得，面试这个东西就是要多练，多去面试两家就不会怕了。看别人的面经用处最大在于了解这个岗位会问什么样的问题，别人碰到的面试官和面试体验给不了多大的参考价值。不如话虽如此，我还是写一点面试相关的经历，给自己留做纪念也好。</p>
+<p>其实对于面经方面我也做了准备，秋招开始之前自己写了一个<code>markdown</code>文档用来记录各家公司的相关面试情况，包括投递进度和面试问题等等。另外我也自己在日历上会写计划好的日程，有序的整理给我省下了不少功夫。下面我大概写一下印象深刻的几家公司面试经历，至于面试问题我会在最后整理。</p>
+<h3 id="vivo-提前批"><a href="#vivo-提前批" class="headerlink" title="vivo 提前批"></a>vivo 提前批</h3><p>这是我秋招参加的第一场面试，6 月 1 号笔试，6 月 8 号<code>vivo</code>就有人来了西安面试。一共两面，一轮技术 + 一轮 HR 面。第一次面试很紧张，不过<code>vivo</code>提前批居然出奇的简单，我身边的人基本都拿到了<code>offer</code>。</p>
+<h4 id="一面"><a href="#一面" class="headerlink" title="一面"></a>一面</h4><p>技术面没有怎么具体问基础，大概问了问项目。感觉面试官应该是<code>leader</code>级别的人，以项目为入口，先是问了<code>Android</code>网络相关知识，比如有哪些网络请求库，各有什么优缺点，然后问了一些场景题，比如图片加载优化，网络请求优化。印象最深刻的一个问题是，假如<code>App</code>需要定时更新某一个文件，你会如何设计具体的实现？我最初给出的方法是选择半夜服务器压力较小的时候如凌晨 1 点进行更新，但是这样带来了一个新问题， 如果大量的客户端向服务器端发送网络请求，服务器必然会宕机，相当于一次<code>DDOS</code>攻击，针对这个新问题我给出的解决方法是某一个时间短随机某一个时间点发送请求，感觉这个回答面试官也不是很满意。总之<code>vivo</code>第一面考察的重点不是理论基础，而是项目经验和实际的解决问题能力。</p>
+<p>本来觉得自己一面答的很烂，因为之前从来没有考虑过那种问题，都是临场想出来的解决方法，没想到居然通过了一面。面试完之后有个小姐姐把我带到了一个房间里等二面，房间里有一些人已经在等了，过了不到 10 分钟刚才那个小姐姐就带我去了二面。</p>
+<h4 id="二面"><a href="#二面" class="headerlink" title="二面"></a>二面</h4><p>二面是<code>HR</code>面，第一次经历这种面试，不过问的问题都是很常规的问题，比如家庭情况，意向城市，爱好等等。提问环节我大概问了一下岗位和业务相关情况，一共聊了不到 20 分钟就结束了这次面试。</p>
+<p>8 号现场面试，10 号去了线下答疑会，<code>vivo</code>提前批很有效率，给的薪资对于校招初期还没有见过世面的我来说还是挺多的，不过拒掉这个<code>offer</code>就是后话了。</p>
+<p><code>vivo</code>提前批的<code>offer</code>对于我来说帮助确实很大，一方面提升了我秋招的自信心，另外一方面也逼迫我尽早复习和投递简历，因为它一开始要求我 8 月 15 号（后来改成了 8 月 30 号）之前要给答复，违约金 5000，大小周，我不是特别想签，而当时来看，只有疯狂投各大公司的提前批才能给自己留条后路。</p>
+<h3 id="华为"><a href="#华为" class="headerlink" title="华为"></a>华为</h3><p>华为面试一般为两面，如果是<code>sp</code>的话会有三面以上不等。我今年参加了华为今年的软件精英挑战赛拿了奖，所以免去了笔试和第一轮技术面试，直接就是第二轮综合面试。</p>
+<p>二面面试官是一个有点岁数的大佬，年龄目测 40+，一上来就给我巨大压力，这个岁数还呆在华为的，绝对是真·大佬级别的人，说不定一眼就看出来我是个渣。面试的问题基本没有基础，想来这种大佬应该很久没有做过一线了，整体而言有一点偏<code>HR</code>面，问的问题大概以下这些。</p>
+<ul>
+<li>家庭情况，经济情况</li>
+<li>有没有碰到压力很大的时候，如何排解</li>
+<li>有没有什么有趣或者难忘的经历</li>
+<li>有什么技术方面的东西想跟我说一下</li>
+<li>工作地点，实习经历，论文以及专利情况</li>
+<li>谈了一下华为工作相关的东西</li>
+</ul>
+<p>感觉华为真的是玄学面试，就没怎么问过技术上的东西，都是让我自己介绍项目的东西，然后就是谈人生。面试完我估计<code>offer</code>应该没问题，因为我参加了华为的比赛还得了奖，另外宣讲会的时候华为说了今年会扩招，这都拿不到<code>offer</code>有点说不过去。但鉴于二面面试官给我很大压力，我的评分应该不会很高，没想到最后居然拿到了华为的<code>sp</code>，果然是玄学面试。</p>
+<h3 id="字节跳动"><a href="#字节跳动" class="headerlink" title="字节跳动"></a>字节跳动</h3><p>头条今年简直秀，每周无间断的笔试和面试，任何时间参加都可以，笔试不过一直都有笔试的机会。投递头条的时间比较早，8 月 13 号我就在官网搞定了，不过笔试被安排在了 8 月 25 号。头条的笔试是真的很难，一共 5 道题，我才 A 了 0.7 道，可能是因为客户端比较缺，所以幸运的进入了面试。</p>
+<p>之后面试被安排在了 9 月份，第一次面试的时候和网易的笔试冲突了，推到了下一周也就是 15 号。现在想想头条的面试其实中规中矩，没有问到特别难的东西，当然也有可能是面试官看出来我技术水平不高，没有问我很难的东西。</p>
+<h4 id="一面-1"><a href="#一面-1" class="headerlink" title="一面"></a>一面</h4><p>因为我把面试日期推到了 15 号，而上一次的笔试相对于以前简单了很多，很多人都进入了面试，因此等了挺长的时间，约定的时间是 3 点，但实际上到 3 点半才开始一面。</p>
+<p>一面相对而言问的很基础，但是因为忘了记录，所以问题很多都不记得了。一开始先问的一些<code>Java</code>基础，然后看我有安卓开发经验，所以也问了一下安卓相关的技术知识点，都不是很深。我本以为这样就完了，但毕竟是宇宙条，算法还是少不了的。面试官出的问题不难，实现两个字符串表示的大数相加。很快就写完了，但是我写太急出了点<code>bug</code>，把除数和余数弄反了，不过问题不是特别大，一面大概 30 分钟结束了。几分钟后收到 <code>HR</code>电话说一面过了等待二面。</p>
+<h4 id="二面-1"><a href="#二面-1" class="headerlink" title="二面"></a>二面</h4><p>二面前面排了两个人，等了一个小时才轮到我面试。二面面试官看起来挺年轻的，技术实力感觉也挺强。问了以下这些问题：</p>
+<ul>
+<li>什么时候开始学 Android</li>
+<li>TCP 三次握手和四次挥手，拥塞控制，校验</li>
+<li>Linux 进程间通信方式有哪些，哪种最快</li>
+<li>Https 流程相关</li>
+<li>线程状态</li>
+<li>抽象类和接口区别</li>
+<li>深拷贝和浅拷贝区别</li>
+<li>图片优化</li>
+<li>RecyclerView 和 ListView 优化</li>
+<li>电量优化，布局优化</li>
+<li>图片加载库用的什么？如果自己设计图片加载库会考虑哪些东西？</li>
+<li>LRU 原理</li>
+<li>设计一个类微信首页的界面，如何实现（ViewPager + Fragement）</li>
+<li>算法：剑指 offer 原题，每一行每一列都是升序，找数字</li>
+</ul>
+<p>最后算法题写的有点久，我一上来直接把剑指<code>offer</code>上的解法写出来了，面试官觉得还可以在优化，让我想想有什么其他的方法，最后在面试官提示下才想出来的方法，时间复杂度大概是<code>O(nlogm)</code>，也就是先找到目标所在行或者列，然后二分查找，最后面试了一个多小时才结束，面试官跟我说休息一下准备接下来的第三面。</p>
+<p>面试完之后仔细想想才觉得面试官提供的方法好像有问题，貌似是面试官套路我？瞬间感觉自己要凉，但是面试官又说让我准备三面，迷迷糊糊的过了二面，面试完已经是晚上 6 点了。</p>
+<p>等了几分钟<code>HR</code>打电话跟我说二面通过，我问她能不能先去吃个饭，帮我把面试时间推到 7 点。结果我刚到食堂买好晚饭就接到了另外一个<code>HR</code>的电话说让回去面试，面试官在线上等我，跟他说我已经出来吃饭了，约了 6 点 40 面试，但是考虑到面试官已经在线上了，我也就打包了饭菜回了宿舍，结果发现面试官也去吃晚饭了。。。</p>
+<h4 id="三面"><a href="#三面" class="headerlink" title="三面"></a>三面</h4><p>7 点左右三面面试官终于出现，感觉是个<code>leader</code>级别的人，也很年轻。三面总体而言也是综合面，不怎么问技术细节，说个大概就可以。面试问题记录如下：<br>睿思项目分工</p>
+<ul>
+<li>网络，HTTP 相关</li>
+<li>网络库区别</li>
+<li>数据库（开源）有没有了解过</li>
+<li>项目<code>crash</code>率有没有检测过</li>
+<li>项目如何实现登陆</li>
+<li>RecyclerView ListView 优化</li>
+<li>华为比赛项目相关</li>
+<li><code>FreeSwitch</code>项目相关</li>
+<li>专业偏嵌入式，为什么选择安卓</li>
+<li><code>JNI</code>了解么</li>
+<li><code>Binder</code>机制&#96;</li>
+<li><code>Android</code>各版本特性</li>
+<li>最近有了解过什么新开源库</li>
+<li><code>MVP</code>和<code>MVC</code>模式的区别</li>
+<li>项目如何使用<code>MVP</code>模式优化</li>
+</ul>
+<p>权力反转环节大概问了一下头条的部门大概情况，聊天还算愉快。之后<code>HR</code>给我打电话说两周内给结果。成功结束头条面试，一下午怼了三面，头昏脑胀。</p>
+<p>头条拿到<code>offer</code>确实是意外，毕竟宇宙条那么难进，给的钱又多。</p>
+<h3 id="大疆"><a href="#大疆" class="headerlink" title="大疆"></a>大疆</h3><p>大疆应该算是最让我纠结的公司了，给钱多，平台还行，未来发展也不错，大疆确实是一个不错的选择，唯一的缺点就是一个非互联网公司，有点可惜，以后有机会可以再试试。言归正传，大疆整体面试偏重于基础一些，会从项目里某一个知识点不断深入。大疆的<code>HR</code>和面试官给我的印象都很不错，一面和二面都是远程面试，三面是现场面。</p>
+<h4 id="一面-2"><a href="#一面-2" class="headerlink" title="一面"></a>一面</h4><p>大疆的笔试难度太大了，整个实验室只有我收到了面试机会。一面是电话面试，听声音应该是两个面试官一起面试，问的东西特别广，从<code>Java``Android</code>到网络再到数据结构算法，甚至还问了未来三年的规划，面试完感觉大脑被掏空了。问题有这些：</p>
+<ul>
+<li>View 事件分发，三个方法，onIntercept方法true 和 false 返回的结果(true拦截，false继续传递)</li>
+<li>自定义 View，获取自定义属性在哪里(构造方法里)，onLayout，onMeasure，onDraw作用</li>
+<li>Looper和Handler关系(1:N)</li>
+<li>图片不同目录下(drawble-hdpi,drawble-dpi)的区别</li>
+<li>Activity 启动方式(standard,singleTask,singleTop,singleInstance)</li>
+<li>Activity onStart和onResume方法区别，什么时候会出现onResume()-&gt;onPause()-&gt;onResume()（可见但不可交互，如有一个对话框），弹Toast会不会，切换到任务管理器是否会执行onStop()</li>
+<li>单例模式有几种方式（饿汉式，懒汉式(多线程情况下需要注意双重判定加锁)）</li>
+<li>synchronized修饰对象和方法有什么区别（锁不同）</li>
+<li>Java里Map有哪些(HashTable，LinkedHashMap，ConcurrentHashMap，HashMap，TreeMap)，哪些是线程安全(concurreentHashMap,HashTable)，那些不是，HashMap底层实现（数组+链表，链表过长-&gt;红黑树）</li>
+<li>IP和掩码关系</li>
+<li>网络滑动窗口概念(TCP)</li>
+<li>单向链表判环（双指针），如何找环入口，如果不用双指针该怎么判定（HashSet）</li>
+<li>是否了解B+树</li>
+<li>内存调度和换页算法概念，调度方式有哪些（FIFO,LRU,最佳替换OPT，时钟替换算法）</li>
+<li>http了解么</li>
+<li>项目如何实现登陆功能，具体细节等</li>
+<li>深拷贝和浅拷贝，如何实现深拷贝(clone(),序列化等)</li>
+<li>最近再看什么书，有什么收获，哪些方面短缺？</li>
+<li>是否碰到OOM问题？哪些情况会出现OOM（图片和泄漏之外）</li>
+<li>未来三年规划</li>
+<li>其他offer</li>
+<li>是否出来实习</li>
+<li>大疆有了解么</li>
+</ul>
+<h4 id="二面-2"><a href="#二面-2" class="headerlink" title="二面"></a>二面</h4><p>对于一面而言还是比较有信心的，虽然有一些问题回答的很惨，但是大体应该还可以。大概等了一个多礼拜收到了二面通知，二面是视频面试，依旧是两个面试官，二面我就比较虚了，被问了很多不熟悉的地方，视频面试所以记录的问题不是很清楚了。</p>
+<ul>
+<li>数据库设计，比如书城，如何设计订单，图书，作者等</li>
+<li>设计模式，在 Android 代码里应用</li>
+<li>智力题，1001个人比赛，决出最终获胜者，需要比赛多少次（1000次）</li>
+<li>给定两个排序数组，如何选出相等的 ID</li>
+<li>画一个正方形，在每个手机上用尺子量长度一样，怎么设计。</li>
+<li>了解大疆么，有哪些飞机，那些产品等等</li>
+</ul>
+<p>智力题居然没有答上来，明明很简单的。。。二面感觉答的不好，一上来怼了一题数据库的设计题，一脸蒙，数据库是我的弱项，基本没怎么看过，最后还是面试官放过了我，跳了这一题。另外对大疆的了解部分确实了解的不多，只知道大概的产品线。总体而言面试感觉很差，感觉应该挂了，没想到最后还是收到了三面的面试通知。</p>
+<h4 id="三面-1"><a href="#三面-1" class="headerlink" title="三面"></a>三面</h4><p>三面面试在一个咖啡馆里，<code>HR</code>小姐姐还给面试者点了饮料，面试体验很棒。三面面试官应该是大佬级别的人，感觉一般三面这种技术面都不会问很深，更注重于综合能力。现场面试，问题都不是很记得了。</p>
+<ul>
+<li>自我介绍</li>
+<li>手撕代码环节，一个无序数组，要求找出其中的最大或者最小 k 个数字。其实就是<code>top k</code>问题，可以用大顶堆或者小顶堆来实现，具体可以看<a href="https://kingsfish.github.io/2018/09/24/%E5%A0%86%E6%8E%92%E5%BA%8F%E9%97%AE%E9%A2%98/">堆排序问题</a></li>
+<li>项目大概的模块划分，大体的实现方式等等，这个聊了很久</li>
+<li>未来的职业规划，想做的方向等</li>
+</ul>
+<p>手撕代码侥幸过关，回学校的时候跟别人讨论发现自己刚好把大顶堆和小顶堆弄反了，貌似面试官也没有在意，有这种思路就可以。</p>
+<p>校招面试每个人体验都会不一样，不同的面试官，不同的<code>HR</code>都会是不一样的感受，这部分参考价值不大，重要的还是面试问题总结，这部分这本书<a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/lrh1993/android_interview_guide/details">Android 校招面试指南</a>总结的已经很全面了，在此我不再赘述。</p>
+<hr>
+<h2 id="书单"><a href="#书单" class="headerlink" title="书单"></a>书单</h2><p>在此也跟风列一下书单吧，里面大部分书我看过，有一部分是经典书籍，值得一看。</p>
+<h3 id="Java"><a href="#Java" class="headerlink" title="Java"></a>Java</h3><h4 id="基础"><a href="#基础" class="headerlink" title="基础"></a>基础</h4><ul>
+<li>Head First Java</li>
+<li>Java 核心技术（卷 1 &#x2F; 卷 2）</li>
+<li>阿里巴巴 Java 开发手册（电子书，2017 年 2 月 9 号发布，主要内容是 Java 开发规范）</li>
+</ul>
+<h4 id="进阶"><a href="#进阶" class="headerlink" title="进阶"></a>进阶</h4><ul>
+<li>Java 编程思想</li>
+<li>Effective Java</li>
+<li>深入理解 Java 虚拟机</li>
+<li>码出高效：Java 开发手册（2018 年 9 月 22 号阿里巴巴云栖大会正式发布）</li>
+</ul>
+<h3 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h3><h4 id="基础-1"><a href="#基础-1" class="headerlink" title="基础"></a>基础</h4><ul>
+<li>第一行代码（第二版）</li>
+</ul>
+<h4 id="进阶-1"><a href="#进阶-1" class="headerlink" title="进阶"></a>进阶</h4><ul>
+<li>Android 群英传</li>
+<li>Android 开发艺术探索</li>
+<li>Android 系统源代码情景分析（这本我还没看）</li>
+<li>高性能 Android 应用开发（很多优化的知识点和实践，值得一看）</li>
+<li>打造高质量 Android 应用（内容主要是优化和实用技巧，不过有点老了）</li>
+</ul>
+<h3 id="数据结构和算法-1"><a href="#数据结构和算法-1" class="headerlink" title="数据结构和算法"></a>数据结构和算法</h3><ul>
+<li>数据结构 475 讲（清华大学邓俊辉）</li>
+<li>算法（第 4 版）</li>
+<li>Leetcode</li>
+<li>剑指 offer</li>
+<li>牛客网</li>
+</ul>
+<h3 id="设计模式"><a href="#设计模式" class="headerlink" title="设计模式"></a>设计模式</h3><ul>
+<li>大话设计模式</li>
+</ul>
+<h3 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h3><ul>
+<li>编程珠玑</li>
+<li>重构 - 改善既有代码的设计</li>
+<li>编程之美</li>
+<li><a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/lrh1993/android_interview_guide/details">Android 校招面试指南</a>（一本非常全的面经，在我求职过程中发挥了巨大作用，再次感谢几位作者）</li>
+</ul>
+<hr>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="个人感想"><a href="#个人感想" class="headerlink" title="个人感想"></a>个人感想</h3><p>秋招如果从<code>vivo</code>提前批开始算起进行了几个月，现在终于落下了帷幕。现在看来其实自己已经很幸运了，前期拿了<code>offer</code>稳定心态，后期几个有意向的<code>offer</code>都差不多同一时间出来薪资，并且<code>offer</code>给的薪资都很不错，虽然最后选择的时候很苦恼，尤其是大疆的<code>offer</code>，找了我好几次，但是没办法，只能优中选合适，最后还是选择了头条。</p>
+<p>秋招其实有点像备考，基础知识点就那些，好好复习肯定面试不会差，感觉大厂很多都重视基础。项目部分如果没有项目的话可以看看网上的项目实战课程，比如慕课网，把项目吃透也可以。其实在面试官看来如果不是大厂项目都差不多，主要看你在项目中体现的综合能力，比如碰到了难题如何解决，整体框架等等。</p>
+<p>秋招的时候心态最重要，保持一个好心态，无论面试成功或者失败。比如贝壳面试面试的时候，当时已经有大疆的<code>offer</code>了，然而一面直接挂，搞得我差点怀疑人生，瞬间想签了大疆完事，下午的百度一面不去了。但是最后还是好好想了想，面试除了实力之外也有运气，运气不好的时候挂了也很正常，所幸没有放弃，最后百度还拿到了<code>offer</code>。另外一定要放松心态，9 月份电话不断，我差点都有电话恐惧症了，一震动就神经紧张。</p>
+<p>面试其实也是一个查缺补漏的过程，在面试中不断发现之前没有了解的知识，总结经验迎接下一次面试。美团曾经问过我某一个项目里的不足点如何改进，我当时没有什么特别好的想法，最后面试官给了他的建议，我自己面试完也好好思考了一下，后来头条面试的时候也问到了同样的问题，我就能自信满满的给出答案。</p>
+<p>秋招是一个艰难抉择的过程，笔试冲突了、面试冲突了、<code>offer</code>如何选择都会让人很痛苦。所以个人建议一开始就想好自己的方向，能不海投尽量不要海投，海投非常消耗精力，另外万一拿到<code>offer</code>，选择更是一个艰难的问题。我就纠结于是否选择大疆 10 多天，期间<code>HR</code>小姐姐几次找我，我未来的大疆导师跟我也聊了很久，大疆的平台和薪资都很不错，让我不忍心拒绝，但是最终还是放弃了大疆，做选择的时候实在是太痛苦了。</p>
+<p>总的来说，秋招还是很充实的，每天面试笔试，经过秋招也学到了挺多东西，不枉花了那么多时间，很特别的一段经历。</p>
+<h3 id="建议"><a href="#建议" class="headerlink" title="建议"></a>建议</h3><p>这里根据我个人的经历给一点建议吧，一家之言，大家看看就好。</p>
+<ol>
+<li>早作准备，优势很大。很多提前批免笔试，直接面试能省很多力气，另外提前批<code>hc</code>数量较多，岗位和部门选择空间也更大。同时也要关注各大公司校招网申笔试等时间点，提前批次挂的话一般还会有正式批次，不过也要注意，提前批次肯定会有面试记录，因此会对正式批次有一定参考价值。</li>
+<li>如果有时间实习一定要去实习，大厂的最好。其实这也是早作准备的原因之一，实习生招聘一般研二或者大三下学期开始，这就意味着这个时候就需要有一定的基础实力，有实习经历能给秋招非常大的助力。</li>
+<li>投简历之前好好想想自己想要从事的行业，不要乱投，到时候不仅浪费自己时间也浪费别人时间。不过面试经验还是要攒的，可以先投一些小公司试试，之后再来面大厂，千万不要把自己的第一次献给大厂。</li>
+<li>面试一定做好规划，做好总结。我用<code>markdown</code>文件记录了我整个秋招的经历，每次面试回来都会回顾一下没有回答上来的问题或者是自己不是很理解的地方，每一次面试都是为下一次做准备。</li>
+</ol>
+<p>祝师弟师妹们未来拿到好<code>offer</code>。</p>
+<hr>
+<p>秋招终于结束，接下来就是好好写专利和论文了。不过<code>offer</code>不是结束只是一个新的开始，新的征程即将拉开帷幕，还是要继续加油。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.995Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/" target="_blank" rel="external">https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Android/" rel="tag">Android</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E7%A7%8B%E6%8B%9B/" rel="tag">秋招</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E9%9D%A2%E7%BB%8F/" rel="tag">面经</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/&title=《我的 2019 Android 秋招经历》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/&title=《我的 2019 Android 秋招经历》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《我的 2019 Android 秋招经历》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/10/12/%E5%89%91%E6%8C%87offer-06-%E9%87%8D%E5%BB%BA%E4%BA%8C%E5%8F%89%E6%A0%91/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">剑指offer-06-重建二叉树</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/09/24/%E5%A0%86%E6%8E%92%E5%BA%8F%E9%97%AE%E9%A2%98/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">堆排序问题</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "QIdqLJLWm9STg3WqIkB6z1e8-MdYXbMMI",
+            appKey: "zFmObMH4Njg5C6DprdK0TIC2",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/&title=《我的 2019 Android 秋招经历》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/&title=《我的 2019 Android 秋招经历》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《我的 2019 Android 秋招经历》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2018/10/10/%E6%88%91%E7%9A%84%202019%20Android%20%E7%A7%8B%E6%8B%9B%E7%BB%8F%E5%8E%86/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQ4AAAEOCAAAAABd2qZ5AAAD+klEQVR42u3ay07jUBAEUP7/pxlpViOBnaru6wwSJysUguN7vCj68fERvz7/vr7+/O87Xz9z9c796+rz9/dzdYWPJ144cODAgSM4anJzVzeU3GJy5eTw9/c/exg4cODAgeMJjiRck1vPozoPxRYxvz4OHDhw4Pi/HKdKvvvPtMGZBz8OHDhw4PhpHEm4bgJ1c7D9I8GBAwcOHGc5ZkOgU4XZLJg3Q6wDvVIcOHDgwNF184py6+f//Kb9Dhw4cOD49Ryf5SsPvNm3J+VivgBRnw4HDhw4cKw5kmbc/WJB20bMm4Oz5bwDbUocOHDgwLHgSAIy/+194OVDpnZlIY/bF3eFAwcOHDgOceShVX9BGef5QKu9ThG0OHDgwIFjwZFHXbtMkNxuG40t/ez6OHDgwIFjc/18aDQbJs0iNo/SdgEuGjjhwIEDB441x2w5YFOMbQZOZz/zTdDiwIEDB441R3K7+Rpc3josGnbBvbX/HODAgQMHjqc5kmicDYraIVDb2ku+PToFDhw4cOBYc7SBt/lM28jbFJD54xl2N3HgwIEDRzozKm46X1PYFHj7hYY2dHHgwIEDx4ZjViblqw9toLZ8syW/y+vjwIEDB46jHO3x2vjctPzy4F89JBw4cODAcSjvZo2zNj7rxlxcnuVLDFEzFAcOHDhwrDn2X5w38mZLD+0Sw2rUhAMHDhw4FhyzQ+ahu1+za0M6v/8XFS0OHDhw4BhxtIHX/lW+AJEH7eY60b8ROHDgwIFjcf+nmnftOkJbOm7KvKJAxYEDBw4ca458KWEWfrPozeN5E9tFIYcDBw4cOBYcbdGVh1xRU8aB3UZysZaBAwcOHDhGHLPQysdIM6Zifa0cU70oKXHgwIEDx1s42ubdpuhqo332MHDgwIEDx3Mc+6HRfQznQ6Z2uW02aooiHAcOHDhwrDnyiM1bfrMmY/tINn8bnRcHDhw4cJQcbRC2bcE8XGcPYDMY++Z9HDhw4MBxlCOJpbwZ15ZbeSGXrzjUhSgOHDhw4FhzzI49a70lB94s4W2GW0XvEAcOHDhwxK3AtpU2Wxdoi6v2gSUrFC8iFgcOHDhwrDnaaf6mxGrDcjOayj+PAwcOHDhOcbSxNHu//cwsStvlvEtoHDhw4MCx4NiMi/IGXz6sahcmksKvKBFx4MCBA8fJmX4RdZtluHxxIS/DZoMuHDhw4MDxHEc+Cmo58vHSZm1iT4YDBw4cOJ7gaMN1FmOzo25WKGpKHDhw4MDxRo7Z4kI+IsoPn/x2hosDBw4cON7P0RZm7ZE2ZdvmoeLAgQMHjrMcs0NuIjYP2v2VixYnDhw4cOBYczyx0LAfAm0I2hh+fL8DBw4cOH4Lxx97IwGTJkrlHwAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

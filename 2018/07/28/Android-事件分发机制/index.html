@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>Android 事件分发机制 | 葫芦籽的碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="事件分发">
+    <meta name="description" content="Android 事件分发机制一直来说都是一个比较难理解的知识内容，恰逢秋招，花了几天时间学习了一下，终于弄懂了是怎么回事，总结如下： 核心方法事件分发机制主要有三个方法：  dispatchTouchEvent()，主要用于事件分发给子控件 onIntercptTouchEvent()，主要用于是否拦截事件，ViewGroup 独有 onTouchEvent()方法，主要用于处理触摸事件  分发机">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Android 事件分发机制">
+<meta property="og:url" content="https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/index.html">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
+<meta property="og:description" content="Android 事件分发机制一直来说都是一个比较难理解的知识内容，恰逢秋招，花了几天时间学习了一下，终于弄懂了是怎么回事，总结如下： 核心方法事件分发机制主要有三个方法：  dispatchTouchEvent()，主要用于事件分发给子控件 onIntercptTouchEvent()，主要用于是否拦截事件，ViewGroup 独有 onTouchEvent()方法，主要用于处理触摸事件  分发机">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/3.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/1.png">
+<meta property="og:image" content="https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/2.jpg">
+<meta property="article:published_time" content="2018-07-28T10:14:04.000Z">
+<meta property="article:modified_time" content="2019-06-14T14:54:54.854Z">
+<meta property="article:author" content="Fish">
+<meta property="article:tag" content="事件分发">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/3.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml"  >
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">Android 事件分发机制</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">Android 事件分发机制</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2018-07-28T10:14:04.000Z" itemprop="datePublished" class="page-time">
+  2018-07-28
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95"><span class="post-toc-number">1.</span> <span class="post-toc-text">核心方法</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6"><span class="post-toc-number">2.</span> <span class="post-toc-text">分发机制</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="post-toc-number">3.</span> <span class="post-toc-text">代码分析</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#%E9%A2%9D%E5%A4%96%E7%9F%A5%E8%AF%86"><span class="post-toc-number">4.</span> <span class="post-toc-text">额外知识</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-Android-事件分发机制"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">Android 事件分发机制</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2018-07-28 18:14:04" datetime="2018-07-28T10:14:04.000Z"  itemprop="datePublished">2018-07-28</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/Android/">Android</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p><code>Android</code> 事件分发机制一直来说都是一个比较难理解的知识内容，恰逢秋招，花了几天时间学习了一下，终于弄懂了是怎么回事，总结如下：</p>
+<h3 id="核心方法"><a href="#核心方法" class="headerlink" title="核心方法"></a>核心方法</h3><p>事件分发机制主要有三个方法：</p>
+<ul>
+<li><code>dispatchTouchEvent()</code>，主要用于事件分发给子控件</li>
+<li><code>onIntercptTouchEvent()</code>，主要用于是否拦截事件，<code>ViewGroup</code> 独有</li>
+<li><code>onTouchEvent()</code>方法，主要用于处理触摸事件</li>
+</ul>
+<h3 id="分发机制"><a href="#分发机制" class="headerlink" title="分发机制"></a>分发机制</h3><p>当屏幕某一个控件被点击时，首先触发顶层布局的<code>dispatchTouchEvent()</code>方法，将事件进行向下传递，如果该布局是<code>ViewGroup</code>，则会先调用<code>onInterceptTouchEvent()</code>方法确定是否拦截该事件，如果返回<code>true</code>，则表示拦截该事件，不再往下传递，并调用自己的<code> onTouch()</code>方法进行事件处理，否则分发给子控件如此循环。直至有子控件消费此事件。流程图如下，假设目前有三层布局，<code>Activity -&gt; LinearLayout -&gt; Button</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="3.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>下图是分发业务流程图</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="1.png" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<h3 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h3><p>上图我刚开始看的时候也看不懂，下面从代码层面分析，根据具体情况分为多种情况，整个调用过程存在递归，先由上层往下分发事件，然后根据上层根据下层返回的数据进行处理，直至分发过程结束：</p>
+<ol>
+<li><p><code>Activity</code> 接收到点击事件，首先进行分发，调用<code>dispatchTouchEvent()</code>，在这个函数里面，会进行事件的分发，调用子控件也即<code>LinearLayout</code>的<code>dispatchTouchEvent()</code>方法，根据<code>LinearLayout</code>的<code>dispatchTouchEvent()</code>的返回值进行判定，会有两种结果:</p>
+<ol>
+<li><p>如果返回<code>true</code>，则表示子控件已经把事件消费掉了，则<code>Activity</code>的 <code>dispatchTouchEvent</code> 方法也返回 <code>true</code>，代表已经处理了这个点击事件，事件分发过程结束。</p>
+</li>
+<li><p>如果返回<code> false</code>，则表示子控件并没有把事件消费掉，则 <code>Activity</code>会调用自己的 <code>onTouchEvent()</code>方法进行时间处理，一般来说我们不会覆写修改<code> Activity</code> 的 <code>onTouchEvent()</code> 方法，该方法默认返回<code>false</code>，事件分发结束。</p>
+</li>
+</ol>
+</li>
+<li><p>那么在 <code>LinearLayout</code> 的<code> dispatchTouchEvent()</code> 方法里什么时候会返回<code> true</code>，什么时候会返回 <code>false</code> 呢？与 <code>Activity</code> 有所不同的的是，<code>LinearLayout</code> 是一个 <code>ViewGroup</code>，多了一个 <code>onInterceptTouchEvent()</code> 方法，<code>LinearLayout</code> 会先调用 <code>onInterceptTouchEvent()</code> 方法决定是否直接拦截事件，会有两种情况：</p>
+</li>
+<li><p><code>onInterceptTouchEvent()</code> 返回 <code>true</code>。那么 <code>LinearLayout</code>不会像<code> Activity</code> 一样无条件向下传递事件，而是直接拦截触摸事件，然后调用自己的 <code>onTouchEvent()</code> 方法，<code>LinearLayout</code> 的<code>dispatchTouchEvent()</code> 方法返回值取决于 <code>onTouchEvent()</code> 的返回值</p>
+</li>
+<li><p><code>onInterceptTouchEvent()</code> 返回<code>false</code>，表示 <code>LinearLayout</code> 不拦截事件，会正常往下传递事件，在此例子中将会调用 <code>Button</code> 的 <code>dispatchTouchEvent()</code> 方法。<code>Button</code> 的 <code>dispatchTouchEvent()</code> 方法返回值也有两种：</p>
+<ol>
+<li>返回<code> true</code>。那么 <code>LinearLayout</code> 的 <code>dispatchTouchEvent()</code> 将直接结束，返回<code> true</code>，继续走<code>Acticty</code> 的 <code>1.1</code> 流程。</li>
+<li>返回<code> false</code>。那么<code> LinearLayout</code> 会调用自己的<code> onTouchEvent()</code> 方法。和 <code>Activity</code> 类似，一般我们不会覆写这个方法，这个方法默认返回 <code>false</code>，那么接下来继续走 <code>Activity</code> 的<code>1.2</code>流程。</li>
+</ol>
+</li>
+<li><p>那么<code> Button</code> 的<code> dispatchTouchEvent()</code> 方法里什么时候会返回<code> true</code>，什么时候会返回<code> false</code> 呢？与<code> LinearLayout</code> 不同，<code>Button</code> 不是<code> ViewGroup</code> 而是 <code>View</code>，只有<code> dispatchTouchEvent()</code> 和 <code>onTouchEvent</code> 方法，但是<code> Button</code> 作为 <code>View</code> 比较特殊，还拥有一个方法<code> onTouch()</code>，<code>Button</code> 的<code>dispatchTouchEvent()</code>方法流程如下。首先检查<code> Button</code> 是否设定了触摸事件，也即<code> onTouchListener</code> 是否为空，结果有两种：</p>
+</li>
+<li><p>设定了触摸事件，则执行 <code>onToucheListener</code> 的<code> onTouch</code> 方法，<code>Button</code> 的 <code>dispatchTouchEvent</code> 方法直接返回 <code>true</code>，走<code> LinearLayout</code> 的<code> 2.2.1</code> 流程</p>
+</li>
+<li><p>未设定触摸事件，则执行<code>Button</code>的<code>onTouchEvent</code> 方法，根据 <code>onTouch</code> 方法返回值返回，如果是<code> true</code>，则 <code>Button</code> 的 <code>dispatchTouchEvent</code> 方法结束，走 <code>LinearLayout</code> 的 <code>2.2.2</code> 流程</p>
+</li>
+</ol>
+<p>使用伪代码的流程图如下：</p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="2.jpg" alt="" title="">
+                </div>
+                <div class="image-caption"></div>
+            </figure>
+
+<p>当然，这个伪代码只是一个非常简略的版本，在实际的源码中，还有很多判定等条件和函数的具体实现，但是大体的流程就这以上这些。</p>
+<h3 id="额外知识"><a href="#额外知识" class="headerlink" title="额外知识"></a>额外知识</h3><p>此外还有一些其他的知识：</p>
+<ol>
+<li><code>onTouch</code>方法调用时间先于<code>onTouchEvent</code></li>
+<li>如果子 <code>View</code>不想让父控件拦截事件怎么办？可以在子类中调用<code>requestDisallowInterceptTouchEvent</code>方法来请求事件的直接下发</li>
+<li>如果某控件<code>onTouchEvent</code>方法对<code>DOWN</code>事件返回了 <code>false</code>，也即不对<code>DOWN</code>事件进行处理，那么之后的<code>UP</code>和<code>MOVE</code>事件都不会下发给该控件。这也符合一般常识，如果一个控件对于手指触摸屏幕事件没有反应，那么对于接下来的手指移动和手指抬起的事件也应当无反应。</li>
+<li>从 3 的另一个方向思考，如果某控件的<code>onTouchEvent</code>对于<code>DOWN</code>事件返回了<code>true</code>，也即消费了该事件，那么接下来的事件都会自己处理，不会下发给子控件。</li>
+<li>如果上一次 <code>Button</code> 消费了<code>DOWN</code>事件，而之后来了一个<code>MOVE</code>事件被<code>LinearLayout</code>拦截了，那么会给<code>Button</code>传递一个<code>CANCEL</code>事件</li>
+</ol>
+<hr>
+<p>最近秋招大潮来临，各种公司内推电话面，每一次都感觉自己还是个渣，被问了很多不知道的东西，每一次面试都是查缺补漏，加油！预祝自己能找个好工作。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.854Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/" target="_blank" rel="external">https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+	<ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91/" rel="tag">事件分发</a></li></ul>
+
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/&title=《Android 事件分发机制》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/&title=《Android 事件分发机制》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android 事件分发机制》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2018/08/17/%E5%A4%A7%E7%96%86Android%E9%9D%A2%E7%BB%8F/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">大疆Android面经</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2018/07/13/%E4%B8%80%E5%91%A8%E5%B9%B4%E7%94%9F%E6%97%A5%E5%BF%AB%E4%B9%90/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">一周年生日快乐</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "QIdqLJLWm9STg3WqIkB6z1e8-MdYXbMMI",
+            appKey: "zFmObMH4Njg5C6DprdK0TIC2",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/&title=《Android 事件分发机制》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/&title=《Android 事件分发机制》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《Android 事件分发机制》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2018/07/28/Android-%E4%BA%8B%E4%BB%B6%E5%88%86%E5%8F%91%E6%9C%BA%E5%88%B6/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAPYAAAD2CAAAAADAeSUUAAADJklEQVR42u3a22rDMBAFwPz/T6evhRD7HK1TYnX0VIxra2TIspfHI17Pl/X7+us97668/te7dx2/9/j5ly1sbGzsm7Cfh+v4nnzTx+DkyflniHaLjY2NvR07AVwVI9bYSYBMLNjY2NjYa+lEm5wkb8fGxsbGvoqdJwbtoSSHi42NjY2dF5UmQSg/oDzJST7ABbU0bGxs7K9nz1/zPX9/pL+NjY2N/cXsZ7nyQ2m3mI/+JEHxRIGNjY29ETsPAC3mqtGcPNlo94+NjY39f9jzF1zbEp6nSdjY2Nj7sZPXtCGqDTZtMMvbFdE3x8bGxt6O3Y7arDV32zZtzisCMDY2NvbN2W1Zv33BvPHQBsvk6LGxsbH3Y8+TkLw1u5ZCtM88UWBjY2Nvx26LO0k60TaJ860nKc3JzrGxsbE3YufpRBta8pbthN2mT9jY2Nj7sdcGcUaN1aXWcpuEFEUlbGxs7Juz21Zrm4q0pZ8kTE5azvVsETY2NvbXs/OEIS8hXdtCWAuiJwEVGxsbeyN2u6E2hZgcR1t+qneLjY2NvR07CSp5QpKP2qwVlSYBEhsbG3sndt64bdOVNhS1hae1YImNjY29HzsPRWtN3LUjbgtG+UjQ20YvNjY29s3Z8xbv54Z4cmpb/MLGxsbeif034ap9ZnvQeRjDxsbG3om9NgQ5D3v59bWGxMk92NjY2FuzP1f6/1xjoE6EsLGxsTdit2GjLffkCUM+NvQoV9HuxcbGxr4hezKU0zZoJ7C1kHZSVMLGxsbegj0p3LRhKU8P5s3dutGLjY2NvQU7H3wsgsQ4yVkraUV7xsbGxt6Offzbnh9Qm0isjVG2YbWeVMLGxsa+ITsZlGzbA5Oi0nxY5+QDYGNjY2/BfpYrCU75YU2KSvkhnjR6sbGxsW/Obn/624buVUWlq55ZHwE2Njb2Tdh5kFgLM2sDPXnbYLEEho2Njb0du22aTgJMm+R8oi2BjY2N/Z/ZkxGftSLUfIfY2NjY2POxm/b6JDlJEhVsbGzs/djzsZt8rCcHXxXGTiaVsLGxsW/Ozhu9eUH/eOttwLu2LIWNjY29EfsHaDCGkljIokUAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>

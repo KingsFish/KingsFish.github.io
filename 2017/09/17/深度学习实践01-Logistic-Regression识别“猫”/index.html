@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    
+    <title>深度学习实践01-Logistic Regression识别包含猫的图片 | 葫芦籽的碎碎念</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="刚通过吴恩达老师的“深度学习”视频学完了Logistic Regression —— 逻辑回归，现在小试牛刀，看看如何实现“猫”图片的识别。 逻辑回归主要使用梯度下降法求出参数下降量来逐步减小成本函数，最终求得需要的模型。逻辑回归思路比较简单，实现的难度较小。主要流程如下：  初始化参数W和b 根据W、b、输入X求得输出A 根据输入X和输出A求得梯度下降量dW和db 使用dW和db来更新W、b">
+<meta property="og:type" content="article">
+<meta property="og:title" content="深度学习实践01-Logistic Regression识别包含猫的图片">
+<meta property="og:url" content="https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/index.html">
+<meta property="og:site_name" content="葫芦籽的碎碎念">
+<meta property="og:description" content="刚通过吴恩达老师的“深度学习”视频学完了Logistic Regression —— 逻辑回归，现在小试牛刀，看看如何实现“猫”图片的识别。 逻辑回归主要使用梯度下降法求出参数下降量来逐步减小成本函数，最终求得需要的模型。逻辑回归思路比较简单，实现的难度较小。主要流程如下：  初始化参数W和b 根据W、b、输入X求得输出A 根据输入X和输出A求得梯度下降量dW和db 使用dW和db来更新W、b">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/正向.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/反向.jpg">
+<meta property="og:image" content="https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/迭代.jpg">
+<meta property="article:published_time" content="2017-09-17T13:27:50.000Z">
+<meta property="article:modified_time" content="2019-06-14T14:54:54.995Z">
+<meta property="article:author" content="Fish">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/正向.jpg">
+    
+        <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <script>window.lazyScripts=[]</script>
+
+    <!-- custom head -->
+    
+
+<meta name="generator" content="Hexo 6.2.0"></head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap" style="background-image:url(/img/brand.jpg)">
+      <div class="brand">
+        <a href="/about" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/logo.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">Fish</h5>
+          <a href="mailto:kingsfish95@gmail.com" title="kingsfish95@gmail.com" class="mail">kingsfish95@gmail.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/KingsFish" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/about"  >
+                <i class="icon icon-lg icon-user-o"></i>
+                关于
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/atom.xml"  >
+                <i class="icon icon-lg icon-rss"></i>
+                RSS订阅
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">深度学习实践01-Logistic Regression识别包含猫的图片</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">深度学习实践01-Logistic Regression识别包含猫的图片</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-09-17T13:27:50.000Z" itemprop="datePublished" class="page-time">
+  2017-09-17
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap post-toc-shrink" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%AE%97%E6%B3%95%E5%AE%9E%E7%8E%B0"><span class="post-toc-number">1.</span> <span class="post-toc-text">算法实现</span></a><ol class="post-toc-child"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8F%82%E6%95%B0W%E5%92%8Cb"><span class="post-toc-number">1.1.</span> <span class="post-toc-text">初始化参数W和b</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%B9%E6%8D%AEW%E3%80%81b%E3%80%81%E8%BE%93%E5%85%A5X%E6%B1%82%E5%BE%97%E8%BE%93%E5%87%BAA"><span class="post-toc-number">1.2.</span> <span class="post-toc-text">根据W、b、输入X求得输出A</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E6%A0%B9%E6%8D%AEX%E3%80%81Y%E5%92%8CA%E6%B1%82dW%E5%92%8Cdb"><span class="post-toc-number">1.3.</span> <span class="post-toc-text">根据X、Y和A求dW和db</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#%E4%BD%BF%E7%94%A8dW%E5%92%8Cdb%E6%9D%A5%E6%9B%B4%E6%96%B0W%E3%80%81b"><span class="post-toc-number">1.4.</span> <span class="post-toc-text">使用dW和db来更新W、b</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#Logistic-Regression%E6%A8%A1%E5%9E%8B%E7%9A%84%E5%BB%BA%E7%AB%8B"><span class="post-toc-number">1.5.</span> <span class="post-toc-text">Logistic Regression模型的建立</span></a></li></ol></li><li class="post-toc-item post-toc-level-1"><a class="post-toc-link" href="#%E7%BB%93%E6%9E%9C"><span class="post-toc-number">2.</span> <span class="post-toc-text">结果</span></a></li></ol>
+        </nav>
+    </aside>
+
+
+<article id="post-深度学习实践01-Logistic-Regression识别“猫”"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">深度学习实践01-Logistic Regression识别包含猫的图片</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017-09-17 21:27:50" datetime="2017-09-17T13:27:50.000Z"  itemprop="datePublished">2017-09-17</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/">机器学习</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>刚通过吴恩达老师的“深度学习”视频学完了<strong>Logistic Regression —— 逻辑回归</strong>，现在小试牛刀，看看如何实现“猫”图片的识别。</p>
+<p>逻辑回归主要使用<strong>梯度下降法</strong>求出参数下降量来逐步减小成本函数，最终求得需要的模型。逻辑回归思路比较简单，实现的难度较小。主要流程如下：</p>
+<ol>
+<li>初始化参数<code>W</code>和<code>b</code></li>
+<li>根据<code>W</code>、<code>b</code>、输入<code>X</code>求得输出<code>A</code></li>
+<li>根据输入<code>X</code>和输出<code>A</code>求得梯度下降量<code>dW</code>和<code>db</code></li>
+<li>使用<code>dW</code>和<code>db</code>来更新<code>W</code>、<code>b</code> </li>
+<li>循环<code>2-5</code>直至满足学习终止条件，如迭代300次。</li>
+</ol>
+<p>实现该算法使用的语言是<code>python</code>，因为<code>python</code>使用简单，而且它的库<code>numpy</code>可以极大的减少运行时间，加快迭代过程。</p>
+<h1 id="算法实现"><a href="#算法实现" class="headerlink" title="算法实现"></a>算法实现</h1><p>假定训练集输入为<code>X</code>，训练集结果为<code>Y</code><br>在实现流程之前首先得加载使用到的<code>python</code>库</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br></pre></td></tr></table></figure>
+
+<h2 id="初始化参数W和b"><a href="#初始化参数W和b" class="headerlink" title="初始化参数W和b"></a>初始化参数<code>W</code>和<code>b</code></h2><p>这部分的时候简单，只需根据输入的规模将<code>W</code>和<code>b</code>初始化全0即可</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">initial</span>(<span class="params">dim</span>):</span><br><span class="line">    W = np.zeros((dim, <span class="number">1</span>))</span><br><span class="line">    b = <span class="number">0</span></span><br><span class="line">    parameters = &#123;<span class="string">&quot;W&quot;</span>: W,</span><br><span class="line">                  <span class="string">&quot;b&quot;</span>: b&#125;</span><br><span class="line">    <span class="keyword">return</span> parameters</span><br></pre></td></tr></table></figure>
+
+<h2 id="根据W、b、输入X求得输出A"><a href="#根据W、b、输入X求得输出A" class="headerlink" title="根据W、b、输入X求得输出A"></a>根据<code>W</code>、<code>b</code>、输入<code>X</code>求得输出<code>A</code></h2><p>根据下面公式求出<code>A</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="正向.jpg" alt="正向公式" title="">
+                </div>
+                <div class="image-caption">正向公式</div>
+            </figure>
+
+<p>首先实现激活函数<code>sigmoid</code></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">sigmoid</span>(<span class="params">Z</span>):</span><br><span class="line">    A = <span class="number">1</span> / (<span class="number">1</span> + np.exp(Z))</span><br><span class="line">    <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
+
+<p>再来实现前向计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">forward</span>(<span class="params">parameters, X</span>):</span><br><span class="line">    W = parameters[<span class="string">&#x27;W&#x27;</span>]</span><br><span class="line">    b = parameters[<span class="string">&#x27;b&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    Z = np.dot(W.T, X) + b</span><br><span class="line">    A = sigmoid(Z)</span><br><span class="line">    <span class="keyword">return</span> A</span><br></pre></td></tr></table></figure>
+
+<h2 id="根据X、Y和A求dW和db"><a href="#根据X、Y和A求dW和db" class="headerlink" title="根据X、Y和A求dW和db"></a>根据<code>X</code>、<code>Y</code>和<code>A</code>求<code>dW</code>和<code>db</code></h2><p>根据公式求<code>dW</code>和<code>db</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="反向.jpg" alt="反向公式" title="">
+                </div>
+                <div class="image-caption">反向公式</div>
+            </figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">back_progate</span>(<span class="params">X, Y, A</span>):</span><br><span class="line">    dW = X(A - Y)</span><br><span class="line">    db = np.<span class="built_in">sum</span>(A - Y, axis = <span class="number">1</span>, keepdims = <span class="literal">True</span>) / m</span><br><span class="line">    grads = &#123;<span class="string">&quot;dW&quot;</span>: dW,</span><br><span class="line">            <span class="string">&quot;db&quot;</span>: db&#125;</span><br><span class="line">    <span class="keyword">return</span> grads</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用dW和db来更新W、b"><a href="#使用dW和db来更新W、b" class="headerlink" title="使用dW和db来更新W、b"></a>使用<code>dW</code>和<code>db</code>来更新<code>W</code>、<code>b</code></h2><p>根据公式更新参数<code>W</code>和<code>b</code></p>
+<figure class="image-bubble">
+                <div class="img-lightbox">
+                    <div class="overlay"></div>
+                    <img src="迭代.jpg" alt="更新参数" title="">
+                </div>
+                <div class="image-caption">更新参数</div>
+            </figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">update_parameters</span>(<span class="params">parameters, grads, learning_rate=<span class="number">0.5</span></span>):</span><br><span class="line">    W = parameters[<span class="string">&#x27;W&#x27;</span>]</span><br><span class="line">    b = parameters[<span class="string">&#x27;b&#x27;</span>]</span><br><span class="line">    dW = grads[<span class="string">&#x27;dW&#x27;</span>]</span><br><span class="line">    db = grads[<span class="string">&#x27;db&#x27;</span>]</span><br><span class="line">    </span><br><span class="line">    W = W - learning_rate * dW</span><br><span class="line">    b = b - learning_rate * db</span><br><span class="line">    parameters = &#123;<span class="string">&quot;W&quot;</span>: W,</span><br><span class="line">                  <span class="string">&quot;b&quot;</span>: b&#125;</span><br><span class="line">    <span class="keyword">return</span> parameters</span><br></pre></td></tr></table></figure>
+
+<h2 id="Logistic-Regression模型的建立"><a href="#Logistic-Regression模型的建立" class="headerlink" title="Logistic Regression模型的建立"></a>Logistic Regression模型的建立</h2><p>将以上的函数进行组合完成Logistic Regression模型的建立</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">def</span> <span class="title function_">lr_model</span>(<span class="params">X, Y, iteration_times</span>):</span><br><span class="line">    n_x = X.shape[<span class="number">0</span>]</span><br><span class="line">    parameters = initial(n_x)</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, iteration_times):</span><br><span class="line">        A = forward(parameters, X)</span><br><span class="line">        grads = back_progate(X, Y, A)</span><br><span class="line">        parameters = update_parameters(parameters, grads)</span><br><span class="line">        </span><br><span class="line">    <span class="keyword">return</span> parameters</span><br></pre></td></tr></table></figure>
+
+<p>最终，通过大量的学习过程，我们求出了所需的参数<code>W</code>和<code>b</code>，之后用于测试的时候只需要代入即可，Logistic Regression模型至此全部实现。</p>
+<h1 id="结果"><a href="#结果" class="headerlink" title="结果"></a>结果</h1><p>经过209张图片的训练，最终Logistic Regression模型对图片的识别成功率大约为70%，对于一个这么简单的模型来说，已经足够了。如果想要继续提升准确率，可以加大训练的图片规模。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2019-06-14T14:54:54.995Z" itemprop="dateUpdated">2019-06-14 22:54:54</time>
+</span><br>
+
+
+        
+        原文链接：<a href="/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/" target="_blank" rel="external">https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/</a>
+        
+    </div>
+    
+    <footer>
+        <a href="https://KingsFish.github.io">
+            <img src="/img/logo.jpg" alt="Fish">
+            Fish
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/&title=《深度学习实践01-Logistic Regression识别包含猫的图片》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/&title=《深度学习实践01-Logistic Regression识别包含猫的图片》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践01-Logistic Regression识别包含猫的图片》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/09/18/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B502-%E6%B5%85%E5%B1%82%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">深度学习实践02-浅层神经网络</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/08/26/Leetcode-120-Triangle/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">Leetcode-120-Triangle</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    <!-- Valine Comments -->
+    <div class="comments vcomment" id="comments"></div>
+    <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+    <script src="//unpkg.com/valine@latest/dist/Valine.min.js"></script>
+    <!-- Valine Comments script -->
+    <script>
+        var GUEST_INFO = ['nick','mail','link'];
+        var guest_info = 'nick,mail,link'.split(',').filter(function(item){
+          return GUEST_INFO.indexOf(item) > -1
+        });
+        new Valine({
+            el: '#comments',
+            notify: 'true' == 'true',
+            verify: 'false' == 'true',
+            appId: "QIdqLJLWm9STg3WqIkB6z1e8-MdYXbMMI",
+            appKey: "zFmObMH4Njg5C6DprdK0TIC2",
+            avatar: "retro",
+            placeholder: "来说点什么吧~记得留下邮箱，这样有提醒哦",
+            guest_info: guest_info.length == 0 ? GUEST_INFO : guest_info,
+            pageSize: "10"
+        })
+    </script>
+    <!-- Valine Comments end -->
+
+
+
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        打赏点饭钱~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <div class="reward-content">
+        
+        <div class="reward-code">
+            <img id="rewardCode" src="/img/wechat.jpg" alt="打赏二维码">
+        </div>
+        
+        <label class="reward-toggle">
+            <input id="rewardToggle" type="checkbox" class="reward-toggle-check"
+                data-wechat="/img/wechat.jpg" data-alipay="/img/alipay.jpg">
+            <div class="reward-toggle-ctrol">
+                <span class="reward-toggle-item wechat">微信</span>
+                <span class="reward-toggle-label"></span>
+                <span class="reward-toggle-item alipay">支付宝</span>
+            </div>
+        </label>
+        
+    </div>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            
+                <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            
+            <span>博客内容遵循 <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">知识共享 署名 - 非商业性 - 相同方式共享 4.0 国际协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p><span>Fish &copy; 2017 - 2023</span>
+            <span>
+                
+                Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a>
+            </span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/&title=《深度学习实践01-Logistic Regression识别包含猫的图片》 — 葫芦籽的碎碎念&pic=https://KingsFish.github.io/img/logo.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/&title=《深度学习实践01-Logistic Regression识别包含猫的图片》 — 葫芦籽的碎碎念&source=talk is cheap, show me the code" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《深度学习实践01-Logistic Regression识别包含猫的图片》 — 葫芦籽的碎碎念&url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/&via=https://KingsFish.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=https://kingsfish.github.io/2017/09/17/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B501-Logistic-Regression%E8%AF%86%E5%88%AB%E2%80%9C%E7%8C%AB%E2%80%9D/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAT4AAAE+CAAAAAAxUyPsAAAFQElEQVR42u3dQW7jMBAEQP//095rgMRS9wyVPaR0ChKvRBYNqDlDYF+v+Hp/uZLff/9Mcv9PPydPyUe1v3994cOHDx8+fB8e9ul2OcE18fX986fnz0qY8vH84IAPHz58+PCN+PYv+GTy1wNtPz+LMu0Ybqzw4cOHDx++X+S7jgL70DCLI/nkr5cNHz58+PDh+798bUDJB90Wyk+V7/cLgA8fPnz48M34ZsX0TRRop5Tff1/Ef6TXgQ8fPnz48JVB4e/8/Mj5Pnz48OHD9+f53osrgX6iEd4ea2sDTSGADx8+fPjwjQTyl3q+gZ+VJDZxqr3PrHzww1Pw4cOHDx++Bd++wdyGmNkxtWR52mjSjhAfPnz48OFr+dqX96b5Pdu0zxZj86+Kdjg+fPjw4cN3iG9POZv87OmzMNQWMn74GR8+fPjw4Rvljbx0ngeFtujf0uQxpS2F5KfR8OHDhw8fvpYvL3BvGuqz9vMs0ORNhVlx/7W/NT58+PDhwxfHiLytnhQO8sC0iSD7dsLHv+LDhw8fPnwlX96uXr3gDxXi2wlvivhRrQUfPnz48OEr+dqX/b7knQeU/eb/1HhuvnH48OHDhw/fiK8NEEmYOFVMz6NS+9y8kX8TXPDhw4cPH76uRv1qJ5kHhRx6027PS/OnFgAfPnz48OFr+fJy+WbrPitAPFEaaNvzN18XfPjw4cOHr+RryfJJbrbreRzZl+OTxYjOF+DDhw8fPnzBZ2bRJO8X503ozWG49iBae098+PDhw4fvCb6z4WDWRB8mr+DpbRSLAhA+fPjw4cO34MvL0y1THpKuF6/lO1Uc+UiMDx8+fPjwHeJ7otm8CS6zseVFina++PDhw4cP34wvbyEn2+82fBQRoWzPn/p8xI0PHz58+PDFfEkj+VhpexRQNuWJpKI+W1p8+PDhw4dvxjfcJMfF93wa+fIkQeRsUWB2N3z48OHDh+96z3vqMW3rug00eRCZFfqLOIUPHz58+PBNduLD/7DhVOv66ZL6+/JKRnKzPPjw4cOHD1/Mtxn6Kaw89CST3xQ16hnhw4cPHz58kxm92ge0m/ZNW/3s/fMvTV2yx4cPHz58+Ebd3rylnQ+iLUPMFvW6nJF/vg1M+PDhw4cPX8t36tU+2+rnWLO2wayDMWvG48OHDx8+fNd8swb5rJl9dqM+C1ttiLlZZnz48OHDh6/ku37wqY30rEwwa4q3d85b43WxHh8+fPjw4fs2nrYc0A59s11vf1McKSsjWh1Z8OHDhw8fvsu7tZPP40gxiFG5vy3Wb3Dx4cOHDx++Pd/mEFhess//bVv0n4WefGlviPHhw4cPH77J23n4mLZZfrZonhf086ckX5QixODDhw8fPnxx+SAPB5uosTlMluPmC9DOFB8+fPjw4dvwtQfREqb9Qbd3ec0Q2/Hgw4cPHz58p/g2m+r8N7ODYnnzYI++OqaGDx8+fPjwffjMPigk087DQRt68r9umu5FfwMfPnz48OEL+GZRow0fs2Nk+0N1SWCaNQPw4cOHDx++Pd++yd0OMSnib+JLe7fiy4QPHz58+PCdzCF1MX0/yc2GP4HIw1PeXMeHDx8+fPhavtmAkjWZlQb2UWO/tPnc8eHDhw8fvhlfXqRuh5WX2mdxarM8s+iGDx8+fPjw/Q7fNVAbNTaFgFn7fNZQv4HGhw8fPnz4HuObbfLbg2U5XHL/vCyStyVWuQ8fPnz48OE7VKyftbeTJWyPi81iStuwx4cPHz58+GZ8bVm83fC3saYt+ucF+rYdvm8n4MOHDx8+fF+uf392aWiIxrXtAAAAAElFTkSuQmCC" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/node-waves/0.7.6/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+</script>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+
+
+
+
+
+
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
