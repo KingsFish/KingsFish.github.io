@@ -42,7 +42,7 @@
         <link rel="alternate" type="application/atom+xml" title="葫芦籽的碎碎念" href="/atom.xml">
     
     <link rel="shortcut icon" href="/favicon.ico">
-    <link rel="stylesheet" href="//unpkg.com/hexo-theme-material-indigo@latest/css/style.css">
+    <link rel="stylesheet" href="/css/style.css?v=1.7.2">
     <script>window.lazyScripts=[]</script>
 
     <!-- custom head -->
@@ -283,7 +283,7 @@
 
 
         
-        原文链接：<a href="/2017/09/24/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B504-%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96%E4%BB%A5%E5%8F%8A%E6%AD%A3%E5%88%99%E5%8C%96/" target="_blank" rel="external">https://kingsfish.github.io/2017/09/24/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E5%AE%9E%E8%B7%B504-%E5%8F%82%E6%95%B0%E4%BC%98%E5%8C%96%E4%BB%A5%E5%8F%8A%E6%AD%A3%E5%88%99%E5%8C%96/</a>
+        原文链接：<a href="<%- url_for(page.path).replace(/index\.html$/, '') %>" target="_blank" rel="external"><%- page.permalink.replace(/index\.html$/, '') %></a>
         
     </div>
     
@@ -520,7 +520,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 
 </script>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/main.min.js"></script>
+<script src="/js/main.js?v=1.7.2"></script>
 
 
 <div class="search-panel" id="search-panel">
@@ -540,7 +540,7 @@ var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
 </li>
 </template>
 
-<script src="//unpkg.com/hexo-theme-material-indigo@latest/js/search.min.js" async></script>
+<script src="/js/search.js?v=1.7.2" async></script>
 
 
 
